@@ -181,7 +181,7 @@ HEAD = """<!DOCTYPE html>
 <header>
  <h1>classroom</h1>
  <p>Interaktivni alati za nastavu u osnovnoj školi, srednjoj školi i edukaciji odraslih. Svaki alat radi u browseru bez login-a i bez naloga. Mnogi imaju i verziju za štampu.</p>
- <p class="meta">Repo: <a href="https://github.com/tnosugar/classroom-private">github.com/tnosugar/classroom-private</a> · Generisano automatski pomoću scripts/regenerate_index.py</p>
+ <p class="meta">Repo: <a href="https://github.com/tnosugar/classroom">github.com/tnosugar/classroom</a> · Generisano automatski pomoću scripts/regenerate_index.py</p>
 </header>
 
 <main>
@@ -190,7 +190,7 @@ HEAD = """<!DOCTYPE html>
 FOOT = """</main>
 
 <footer>
- classroom · otvoreni alati za nastavu · <a href="https://github.com/tnosugar/classroom-private">izvorni kod</a>
+ classroom · otvoreni alati za nastavu · <a href="https://github.com/tnosugar/classroom">izvorni kod</a>
 </footer>
 
 </div>
