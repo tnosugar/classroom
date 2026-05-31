@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>classroom — interaktivni alati za nastavu</title>
+<style>
+ :root{--bg:#faf8f2;--surface:#fff;--ink:#2b2b2b;--muted:#6b6456;--edge:#b1271f;--accent:#1f7a3a;--border:#e6e0d2;}
+ *{box-sizing:border-box}
+ body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+ .wrap{max-width:880px;margin:0 auto;padding:32px 22px 64px}
+ header h1{font-size:28px;margin:0 0 8px;color:#3a3528}
+ header p{margin:0 0 6px;color:var(--muted);max-width:680px}
+ .meta{font-size:13px;color:var(--muted);margin-top:14px}
+ .meta a{color:var(--edge);text-decoration:none}
+ .meta a:hover{text-decoration:underline}
+ main{margin-top:36px}
+ section.subject{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px}
+ section.subject > h2{font-size:18px;margin:0 0 14px;color:var(--edge);border-bottom:1px solid var(--border);padding-bottom:8px}
+ ul.tools{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:14px}
+ @media (min-width:600px){ ul.tools{grid-template-columns:1fr 1fr;gap:18px} }
+ li.tool{border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:#fefcf7;transition:border-color .15s,background .15s}
+ li.tool:hover{border-color:var(--accent);background:#fff}
+ li.tool a.title{display:block;font-weight:700;font-size:15.5px;color:#3a3528;text-decoration:none;margin-bottom:6px}
+ li.tool a.title:hover{color:var(--accent)}
+ li.tool p{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+ li.tool .links{font-size:12.5px;color:var(--muted)}
+ li.tool .links a{color:var(--edge);text-decoration:none}
+ li.tool .links a:hover{text-decoration:underline}
+ .muted{color:var(--muted);font-style:italic}
+ .empty{padding:20px 22px;background:var(--surface);border:1px dashed var(--border);border-radius:10px;color:var(--muted);text-align:center}
+ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted);text-align:center}
+ footer a{color:var(--edge);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+ <h1>classroom</h1>
+ <p>Interaktivni alati za nastavu u osnovnoj školi, srednjoj školi i edukaciji odraslih. Svaki alat radi u browseru bez login-a i bez naloga. Mnogi imaju i verziju za štampu.</p>
+ <p class="meta">Repo: <a href="https://github.com/tnosugar/classroom-private">github.com/tnosugar/classroom-private</a> · Generisano automatski pomoću scripts/regenerate_index.py</p>
+</header>
+
+<main>
+<section class="subject">
+ <h2>Geografija</h2>
+ <ul class="tools">
+  <li class="tool"><a class="title" href="tools/geografija/evropa-kviz/">Evropa — geografski kviz</a><p>Učenik upisuje broj pojma sa spiska u kvadrat na karti koji označava njegovu geografsku lokaciju. Ako pogreši, sistem traži ponovan unos i broji greške po polju i ukupno.</p><span class="links"><a href="tools/geografija/evropa-kviz/">Interaktivni alat</a> · <a href="tools/geografija/evropa-kviz/radna.pdf">PDF (radna)</a> · <a href="tools/geografija/evropa-kviz/resenja.pdf">PDF (rešenja)</a></span></li>
+ </ul>
+</section>
+</main>
+
+<footer>
+ classroom · otvoreni alati za nastavu · <a href="https://github.com/tnosugar/classroom-private">izvorni kod</a>
+</footer>
+
+</div>
+</body>
+</html>

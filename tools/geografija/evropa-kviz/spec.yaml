@@ -1,0 +1,264 @@
+# ============================================================================
+# Evropa — geografski kviz (spec.yaml)
+# ----------------------------------------------------------------------------
+# Ovaj fajl je SAMO PODACI. Render logiku (HTML kviz + PDF radna/rešenja)
+# obavlja classroom/shared/python/labeled_location_quiz.py preko make.py
+# u istom folderu.
+#
+# Kako se rebuild radi:
+#   cd classroom/tools/geografija/evropa-kviz/
+#   python3 make.py
+#
+# Kako napraviti sličan kviz za drugi region:
+#   cp -r classroom/templates/labeled-location-quiz/ classroom/tools/{predmet}/{novi-kviz}/
+#   edit spec.yaml (extent, terms, geometry)
+#   python3 make.py
+# ============================================================================
+
+title: "Evropa — geografski kviz"
+title_short: "Evropa"
+locale: sr
+description: >
+  Učenik upisuje broj pojma sa spiska u kvadrat na karti koji označava
+  njegovu geografsku lokaciju. Ako pogreši, sistem traži ponovan unos i
+  broji greške po polju i ukupno.
+
+# Geografski opseg karte (longitude/latitude granice).
+# mid_lat se koristi za aspect ratio (equirectangular projection).
+map:
+  extent:
+    lon: [-25, 62]
+    lat: [33.5, 72]
+  mid_lat_for_aspect: 53.0
+  geo_data: ../../../shared/data/countries.geojson  # relativno od ovog fajla
+
+# Render styling — opcioni; renderer ima default-e ako se izostavi.
+style:
+  colors:
+    sea: "#cfe6f2"
+    land: "#f3ecd8"
+    border: "#8a8170"
+    coast: "#5b5446"
+    mountain: "#9c5a2c"
+    river: "#2f7fb5"
+    circle_edge: "#b1271f"
+    circle_fill: "#ffffff"
+
+# UI tekstovi (lokalizovani; ako praviš verziju na drugom jeziku, samo ovo menjaš).
+ui:
+  header_title: "Evropa — geografski kviz"
+  header_subtitle: >
+    U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi
+    na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako
+    pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
+  list_heading: "Spisak pojmova"
+  legend_mountains: "▲ braon linije = planine"
+  legend_rivers: "— plave linije = reke"
+  legend_circles: "▢ = lokacija pojma (upiši broj)"
+  stat_correct: "Tačno"
+  stat_miss: "Ukupno grešaka"
+  btn_reset: "Počni ispočetka"
+  btn_export_csv: "Preuzmi rezultate (CSV)"
+  mode_label: "Pitanja"
+  mode_all: "Sve ({n})"
+  mode_random: "{n} nasumičnih"
+  resume_indicator: "Nastavak prethodne sesije — tvoj progres je sačuvan."
+  zoom_hint: "Zumiraj: dugmad +/−, točkić miša ili dvoklik · Prevuci za pomeranje"
+  msg_correct: "Tačno!"
+  msg_wrong: "Pogrešno — pokušaj ponovo"
+  msg_win: "🎉 Bravo! Sve tačno ({total}/{total}) · ukupno grešaka: {miss}"
+  pdf_title_quiz: "EVROPA — geografski pojmovi"
+  pdf_title_answer: "EVROPA — geografski pojmovi (REŠENJA)"
+  pdf_legend_heading: "Upiši broj pojma u krug na karti:"
+  pdf_legend_symbols: "▲ planine    — reke    ○ lokacija pojma"
+
+# ----------------------------------------------------------------------------
+# Termini — 42 geografska pojma.
+#
+# Svaki termin ima:
+#   id           — broj pitanja (1-42), redom kako se prikazuje u listi
+#   name         — naziv pojma na lokalu (na koji jezik je locale postavljen)
+#   label_at     — [lon, lat] gde stoji kvadrat za unos broja na karti
+#   geometry     — opciono; ako pojam je linija (planina ili reka), dodaje se polilinija
+#       type     — "mountain" ili "river"
+#       polyline — niz [lon, lat] tačaka
+# ----------------------------------------------------------------------------
+
+terms:
+  - id: 1
+    name: "Gibraltarski moreuz"
+    label_at: [-5.6, 35.95]
+  - id: 2
+    name: "Sredozemno more"
+    label_at: [7.5, 38.6]
+  - id: 3
+    name: "Planina Ural"
+    label_at: [58.5, 57.5]
+    geometry:
+      type: mountain
+      polyline: [[60, 68], [59.2, 64], [59, 60], [58, 56], [57, 52.5]]
+  - id: 4
+    name: "Reka Ural"
+    label_at: [53.0, 49.3]
+    geometry:
+      type: river
+      polyline: [[58.5, 54], [56, 52.8], [53.5, 51.2], [52, 49.5], [51.5, 47.2]]
+  - id: 5
+    name: "Kaspijsko jezero"
+    label_at: [50.5, 42.0]
+  - id: 6
+    name: "Kavkaz"
+    label_at: [44.2, 42.9]
+    geometry:
+      type: mountain
+      polyline: [[40, 43.6], [43, 43.2], [45.5, 42.5], [48, 41.6]]
+  - id: 7
+    name: "Crno more"
+    label_at: [34.5, 43.2]
+  - id: 8
+    name: "Moreuz Bosfor"
+    label_at: [29.2, 41.2]
+  - id: 9
+    name: "Mramorno more"
+    label_at: [28.2, 40.6]
+  - id: 10
+    name: "Moreuz Dardaneli"
+    label_at: [26.3, 40.2]
+  - id: 11
+    name: "Egejsko more"
+    label_at: [25.0, 38.4]
+  - id: 12
+    name: "Velika Britanija"
+    label_at: [-1.6, 52.7]
+  - id: 13
+    name: "Reka Volga"
+    label_at: [46.8, 51.5]
+    geometry:
+      type: river
+      polyline: [[34, 57], [37, 56.2], [43, 56.3], [47, 55], [48, 52.5], [46, 50.2], [47.5, 48], [48, 46.3]]
+  - id: 14
+    name: "Apeninsko poluostrvo"
+    label_at: [13.6, 42.2]
+  - id: 15
+    name: "Pirinejsko poluostrvo"
+    label_at: [-4.2, 40.0]
+  - id: 16
+    name: "Balkansko poluostrvo"
+    label_at: [22.5, 42.2]
+  - id: 17
+    name: "Skandinavsko poluostrvo"
+    label_at: [15.5, 62.5]
+  - id: 18
+    name: "Krim"
+    label_at: [34.3, 45.4]
+  - id: 19
+    name: "Peloponez"
+    label_at: [22.2, 37.2]
+  - id: 20
+    name: "Jiland"
+    label_at: [9.2, 56.2]
+  - id: 21
+    name: "Kola"
+    label_at: [37.5, 67.6]
+  - id: 22
+    name: "Kanin"
+    label_at: [44.5, 68.0]
+  - id: 23
+    name: "Irska"
+    label_at: [-8.2, 53.3]
+  - id: 24
+    name: "Island"
+    label_at: [-18.8, 64.8]
+  - id: 25
+    name: "Sicilija"
+    label_at: [14.1, 37.5]
+  - id: 26
+    name: "Sardinija"
+    label_at: [9.1, 40.1]
+  - id: 27
+    name: "Malta"
+    label_at: [14.45, 35.9]
+  - id: 28
+    name: "Krit"
+    label_at: [24.9, 35.2]
+  - id: 29
+    name: "Balearska ostrva"
+    label_at: [2.8, 39.5]
+  - id: 30
+    name: "Pirineji"
+    label_at: [0.6, 42.75]
+    geometry:
+      type: mountain
+      polyline: [[-1.6, 43.3], [0.5, 42.8], [2.6, 42.4]]
+  - id: 31
+    name: "Alpi"
+    label_at: [10.2, 46.4]
+    geometry:
+      type: mountain
+      polyline: [[6, 45.0], [8, 46.2], [11, 47.1], [14.5, 47.0]]
+  - id: 32
+    name: "Apenini"
+    label_at: [15.6, 41.0]
+    geometry:
+      type: mountain
+      polyline: [[10.2, 44.4], [13, 43.0], [15.2, 41.4], [16.3, 40.2]]
+  - id: 33
+    name: "Dinarske planine"
+    label_at: [18.0, 43.3]
+    geometry:
+      type: mountain
+      polyline: [[14.8, 45.6], [17, 44.0], [18.8, 43.0], [20, 42.2]]
+  - id: 34
+    name: "Balkanske planine"
+    label_at: [25.0, 43.0]
+    geometry:
+      type: mountain
+      polyline: [[22.6, 43.1], [25, 43.1], [27, 42.9]]
+  - id: 35
+    name: "Karpati"
+    label_at: [23.5, 47.6]
+    geometry:
+      type: mountain
+      polyline: [[18.8, 49.3], [21.5, 49.2], [24, 48.0], [25.5, 46.2], [24, 45.5]]
+  - id: 36
+    name: "Centralni masiv"
+    label_at: [3.0, 45.0]
+    geometry:
+      type: mountain
+      polyline: [[2.2, 45.9], [3.0, 45.0], [3.6, 44.2]]
+  - id: 37
+    name: "Vogezi"
+    label_at: [6.6, 48.2]
+    geometry:
+      type: mountain
+      polyline: [[7.0, 48.5], [7.2, 47.9]]
+  - id: 38
+    name: "Švarcvald"
+    label_at: [8.6, 48.1]
+    geometry:
+      type: mountain
+      polyline: [[8.1, 48.5], [8.3, 47.7]]
+  - id: 39
+    name: "Sudeti"
+    label_at: [16.0, 50.55]
+    geometry:
+      type: mountain
+      polyline: [[14.8, 50.8], [16.4, 50.6], [17.2, 50.2]]
+  - id: 40
+    name: "Peninske planine"
+    label_at: [-2.4, 54.3]
+    geometry:
+      type: mountain
+      polyline: [[-2.2, 55.0], [-2.0, 54.0], [-1.8, 53.2]]
+  - id: 41
+    name: "Skandinavske planine"
+    label_at: [13.2, 65.0]
+    geometry:
+      type: mountain
+      polyline: [[12, 68.5], [14, 66], [15, 64], [13, 61.5], [9.5, 61]]
+  - id: 42
+    name: "Šumava"
+    label_at: [13.2, 49.2]
+    geometry:
+      type: mountain
+      polyline: [[12.6, 49.6], [13.6, 49.0], [14.2, 48.6]]

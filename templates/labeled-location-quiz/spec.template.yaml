@@ -1,0 +1,96 @@
+# ============================================================================
+# {NAZIV KVIZA} (spec.yaml)
+# ----------------------------------------------------------------------------
+# Kopirajte ovaj fajl, preimenujte u spec.yaml, i popunite sve { ... } sekcije.
+#
+# Kako se rebuild radi:
+#   python3 make.py
+# ============================================================================
+
+title: "{Pun naziv kviza, npr. 'Azija — geografski kviz'}"
+title_short: "{Kratak naziv za HTML <title>, npr. 'Azija'}"
+locale: sr            # ili en, de, hr, bs, mk... — koristi se za <html lang="">
+description: >
+  {Kratak opis šta učenik radi u ovom kvizu — 1-2 rečenice.}
+
+# Geografski opseg karte.
+# extent.lon = [min_lon, max_lon]; extent.lat = [min_lat, max_lat]
+# mid_lat_for_aspect = centralna latitude (oko sredine extent.lat); koristi se za aspect
+map:
+  extent:
+    lon: [0, 180]
+    lat: [0, 80]
+  mid_lat_for_aspect: 40.0
+  # Relativna putanja od ovog spec.yaml fajla:
+  geo_data: ../../../shared/data/countries.geojson
+
+# Stilizacija je opciona — ako se izostavi, renderer koristi default-e.
+# Override koristi se za teme (npr. dečija šarenija paleta).
+# style:
+#   colors:
+#     sea: "#cfe6f2"
+#     land: "#f3ecd8"
+#     border: "#8a8170"
+#     mountain: "#9c5a2c"
+#     river: "#2f7fb5"
+#     circle_edge: "#b1271f"
+#     circle_fill: "#ffffff"
+
+# UI tekstovi — svi vidljivi stringovi. Za drugi jezik samo ovo menjaš.
+ui:
+  header_title: "{Naslov stranice u HTML headeru}"
+  header_subtitle: >
+    {Instrukcija učeniku — npr. "U svaki kvadrat upiši broj pojma sa spiska..."}
+  list_heading: "Spisak pojmova"
+  legend_mountains: "▲ braon linije = planine"
+  legend_rivers: "— plave linije = reke"
+  legend_circles: "▢ = lokacija pojma (upiši broj)"
+  stat_correct: "Tačno"
+  stat_miss: "Ukupno grešaka"
+  btn_reset: "Počni ispočetka"
+  btn_export_csv: "Preuzmi rezultate (CSV)"
+  mode_label: "Pitanja"
+  mode_all: "Sve ({n})"
+  mode_random: "{n} nasumičnih"
+  resume_indicator: "Nastavak prethodne sesije — tvoj progres je sačuvan."
+  msg_correct: "Tačno!"
+  msg_wrong: "Pogrešno — pokušaj ponovo"
+  msg_win: "🎉 Bravo! Sve tačno ({total}/{total}) · ukupno grešaka: {miss}"
+  zoom_hint: "Zumiraj: dugmad +/−, točkić miša ili dvoklik · Prevuci za pomeranje"
+  pdf_title_quiz: "{NASLOV ZA PDF — npr. 'AZIJA — geografski pojmovi'}"
+  pdf_title_answer: "{NASLOV ZA REŠENJA — npr. 'AZIJA — geografski pojmovi (REŠENJA)'}"
+  pdf_legend_heading: "Upiši broj pojma u krug na karti:"
+  pdf_legend_symbols: "▲ planine    — reke    ○ lokacija pojma"
+
+# ----------------------------------------------------------------------------
+# Termini.
+#
+# Svaki termin ima:
+#   id           — redni broj (1, 2, 3, ...), istovremeno tačan odgovor
+#   name         — naziv pojma
+#   label_at     — [lon, lat] gde stoji kvadrat za unos broja na karti
+#   geometry     — opciono; za pojmove koji su linije (planinski venci, reke)
+#       type: mountain | river
+#       polyline: niz [lon, lat] tačaka koje renderer crta kao liniju
+# ----------------------------------------------------------------------------
+
+terms:
+  - id: 1
+    name: "{Naziv prvog pojma}"
+    label_at: [50.0, 40.0]   # [lon, lat] — primer
+
+  # Primer pojma sa geometrijom (planinski venac):
+  # - id: 2
+  #   name: "Himalaji"
+  #   label_at: [85.0, 28.5]
+  #   geometry:
+  #     type: mountain
+  #     polyline: [[75, 35], [80, 32], [85, 28.5], [90, 27], [95, 28]]
+
+  # Primer pojma sa geometrijom (reka):
+  # - id: 3
+  #   name: "Jangcekjang"
+  #   label_at: [108, 30]
+  #   geometry:
+  #     type: river
+  #     polyline: [[91, 33], [95, 32], [100, 31], [110, 30], [120, 31.5]]

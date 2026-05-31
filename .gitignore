@@ -1,0 +1,31 @@
+# macOS / OS metadata
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Chat session artefakti (Cowork output drops itd.)
+# Ostavljamo ih lokalno za referencu, ne ulaze u repo.
+audit.jsonl
+.chat-archive/
+
+# Legacy folder iz prvog draft chat-a alata — sadrži audit.jsonl + debug PNG-ove.
+# Posle što potvrdiš da ti ništa odavde ne treba, obriši folder ručno.
+Geografija-Evropa-Kviz/
+
+# Debug preview/scratch slike koje renderer može usput da napravi
+crop_*.png
+preview_*.png
+_check.js
