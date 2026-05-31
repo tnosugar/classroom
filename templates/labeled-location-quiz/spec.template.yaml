@@ -10,6 +10,13 @@
 title: "{Pun naziv kviza, npr. 'Azija — geografski kviz'}"
 title_short: "{Kratak naziv za HTML <title>, npr. 'Azija'}"
 locale: sr            # ili en, de, hr, bs, mk... — koristi se za <html lang="">
+
+# Default je true: brojevi pojmova se nasumično preraspoređuju pri svakom
+# fresh load-u / reset-u / promeni moda, pa učenik ne pamti unose po brojevima.
+# Postavi false ako je za kviz važno da kanonski redosled (po ID-u u spec.yaml)
+# bude i prikazani redosled (npr. periodni sistem elemenata).
+randomize_numbers: true
+
 description: >
   {Kratak opis šta učenik radi u ovom kvizu — 1-2 rečenice.}
 

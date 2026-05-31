@@ -125,7 +125,8 @@
 <script>
 const ALL_TERMS = [{"id": 1, "name": "Gibraltarski moreuz"}, {"id": 2, "name": "Sredozemno more"}, {"id": 3, "name": "Planina Ural"}, {"id": 4, "name": "Reka Ural"}, {"id": 5, "name": "Kaspijsko jezero"}, {"id": 6, "name": "Kavkaz"}, {"id": 7, "name": "Crno more"}, {"id": 8, "name": "Moreuz Bosfor"}, {"id": 9, "name": "Mramorno more"}, {"id": 10, "name": "Moreuz Dardaneli"}, {"id": 11, "name": "Egejsko more"}, {"id": 12, "name": "Velika Britanija"}, {"id": 13, "name": "Reka Volga"}, {"id": 14, "name": "Apeninsko poluostrvo"}, {"id": 15, "name": "Pirinejsko poluostrvo"}, {"id": 16, "name": "Balkansko poluostrvo"}, {"id": 17, "name": "Skandinavsko poluostrvo"}, {"id": 18, "name": "Krim"}, {"id": 19, "name": "Peloponez"}, {"id": 20, "name": "Jiland"}, {"id": 21, "name": "Kola"}, {"id": 22, "name": "Kanin"}, {"id": 23, "name": "Irska"}, {"id": 24, "name": "Island"}, {"id": 25, "name": "Sicilija"}, {"id": 26, "name": "Sardinija"}, {"id": 27, "name": "Malta"}, {"id": 28, "name": "Krit"}, {"id": 29, "name": "Balearska ostrva"}, {"id": 30, "name": "Pirineji"}, {"id": 31, "name": "Alpi"}, {"id": 32, "name": "Apenini"}, {"id": 33, "name": "Dinarske planine"}, {"id": 34, "name": "Balkanske planine"}, {"id": 35, "name": "Karpati"}, {"id": 36, "name": "Centralni masiv"}, {"id": 37, "name": "Vogezi"}, {"id": 38, "name": "Švarcvald"}, {"id": 39, "name": "Sudeti"}, {"id": 40, "name": "Peninske planine"}, {"id": 41, "name": "Skandinavske planine"}, {"id": 42, "name": "Šumava"}];
 const STATE_KEY = 'classroom:' + window.location.pathname;
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
+const RANDOMIZE_NUMBERS = true;
 const MSG_CORRECT = "Ta\u010dno!", MSG_WRONG = "Pogre\u0161no \u2014 poku\u0161aj ponovo", MSG_WIN_TPL = "\ud83c\udf89 Bravo! Sve ta\u010dno ({total}/{total}) \u00b7 ukupno gre\u0161aka: {miss}";
 const MODE_ALL_TPL = "Sve ({n})", MODE_RANDOM_TPL = "{n} nasumi\u010dnih";
 
@@ -144,7 +145,52 @@ const resumeBanner = document.getElementById('resumeBanner');
 
 let currentMode = 'all';
 let visibleIds = ALL_TERMS.map(t => t.id);
+let currentMapping = null;  // { c2d: {canonId: displayNum}, d2c: {displayNum: canonId} }
 let msgT = null;
+
+const legendList = document.querySelector('ol.terms');
+
+function generateMapping(canonicalIds) {
+  const arr = [...canonicalIds];
+  if (RANDOMIZE_NUMBERS) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+  const c2d = {}, d2c = {};
+  arr.forEach((canonId, idx) => {
+    c2d[canonId] = idx + 1;
+    d2c[idx + 1] = canonId;
+  });
+  return { c2d, d2c };
+}
+
+function applyMapping(mapping) {
+  currentMapping = mapping;
+  // Update each input's expected answer to its display number
+  for (const inp of allInputs) {
+    const canonId = parseInt(inp.dataset.id, 10);
+    const display = mapping.c2d[canonId];
+    inp.dataset.correct = display ? String(display) : '';
+  }
+  // Reorder legend by display number and rewrite the <b>N.</b> prefix
+  const items = [...legendList.children];
+  items.sort((a, b) => {
+    const da = mapping.c2d[parseInt(a.dataset.id, 10)] || 9999;
+    const db = mapping.c2d[parseInt(b.dataset.id, 10)] || 9999;
+    return da - db;
+  });
+  legendList.append(...items);
+  for (const li of items) {
+    const canonId = parseInt(li.dataset.id, 10);
+    const display = mapping.c2d[canonId];
+    if (display) {
+      const b = li.querySelector('b');
+      if (b) b.textContent = display + '.';
+    }
+  }
+}
 
 function setSelectOptions() {
   // Fill {n} placeholders for the mode selector options
@@ -237,13 +283,19 @@ function check(inp) {
 function saveState() {
   const answers = {};
   for (const inp of allInputs) {
-    answers[inp.dataset.correct] = {
+    answers[inp.dataset.id] = {  // keyed by canonical id, not display number
       v: inp.value,
       c: inp.classList.contains('correct'),
       m: parseInt(inp.dataset.miss, 10) || 0
     };
   }
-  const state = { v: STATE_VERSION, mode: currentMode, visible: visibleIds, answers };
+  const state = {
+    v: STATE_VERSION,
+    mode: currentMode,
+    visible: visibleIds,
+    mapping: currentMapping ? currentMapping.c2d : null,
+    answers
+  };
   try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {}
 }
 
@@ -265,7 +317,7 @@ function clearState() {
 
 function applyAnswers(answers) {
   for (const inp of allInputs) {
-    const a = answers[inp.dataset.correct];
+    const a = answers[inp.dataset.id];  // keyed by canonical id
     inp.value = '';
     inp.readOnly = false;
     inp.classList.remove('correct', 'wrong');
@@ -308,7 +360,9 @@ function setMode(mode, opts) {
     ids = opts.restoreIds || shuffleIds(n);
   }
   applyVisibility(ids);
-  if (!opts.restoreIds) {
+  const mapping = opts.restoreMapping || generateMapping(ids);
+  applyMapping(mapping);
+  if (!opts.restoreIds && !opts.restoreMapping) {
     // mode change resets answers
     applyAnswers({});
   }
@@ -322,14 +376,15 @@ modeSelect.addEventListener('change', () => {
 
 // --- CSV export ---
 function exportCSV() {
-  const lines = ['id,name,correct,miss_count'];
+  const lines = ['canonical_id,display_number,name,correct,miss_count'];
   for (const t of ALL_TERMS) {
     if (!visibleIds.includes(t.id)) continue;
     const inp = inputsById.get(t.id);
+    const display = inp.dataset.correct || '';
     const correct = inp.classList.contains('correct') ? 'yes' : 'no';
     const miss = inp.dataset.miss || '0';
     const name = '"' + t.name.replace(/"/g, '""') + '"';
-    lines.push(t.id + ',' + name + ',' + correct + ',' + miss);
+    lines.push(t.id + ',' + display + ',' + name + ',' + correct + ',' + miss);
   }
   const csv = lines.join('\n') + '\n';
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -351,13 +406,13 @@ allInputs.forEach(inp => {
 });
 
 resetBtn.addEventListener('click', () => {
+  // Always re-shuffle numbering on reset (if randomization is enabled)
+  // and within the same mode (pick fresh random subset for N-mode).
   if (currentMode !== 'all') {
-    // pick a fresh random subset within the same N
     const n = parseInt(currentMode, 10);
     setMode(currentMode, { restoreIds: shuffleIds(n) });
   } else {
-    applyAnswers({});
-    recountCorrectMiss();
+    setMode('all', {});
   }
   resumeBanner.classList.remove('show');
   clearState();
@@ -468,7 +523,13 @@ setSelectOptions();
 const saved = loadState();
 if (saved) {
   modeSelect.value = saved.mode || 'all';
-  setMode(saved.mode || 'all', { restoreIds: saved.visible });
+  let restoreMapping = null;
+  if (saved.mapping) {
+    const d2c = {};
+    for (const [c, d] of Object.entries(saved.mapping)) d2c[d] = parseInt(c, 10);
+    restoreMapping = { c2d: saved.mapping, d2c };
+  }
+  setMode(saved.mode || 'all', { restoreIds: saved.visible, restoreMapping });
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
   resumeBanner.classList.add('show');

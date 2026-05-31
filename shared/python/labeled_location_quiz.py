@@ -247,7 +247,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <script>
 const ALL_TERMS = __TERMS_JSON__;
 const STATE_KEY = 'classroom:' + window.location.pathname;
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
+const RANDOMIZE_NUMBERS = __RANDOMIZE_NUMBERS__;
 const MSG_CORRECT = __MSG_CORRECT__, MSG_WRONG = __MSG_WRONG__, MSG_WIN_TPL = __MSG_WIN__;
 const MODE_ALL_TPL = __MODE_ALL_TPL__, MODE_RANDOM_TPL = __MODE_RANDOM_TPL__;
 
@@ -266,7 +267,52 @@ const resumeBanner = document.getElementById('resumeBanner');
 
 let currentMode = 'all';
 let visibleIds = ALL_TERMS.map(t => t.id);
+let currentMapping = null;  // { c2d: {canonId: displayNum}, d2c: {displayNum: canonId} }
 let msgT = null;
+
+const legendList = document.querySelector('ol.terms');
+
+function generateMapping(canonicalIds) {
+  const arr = [...canonicalIds];
+  if (RANDOMIZE_NUMBERS) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+  const c2d = {}, d2c = {};
+  arr.forEach((canonId, idx) => {
+    c2d[canonId] = idx + 1;
+    d2c[idx + 1] = canonId;
+  });
+  return { c2d, d2c };
+}
+
+function applyMapping(mapping) {
+  currentMapping = mapping;
+  // Update each input's expected answer to its display number
+  for (const inp of allInputs) {
+    const canonId = parseInt(inp.dataset.id, 10);
+    const display = mapping.c2d[canonId];
+    inp.dataset.correct = display ? String(display) : '';
+  }
+  // Reorder legend by display number and rewrite the <b>N.</b> prefix
+  const items = [...legendList.children];
+  items.sort((a, b) => {
+    const da = mapping.c2d[parseInt(a.dataset.id, 10)] || 9999;
+    const db = mapping.c2d[parseInt(b.dataset.id, 10)] || 9999;
+    return da - db;
+  });
+  legendList.append(...items);
+  for (const li of items) {
+    const canonId = parseInt(li.dataset.id, 10);
+    const display = mapping.c2d[canonId];
+    if (display) {
+      const b = li.querySelector('b');
+      if (b) b.textContent = display + '.';
+    }
+  }
+}
 
 function setSelectOptions() {
   // Fill {n} placeholders for the mode selector options
@@ -359,13 +405,19 @@ function check(inp) {
 function saveState() {
   const answers = {};
   for (const inp of allInputs) {
-    answers[inp.dataset.correct] = {
+    answers[inp.dataset.id] = {  // keyed by canonical id, not display number
       v: inp.value,
       c: inp.classList.contains('correct'),
       m: parseInt(inp.dataset.miss, 10) || 0
     };
   }
-  const state = { v: STATE_VERSION, mode: currentMode, visible: visibleIds, answers };
+  const state = {
+    v: STATE_VERSION,
+    mode: currentMode,
+    visible: visibleIds,
+    mapping: currentMapping ? currentMapping.c2d : null,
+    answers
+  };
   try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {}
 }
 
@@ -387,7 +439,7 @@ function clearState() {
 
 function applyAnswers(answers) {
   for (const inp of allInputs) {
-    const a = answers[inp.dataset.correct];
+    const a = answers[inp.dataset.id];  // keyed by canonical id
     inp.value = '';
     inp.readOnly = false;
     inp.classList.remove('correct', 'wrong');
@@ -430,7 +482,9 @@ function setMode(mode, opts) {
     ids = opts.restoreIds || shuffleIds(n);
   }
   applyVisibility(ids);
-  if (!opts.restoreIds) {
+  const mapping = opts.restoreMapping || generateMapping(ids);
+  applyMapping(mapping);
+  if (!opts.restoreIds && !opts.restoreMapping) {
     // mode change resets answers
     applyAnswers({});
   }
@@ -444,14 +498,15 @@ modeSelect.addEventListener('change', () => {
 
 // --- CSV export ---
 function exportCSV() {
-  const lines = ['id,name,correct,miss_count'];
+  const lines = ['canonical_id,display_number,name,correct,miss_count'];
   for (const t of ALL_TERMS) {
     if (!visibleIds.includes(t.id)) continue;
     const inp = inputsById.get(t.id);
+    const display = inp.dataset.correct || '';
     const correct = inp.classList.contains('correct') ? 'yes' : 'no';
     const miss = inp.dataset.miss || '0';
     const name = '"' + t.name.replace(/"/g, '""') + '"';
-    lines.push(t.id + ',' + name + ',' + correct + ',' + miss);
+    lines.push(t.id + ',' + display + ',' + name + ',' + correct + ',' + miss);
   }
   const csv = lines.join('\n') + '\n';
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -473,13 +528,13 @@ allInputs.forEach(inp => {
 });
 
 resetBtn.addEventListener('click', () => {
+  // Always re-shuffle numbering on reset (if randomization is enabled)
+  // and within the same mode (pick fresh random subset for N-mode).
   if (currentMode !== 'all') {
-    // pick a fresh random subset within the same N
     const n = parseInt(currentMode, 10);
     setMode(currentMode, { restoreIds: shuffleIds(n) });
   } else {
-    applyAnswers({});
-    recountCorrectMiss();
+    setMode('all', {});
   }
   resumeBanner.classList.remove('show');
   clearState();
@@ -590,7 +645,13 @@ setSelectOptions();
 const saved = loadState();
 if (saved) {
   modeSelect.value = saved.mode || 'all';
-  setMode(saved.mode || 'all', { restoreIds: saved.visible });
+  let restoreMapping = null;
+  if (saved.mapping) {
+    const d2c = {};
+    for (const [c, d] of Object.entries(saved.mapping)) d2c[d] = parseInt(c, 10);
+    restoreMapping = { c2d: saved.mapping, d2c };
+  }
+  setMode(saved.mode || 'all', { restoreIds: saved.visible, restoreMapping });
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
   resumeBanner.classList.add('show');
@@ -704,6 +765,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__RESUME_MSG__": ui["resume_indicator"],
         "__TOTAL__": str(len(spec["terms"])),
         "__TERMS_JSON__": terms_json,
+        "__RANDOMIZE_NUMBERS__": "true" if spec.get("randomize_numbers", True) else "false",
         "__MSG_CORRECT__": _json.dumps(ui["msg_correct"]),
         "__MSG_WRONG__": _json.dumps(ui["msg_wrong"]),
         "__MSG_WIN__": _json.dumps(ui["msg_win"]),

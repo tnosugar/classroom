@@ -18,6 +18,14 @@
 title: "Evropa — geografski kviz"
 title_short: "Evropa"
 locale: sr
+
+# Pri svakoj novoj sesiji (fresh load / reset / promena moda) sistem nasumično
+# preraspoređuje brojeve pojmova (npr. "1 = Pirineji" jedne sesije, "1 = Krit"
+# druge). Cilj: učenik ne pamti unose po brojevima, mora svaki put da gleda
+# legendu i mapu. Set false za kvizove gde redosled ima značaja (npr. periodni
+# sistem). localStorage čuva mapping tako da refresh ne menja numbering.
+randomize_numbers: true
+
 description: >
   Učenik upisuje broj pojma sa spiska u kvadrat na karti koji označava
   njegovu geografsku lokaciju. Ako pogreši, sistem traži ponovan unos i
