@@ -99,6 +99,9 @@ def _ui_default():
         "mode_label": "Questions",
         "mode_all": "All ({n})",
         "mode_random": "{n} random",
+        "toggle_features": "Mountains + rivers",
+        "toggle_borders": "Borders",
+        "toggle_bw": "B&W",
         "msg_correct": "Correct!",
         "msg_wrong": "Wrong — try again",
         "msg_win": "Done! All correct ({total}/{total}) · total mistakes: {miss}",
@@ -128,7 +131,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__</title>
 <style>
- :root{--sea:__SEA__;--land:__LAND__;--bord:__BORD__;--edge:__EDGE__;--ink:#2b2b2b;}
+ :root{--sea:__SEA__;--land:__LAND__;--bord:__BORD__;--edge:__EDGE__;--mtn-col:__MTN_COL__;--riv-col:__RIV_COL__;--ink:#2b2b2b;}
  *{box-sizing:border-box}
  body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#faf8f2}
  header{padding:14px 18px;background:#fff;border-bottom:1px solid #e6e0d2;position:sticky;top:0;z-index:50}
@@ -144,6 +147,9 @@ _HTML_TPL = r"""<!DOCTYPE html>
  button.secondary:hover{background:#1f7a3a;color:#fff}
  .mode-selector{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:#3a3528}
  .mode-selector select{font:inherit;padding:4px 8px;border:1px solid #6b6456;border-radius:6px;background:#fff;color:#3a3528;cursor:pointer}
+ .view-toggles{display:inline-flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:#3a3528;padding:4px 10px;background:#f3ecd8;border:1px solid #e1d8c2;border-radius:8px}
+ .view-toggles label{display:inline-flex;gap:5px;align-items:center;cursor:pointer;user-select:none}
+ .view-toggles input{margin:0;cursor:pointer}
  .resume-banner{display:none;margin-top:8px;background:#fffbe6;border:1px solid #f0d878;border-radius:8px;padding:6px 12px;font-size:13px;color:#7a5a00}
  .resume-banner.show{display:block}
  .layout{display:flex;align-items:flex-start;gap:0;width:100%}
@@ -175,6 +181,30 @@ _HTML_TPL = r"""<!DOCTYPE html>
  #msg{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#b1271f;color:#fff;padding:10px 18px;border-radius:24px;font-size:14px;font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99}
  #msg.show{opacity:1}
  .win{background:#d8f0dd;border-color:#1f7a3a;color:#13602c;font-weight:700}
+
+ /* View toggles: features (mountains+rivers) / borders / color mode */
+ body.no-features svg .feat-mtn,
+ body.no-features svg .feat-mtn-mark,
+ body.no-features svg .feat-riv,
+ body.no-features .keyline .m,
+ body.no-features .keyline .r,
+ body.no-features .keyline br:first-of-type { display: none }
+ body.no-borders svg .border-path { display: none }
+
+ /* Black & white mode: grayscale palette + subtle gradient on sea */
+ body.bw {
+   --sea: #d4d4d4; --land: #f2f2f2; --bord: #5a5a5a; --edge: #1a1a1a;
+   --mtn-col: #404040; --riv-col: #707070;
+ }
+ body.bw svg {
+   background: linear-gradient(180deg, #b8b8b8 0%, #dcdcdc 60%, #e8e8e8 100%) !important;
+ }
+ body.bw .ans { box-shadow: 0 1px 2px rgba(0,0,0,.25) }
+ body.bw .ans.correct { background: #e8e8e8; border-color: #000; color: #000 }
+ body.bw .ans.wrong { background: #d8d8d8 }
+ body.bw .stat.win { background: #e0e0e0; color: #000; border-color: #000 }
+ body.bw #msg { background: #1a1a1a !important }
+
  @media (max-width:760px){
    .layout{flex-direction:column}
    .qcol{flex:none;width:auto;position:static;max-height:none;border-right:none;border-bottom:1px solid #e6e0d2}
@@ -212,6 +242,11 @@ _HTML_TPL = r"""<!DOCTYPE html>
     <option value="5">__MODE_5__</option>
    </select>
   </label>
+  <span class="view-toggles">
+   <label><input type="checkbox" id="tFeatures" checked> __TGL_FEATURES__</label>
+   <label><input type="checkbox" id="tBorders" checked> __TGL_BORDERS__</label>
+   <label><input type="checkbox" id="tBW"> __TGL_BW__</label>
+  </span>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
  <div id="resumeBanner" class="resume-banner">__RESUME_MSG__</div>
@@ -233,7 +268,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
    <div id="stage">
     <svg viewBox="0 0 __W__ __H__" xmlns="http://www.w3.org/2000/svg">
      <path d="__LAND_PATH__" fill="var(--land)" stroke="none"/>
-     <path d="__STROKE__" fill="none" stroke="var(--bord)" stroke-width="0.6"/>
+     <path class="border-path" d="__STROKE__" fill="none" stroke="var(--bord)" stroke-width="0.6"/>
      __RIV__
      __MTN__
      __MARKS__
@@ -416,6 +451,11 @@ function saveState() {
     mode: currentMode,
     visible: visibleIds,
     mapping: currentMapping ? currentMapping.c2d : null,
+    toggles: {
+      features: tFeatures.checked,
+      borders: tBorders.checked,
+      bw: tBW.checked
+    },
     answers
   };
   try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -520,6 +560,21 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 exportBtn.addEventListener('click', exportCSV);
+
+// --- view toggles: features / borders / b&w ---
+const tFeatures = document.getElementById('tFeatures');
+const tBorders = document.getElementById('tBorders');
+const tBW = document.getElementById('tBW');
+
+function applyToggles() {
+  document.body.classList.toggle('no-features', !tFeatures.checked);
+  document.body.classList.toggle('no-borders', !tBorders.checked);
+  document.body.classList.toggle('bw', tBW.checked);
+}
+
+[tFeatures, tBorders, tBW].forEach(t => {
+  t.addEventListener('change', () => { applyToggles(); saveState(); });
+});
 
 // --- input handlers ---
 allInputs.forEach(inp => {
@@ -654,10 +709,16 @@ if (saved) {
   setMode(saved.mode || 'all', { restoreIds: saved.visible, restoreMapping });
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
+  // Restore toggle state (default to all-on color mode if missing in old state)
+  const tg = saved.toggles || { features: true, borders: true, bw: false };
+  tFeatures.checked = tg.features !== false;
+  tBorders.checked = tg.borders !== false;
+  tBW.checked = tg.bw === true;
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});
 }
+applyToggles();
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
 setHeaderTop();
@@ -694,9 +755,13 @@ def render_html(spec, output_path, map_width_px=1160.0):
     def polyline_str(pts):
         return " ".join(f"{px(lo, la)[0]:.1f},{px(lo, la)[1]:.1f}" for lo, la in pts)
 
+    # Mountains, rivers, and mountain marks reference CSS variables so the
+    # B&W toggle can swap them at runtime. Each element gets a class so the
+    # "hide features" toggle can target them via CSS.
     mtn_svg = "".join(
-        f'<polyline points="{polyline_str(p)}" fill="none" stroke="{colors["mountain"]}" '
-        f'stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'
+        f'<polyline class="feat-mtn" points="{polyline_str(p)}" fill="none" '
+        f'stroke="var(--mtn-col)" stroke-width="3" stroke-linejoin="round" '
+        f'stroke-linecap="round"/>'
         for _, p in spec["_mountains"]
     )
     mtn_marks = ""
@@ -704,12 +769,14 @@ def render_html(spec, output_path, map_width_px=1160.0):
         for lo, la in pts:
             x, y = px(lo, la)
             mtn_marks += (
-                f'<path d="M{x-3:.1f},{y+3:.1f} L{x:.1f},{y-3:.1f} '
-                f'L{x+3:.1f},{y+3:.1f} Z" fill="{colors["mountain"]}"/>'
+                f'<path class="feat-mtn-mark" d="M{x-3:.1f},{y+3:.1f} '
+                f'L{x:.1f},{y-3:.1f} L{x+3:.1f},{y+3:.1f} Z" '
+                f'fill="var(--mtn-col)"/>'
             )
     riv_svg = "".join(
-        f'<polyline points="{polyline_str(p)}" fill="none" stroke="{colors["river"]}" '
-        f'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>'
+        f'<polyline class="feat-riv" points="{polyline_str(p)}" fill="none" '
+        f'stroke="var(--riv-col)" stroke-width="2.2" stroke-linejoin="round" '
+        f'stroke-linecap="round"/>'
         for _, p in spec["_rivers"]
     )
 
@@ -757,6 +824,9 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__MODE_20__": ui["mode_random"].replace("{n}", "20"),
         "__MODE_10__": ui["mode_random"].replace("{n}", "10"),
         "__MODE_5__": ui["mode_random"].replace("{n}", "5"),
+        "__TGL_FEATURES__": ui["toggle_features"],
+        "__TGL_BORDERS__": ui["toggle_borders"],
+        "__TGL_BW__": ui["toggle_bw"],
         "__LIST_HEADING__": ui["list_heading"],
         "__LEG_MOUNTAINS__": ui["legend_mountains"],
         "__LEG_RIVERS__": ui["legend_rivers"],

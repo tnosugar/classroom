@@ -59,6 +59,9 @@ ui:
   mode_label: "Pitanja"
   mode_all: "Sve ({n})"
   mode_random: "{n} nasumičnih"
+  toggle_features: "Planine i reke"     # menjati za nemapske kvizove (npr. "Detalji")
+  toggle_borders: "Granice"
+  toggle_bw: "Crno-belo"
   resume_indicator: "Nastavak prethodne sesije — tvoj progres je sačuvan."
   msg_correct: "Tačno!"
   msg_wrong: "Pogrešno — pokušaj ponovo"
