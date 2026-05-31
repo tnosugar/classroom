@@ -65,6 +65,29 @@
  body.no-features .keyline br:first-of-type { display: none }
  body.no-borders svg .border-path { display: none }
 
+ /* Drag mode: pre-placed cells are hidden until dropped. Legend items
+    become draggable; placed-but-wrong cells become re-draggable. */
+ body.drag-mode .cell:not(.drag-placed) { display: none }
+ body.drag-mode .cell { pointer-events: auto; cursor: grab }
+ body.drag-mode .cell .ans { pointer-events: none }
+ body.drag-mode .cell.dragging { opacity: 0.35; cursor: grabbing }
+ body.drag-mode ol.terms li { cursor: grab; padding: 2px 6px; border-radius: 4px; user-select: none; -webkit-user-select: none }
+ body.drag-mode ol.terms li:hover { background: #f3ecd8 }
+ body.drag-mode ol.terms li.dragging { opacity: 0.35 }
+ body.drag-mode ol.terms li.placed { text-decoration: line-through; color: #9b9387; cursor: default; background: transparent }
+ body.drag-mode ol.terms li.placed:hover { background: transparent }
+ body.drag-mode #stageWrap { cursor: crosshair }
+ body.drag-mode #stageWrap.grabbing { cursor: grabbing }
+ .ans.wrong-placed { background: #fdd; border-color: #b1271f; color: #b1271f }
+ .drag-ghost {
+   position: fixed; z-index: 200; pointer-events: none;
+   width: 32px; height: 32px; border: 2px solid var(--edge);
+   border-radius: 6px; background: #fff; color: var(--edge);
+   font-size: 13px; font-weight: 700; line-height: 28px; text-align: center;
+   transform: translate(-50%, -50%); box-shadow: 0 2px 8px rgba(0,0,0,.3);
+   opacity: 0.9;
+ }
+
  /* Black & white mode: grayscale palette + subtle gradient on sea */
  body.bw {
    --sea: #d4d4d4; --land: #f2f2f2; --bord: #5a5a5a; --edge: #1a1a1a;
@@ -121,6 +144,7 @@
    <label><input type="checkbox" id="tFeatures" checked> Planine i reke</label>
    <label><input type="checkbox" id="tBorders" checked> Granice</label>
    <label><input type="checkbox" id="tBW"> Crno-belo</label>
+   <label><input type="checkbox" id="tDrag"> Prevuci pojmove</label>
   </span>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
@@ -149,7 +173,7 @@
      <path class="feat-mtn-mark" d="M1130.3,91.6 L1133.3,85.6 L1136.3,91.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M1119.7,180.2 L1122.7,174.2 L1125.7,180.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M1117.0,268.9 L1120.0,262.9 L1123.0,268.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M1103.7,357.5 L1106.7,351.5 L1109.7,357.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M1090.3,435.0 L1093.3,429.0 L1096.3,435.0 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M863.7,632.2 L866.7,626.2 L869.7,632.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M903.7,641.1 L906.7,635.1 L909.7,641.1 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M937.0,656.6 L940.0,650.6 L943.0,656.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M970.3,676.5 L973.3,670.5 L976.3,676.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M309.0,638.9 L312.0,632.9 L315.0,638.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M337.0,649.9 L340.0,643.9 L343.0,649.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M365.0,658.8 L368.0,652.8 L371.0,658.8 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M410.3,601.2 L413.3,595.2 L416.3,601.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M437.0,574.6 L440.0,568.6 L443.0,574.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M477.0,554.7 L480.0,548.7 L483.0,554.7 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M523.7,556.9 L526.7,550.9 L529.7,556.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M466.3,614.5 L469.3,608.5 L472.3,614.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M503.7,645.5 L506.7,639.5 L509.7,645.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M533.0,680.9 L536.0,674.9 L539.0,680.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M547.7,707.5 L550.7,701.5 L553.7,707.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M527.7,587.9 L530.7,581.9 L533.7,587.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M557.0,623.3 L560.0,617.3 L563.0,623.3 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M581.0,645.5 L584.0,639.5 L587.0,645.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M597.0,663.2 L600.0,657.2 L603.0,663.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M631.7,643.3 L634.7,637.3 L637.7,643.3 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M663.7,643.3 L666.7,637.3 L669.7,643.3 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M690.3,647.7 L693.3,641.7 L696.3,647.7 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M581.0,505.9 L584.0,499.9 L587.0,505.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M617.0,508.1 L620.0,502.1 L623.0,508.1 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M650.3,534.7 L653.3,528.7 L656.3,534.7 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M670.3,574.6 L673.3,568.6 L676.3,574.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M650.3,590.1 L653.3,584.1 L656.3,590.1 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M359.7,581.3 L362.7,575.3 L365.7,581.3 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M370.3,601.2 L373.3,595.2 L376.3,601.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M378.3,618.9 L381.3,612.9 L384.3,618.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M423.7,523.6 L426.7,517.6 L429.7,523.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M426.3,536.9 L429.3,530.9 L432.3,536.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M438.3,523.6 L441.3,517.6 L444.3,523.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M441.0,541.4 L444.0,535.4 L447.0,541.4 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M527.7,472.7 L530.7,466.7 L533.7,472.7 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M549.0,477.1 L552.0,471.1 L555.0,477.1 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M559.7,486.0 L562.7,480.0 L565.7,486.0 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M301.0,379.6 L304.0,373.6 L307.0,379.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M303.7,401.8 L306.7,395.8 L309.7,401.8 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M306.3,419.5 L309.3,413.5 L312.3,419.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M490.3,80.5 L493.3,74.5 L496.3,80.5 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M517.0,135.9 L520.0,129.9 L523.0,135.9 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M530.3,180.2 L533.3,174.2 L536.3,180.2 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M503.7,235.6 L506.7,229.6 L509.7,235.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M457.0,246.7 L460.0,240.7 L463.0,246.7 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M498.3,499.3 L501.3,493.3 L504.3,499.3 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M511.7,512.6 L514.7,506.6 L517.7,512.6 Z" fill="var(--mtn-col)"/><path class="feat-mtn-mark" d="M519.7,521.4 L522.7,515.4 L525.7,521.4 Z" fill="var(--mtn-col)"/>
     </svg>
    </div>
-   <div id="overlay"><div class="cell" data-sx="258.7" data-sy="798.7"><input class="ans" data-id="1" data-correct="1" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="433.3" data-sy="740.0"><input class="ans" data-id="2" data-correct="2" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1113.3" data-sy="321.3"><input class="ans" data-id="3" data-correct="3" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1040.0" data-sy="502.9"><input class="ans" data-id="4" data-correct="4" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1006.7" data-sy="664.7"><input class="ans" data-id="5" data-correct="5" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="922.7" data-sy="644.7"><input class="ans" data-id="6" data-correct="6" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="793.3" data-sy="638.1"><input class="ans" data-id="7" data-correct="7" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="722.7" data-sy="682.4"><input class="ans" data-id="8" data-correct="8" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="709.3" data-sy="695.7"><input class="ans" data-id="9" data-correct="9" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="684.0" data-sy="704.5"><input class="ans" data-id="10" data-correct="10" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="666.7" data-sy="744.4"><input class="ans" data-id="11" data-correct="11" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="312.0" data-sy="427.6"><input class="ans" data-id="12" data-correct="12" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="957.3" data-sy="454.2"><input class="ans" data-id="13" data-correct="13" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="514.7" data-sy="660.2"><input class="ans" data-id="14" data-correct="14" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="277.3" data-sy="709.0"><input class="ans" data-id="15" data-correct="15" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="633.3" data-sy="660.2"><input class="ans" data-id="16" data-correct="16" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="540.0" data-sy="210.5"><input class="ans" data-id="17" data-correct="17" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="790.7" data-sy="589.3"><input class="ans" data-id="18" data-correct="18" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="629.3" data-sy="771.0"><input class="ans" data-id="19" data-correct="19" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="456.0" data-sy="350.1"><input class="ans" data-id="20" data-correct="20" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="833.3" data-sy="97.5"><input class="ans" data-id="21" data-correct="21" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="926.7" data-sy="88.6"><input class="ans" data-id="22" data-correct="22" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="224.0" data-sy="414.3"><input class="ans" data-id="23" data-correct="23" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="82.7" data-sy="159.5"><input class="ans" data-id="24" data-correct="24" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="521.3" data-sy="764.4"><input class="ans" data-id="25" data-correct="25" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="454.7" data-sy="706.8"><input class="ans" data-id="26" data-correct="26" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="526.0" data-sy="799.8"><input class="ans" data-id="27" data-correct="27" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="665.3" data-sy="815.3"><input class="ans" data-id="28" data-correct="28" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="370.7" data-sy="720.0"><input class="ans" data-id="29" data-correct="29" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="341.3" data-sy="648.0"><input class="ans" data-id="30" data-correct="30" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="469.3" data-sy="567.2"><input class="ans" data-id="31" data-correct="31" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="541.3" data-sy="686.8"><input class="ans" data-id="32" data-correct="32" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="573.3" data-sy="635.9"><input class="ans" data-id="33" data-correct="33" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="666.7" data-sy="642.5"><input class="ans" data-id="34" data-correct="34" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="646.7" data-sy="540.6"><input class="ans" data-id="35" data-correct="35" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="373.3" data-sy="598.2"><input class="ans" data-id="36" data-correct="36" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="421.3" data-sy="527.3"><input class="ans" data-id="37" data-correct="37" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="448.0" data-sy="529.5"><input class="ans" data-id="38" data-correct="38" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="546.7" data-sy="475.2"><input class="ans" data-id="39" data-correct="39" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="301.3" data-sy="392.1"><input class="ans" data-id="40" data-correct="40" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="509.3" data-sy="155.1"><input class="ans" data-id="41" data-correct="41" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="509.3" data-sy="505.1"><input class="ans" data-id="42" data-correct="42" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div></div>
+   <div id="overlay"><div class="cell" data-sx="258.7" data-sy="798.7" data-canon-sx="258.7" data-canon-sy="798.7"><input class="ans" data-id="1" data-correct="1" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="433.3" data-sy="740.0" data-canon-sx="433.3" data-canon-sy="740.0"><input class="ans" data-id="2" data-correct="2" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1113.3" data-sy="321.3" data-canon-sx="1113.3" data-canon-sy="321.3"><input class="ans" data-id="3" data-correct="3" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1040.0" data-sy="502.9" data-canon-sx="1040.0" data-canon-sy="502.9"><input class="ans" data-id="4" data-correct="4" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="1006.7" data-sy="664.7" data-canon-sx="1006.7" data-canon-sy="664.7"><input class="ans" data-id="5" data-correct="5" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="922.7" data-sy="644.7" data-canon-sx="922.7" data-canon-sy="644.7"><input class="ans" data-id="6" data-correct="6" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="793.3" data-sy="638.1" data-canon-sx="793.3" data-canon-sy="638.1"><input class="ans" data-id="7" data-correct="7" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="722.7" data-sy="682.4" data-canon-sx="722.7" data-canon-sy="682.4"><input class="ans" data-id="8" data-correct="8" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="709.3" data-sy="695.7" data-canon-sx="709.3" data-canon-sy="695.7"><input class="ans" data-id="9" data-correct="9" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="684.0" data-sy="704.5" data-canon-sx="684.0" data-canon-sy="704.5"><input class="ans" data-id="10" data-correct="10" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="666.7" data-sy="744.4" data-canon-sx="666.7" data-canon-sy="744.4"><input class="ans" data-id="11" data-correct="11" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="312.0" data-sy="427.6" data-canon-sx="312.0" data-canon-sy="427.6"><input class="ans" data-id="12" data-correct="12" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="957.3" data-sy="454.2" data-canon-sx="957.3" data-canon-sy="454.2"><input class="ans" data-id="13" data-correct="13" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="514.7" data-sy="660.2" data-canon-sx="514.7" data-canon-sy="660.2"><input class="ans" data-id="14" data-correct="14" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="277.3" data-sy="709.0" data-canon-sx="277.3" data-canon-sy="709.0"><input class="ans" data-id="15" data-correct="15" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="633.3" data-sy="660.2" data-canon-sx="633.3" data-canon-sy="660.2"><input class="ans" data-id="16" data-correct="16" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="540.0" data-sy="210.5" data-canon-sx="540.0" data-canon-sy="210.5"><input class="ans" data-id="17" data-correct="17" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="790.7" data-sy="589.3" data-canon-sx="790.7" data-canon-sy="589.3"><input class="ans" data-id="18" data-correct="18" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="629.3" data-sy="771.0" data-canon-sx="629.3" data-canon-sy="771.0"><input class="ans" data-id="19" data-correct="19" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="456.0" data-sy="350.1" data-canon-sx="456.0" data-canon-sy="350.1"><input class="ans" data-id="20" data-correct="20" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="833.3" data-sy="97.5" data-canon-sx="833.3" data-canon-sy="97.5"><input class="ans" data-id="21" data-correct="21" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="926.7" data-sy="88.6" data-canon-sx="926.7" data-canon-sy="88.6"><input class="ans" data-id="22" data-correct="22" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="224.0" data-sy="414.3" data-canon-sx="224.0" data-canon-sy="414.3"><input class="ans" data-id="23" data-correct="23" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="82.7" data-sy="159.5" data-canon-sx="82.7" data-canon-sy="159.5"><input class="ans" data-id="24" data-correct="24" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="521.3" data-sy="764.4" data-canon-sx="521.3" data-canon-sy="764.4"><input class="ans" data-id="25" data-correct="25" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="454.7" data-sy="706.8" data-canon-sx="454.7" data-canon-sy="706.8"><input class="ans" data-id="26" data-correct="26" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="526.0" data-sy="799.8" data-canon-sx="526.0" data-canon-sy="799.8"><input class="ans" data-id="27" data-correct="27" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="665.3" data-sy="815.3" data-canon-sx="665.3" data-canon-sy="815.3"><input class="ans" data-id="28" data-correct="28" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="370.7" data-sy="720.0" data-canon-sx="370.7" data-canon-sy="720.0"><input class="ans" data-id="29" data-correct="29" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="341.3" data-sy="648.0" data-canon-sx="341.3" data-canon-sy="648.0"><input class="ans" data-id="30" data-correct="30" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="469.3" data-sy="567.2" data-canon-sx="469.3" data-canon-sy="567.2"><input class="ans" data-id="31" data-correct="31" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="541.3" data-sy="686.8" data-canon-sx="541.3" data-canon-sy="686.8"><input class="ans" data-id="32" data-correct="32" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="573.3" data-sy="635.9" data-canon-sx="573.3" data-canon-sy="635.9"><input class="ans" data-id="33" data-correct="33" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="666.7" data-sy="642.5" data-canon-sx="666.7" data-canon-sy="642.5"><input class="ans" data-id="34" data-correct="34" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="646.7" data-sy="540.6" data-canon-sx="646.7" data-canon-sy="540.6"><input class="ans" data-id="35" data-correct="35" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="373.3" data-sy="598.2" data-canon-sx="373.3" data-canon-sy="598.2"><input class="ans" data-id="36" data-correct="36" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="421.3" data-sy="527.3" data-canon-sx="421.3" data-canon-sy="527.3"><input class="ans" data-id="37" data-correct="37" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="448.0" data-sy="529.5" data-canon-sx="448.0" data-canon-sy="529.5"><input class="ans" data-id="38" data-correct="38" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="546.7" data-sy="475.2" data-canon-sx="546.7" data-canon-sy="475.2"><input class="ans" data-id="39" data-correct="39" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="301.3" data-sy="392.1" data-canon-sx="301.3" data-canon-sy="392.1"><input class="ans" data-id="40" data-correct="40" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="509.3" data-sy="155.1" data-canon-sx="509.3" data-canon-sy="155.1"><input class="ans" data-id="41" data-correct="41" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div><div class="cell" data-sx="509.3" data-sy="505.1" data-canon-sx="509.3" data-canon-sy="505.1"><input class="ans" data-id="42" data-correct="42" data-miss="0" maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number"><span class="miss" style="display:none">0</span></div></div>
   </div>
  </main>
 </div>
@@ -315,11 +339,19 @@ function check(inp) {
 function saveState() {
   const answers = {};
   for (const inp of allInputs) {
-    answers[inp.dataset.id] = {  // keyed by canonical id, not display number
+    const cell = inp.parentElement;
+    const a = {
       v: inp.value,
       c: inp.classList.contains('correct'),
       m: parseInt(inp.dataset.miss, 10) || 0
     };
+    // Drag placement (only relevant in drag mode for placed cells)
+    if (cell.classList.contains('drag-placed')) {
+      a.dp = true;
+      a.px = parseFloat(cell.dataset.sx);
+      a.py = parseFloat(cell.dataset.sy);
+    }
+    answers[inp.dataset.id] = a;
   }
   const state = {
     v: STATE_VERSION,
@@ -329,7 +361,8 @@ function saveState() {
     toggles: {
       features: tFeatures.checked,
       borders: tBorders.checked,
-      bw: tBW.checked
+      bw: tBW.checked,
+      drag: tDrag.checked
     },
     answers
   };
@@ -355,13 +388,18 @@ function clearState() {
 function applyAnswers(answers) {
   for (const inp of allInputs) {
     const a = answers[inp.dataset.id];  // keyed by canonical id
+    const cell = inp.parentElement;
     inp.value = '';
     inp.readOnly = false;
-    inp.classList.remove('correct', 'wrong');
+    inp.classList.remove('correct', 'wrong', 'wrong-placed');
     inp.dataset.miss = '0';
-    const badge = inp.parentElement.querySelector('.miss');
+    const badge = cell.querySelector('.miss');
     badge.style.display = 'none';
     badge.textContent = '0';
+    // Reset drag-placed state and snap back to canonical position
+    cell.classList.remove('drag-placed', 'dragging');
+    cell.dataset.sx = cell.dataset.canonSx;
+    cell.dataset.sy = cell.dataset.canonSy;
     if (!a) continue;
     if (a.v) inp.value = a.v;
     if (a.c) {
@@ -373,6 +411,18 @@ function applyAnswers(answers) {
       badge.textContent = a.m;
       badge.style.display = 'block';
     }
+    // Restore drag placement if present in saved state
+    if (a.dp) {
+      cell.classList.add('drag-placed');
+      cell.dataset.sx = String(a.px);
+      cell.dataset.sy = String(a.py);
+      if (!a.c) inp.classList.add('wrong-placed');
+    }
+  }
+  // Restore legend "placed" strikethrough for correctly drag-placed items
+  for (const [id, li] of legendItems) {
+    const a = answers[id];
+    li.classList.toggle('placed', !!(a && a.dp && a.c));
   }
 }
 
@@ -436,20 +486,153 @@ function exportCSV() {
 }
 exportBtn.addEventListener('click', exportCSV);
 
-// --- view toggles: features / borders / b&w ---
+// --- view toggles: features / borders / b&w / drag ---
 const tFeatures = document.getElementById('tFeatures');
 const tBorders = document.getElementById('tBorders');
 const tBW = document.getElementById('tBW');
+const tDrag = document.getElementById('tDrag');
 
 function applyToggles() {
   document.body.classList.toggle('no-features', !tFeatures.checked);
   document.body.classList.toggle('no-borders', !tBorders.checked);
   document.body.classList.toggle('bw', tBW.checked);
+  document.body.classList.toggle('drag-mode', tDrag.checked);
 }
 
 [tFeatures, tBorders, tBW].forEach(t => {
   t.addEventListener('change', () => { applyToggles(); saveState(); });
 });
+
+// Drag toggle has a different effect: switching modes resets all answers
+// and clears any drag placements (cleaner mental model).
+tDrag.addEventListener('change', () => {
+  applyToggles();
+  // Clear drag-placed positions back to canonical, remove drag-placed class
+  for (const inp of allInputs) {
+    const cell = inp.parentElement;
+    cell.dataset.sx = cell.dataset.canonSx;
+    cell.dataset.sy = cell.dataset.canonSy;
+    cell.classList.remove('drag-placed', 'dragging');
+    inp.classList.remove('wrong-placed');
+  }
+  for (const [, li] of legendItems) li.classList.remove('placed', 'dragging');
+  applyAnswers({});
+  recountCorrectMiss();
+  apply();   // re-render cell positions
+  saveState();
+});
+
+// --- drag system (active only when body.drag-mode) ---
+const DRAG_THRESHOLD_PX = 40;  // base-map pixels at unzoomed scale
+let dragGhost = null;
+let dragSourceCanonId = null;
+
+function startDrag(clientX, clientY, displayLabel, sourceElement) {
+  if (!document.body.classList.contains('drag-mode')) return;
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  dragGhost.textContent = displayLabel;
+  dragGhost.style.left = clientX + 'px';
+  dragGhost.style.top = clientY + 'px';
+  document.body.appendChild(dragGhost);
+  sourceElement.classList.add('dragging');
+}
+
+function endDragCleanup() {
+  if (dragGhost) {
+    dragGhost.remove();
+    dragGhost = null;
+  }
+  for (const el of document.querySelectorAll('.dragging')) el.classList.remove('dragging');
+  dragSourceCanonId = null;
+}
+
+function tryDragDrop(canonicalId, clientX, clientY) {
+  const cell = inputsById.get(canonicalId).parentElement;
+  const inp = cell.querySelector('.ans');
+  if (inp.classList.contains('correct')) return;
+  const r = wrap.getBoundingClientRect();
+  if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) {
+    return;  // dropped outside map — abort
+  }
+  const sc = baseFit * zoom;
+  const baseX = (clientX - r.left - panX) / sc;
+  const baseY = (clientY - r.top - panY) / sc;
+  const canonX = parseFloat(cell.dataset.canonSx);
+  const canonY = parseFloat(cell.dataset.canonSy);
+  const dist = Math.hypot(baseX - canonX, baseY - canonY);
+
+  cell.classList.add('drag-placed');
+  inp.value = inp.dataset.correct;
+
+  if (dist <= DRAG_THRESHOLD_PX) {
+    // Snap to canonical, mark green, lock it
+    cell.dataset.sx = String(canonX);
+    cell.dataset.sy = String(canonY);
+    inp.classList.remove('wrong-placed');
+    inp.classList.add('correct');
+    inp.readOnly = true;
+    const li = legendItems.get(canonicalId);
+    if (li) li.classList.add('placed');
+    showMsg(MSG_CORRECT, true);
+  } else {
+    // Wrong — stay at drop location, red, draggable
+    cell.dataset.sx = String(baseX);
+    cell.dataset.sy = String(baseY);
+    inp.classList.add('wrong-placed');
+    const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
+    inp.dataset.miss = m;
+    const badge = cell.querySelector('.miss');
+    badge.textContent = m;
+    badge.style.display = 'block';
+    showMsg(MSG_WRONG, false);
+  }
+  apply();
+  recountCorrectMiss();
+  saveState();
+}
+
+// pointerdown on a legend item starts drag
+legendList.addEventListener('pointerdown', e => {
+  if (!document.body.classList.contains('drag-mode')) return;
+  const li = e.target.closest('li');
+  if (!li || li.classList.contains('placed')) return;
+  e.preventDefault();
+  const canonId = parseInt(li.dataset.id, 10);
+  dragSourceCanonId = canonId;
+  const display = currentMapping ? currentMapping.c2d[canonId] : canonId;
+  startDrag(e.clientX, e.clientY, display, li);
+});
+
+// pointerdown on a placed-wrong cell starts re-drag
+document.getElementById('overlay').addEventListener('pointerdown', e => {
+  if (!document.body.classList.contains('drag-mode')) return;
+  const cell = e.target.closest('.cell.drag-placed');
+  if (!cell) return;
+  const inp = cell.querySelector('.ans');
+  if (inp.classList.contains('correct')) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const canonId = parseInt(inp.dataset.id, 10);
+  dragSourceCanonId = canonId;
+  const display = inp.dataset.correct || '?';
+  startDrag(e.clientX, e.clientY, display, cell);
+});
+
+document.addEventListener('pointermove', e => {
+  if (!dragGhost) return;
+  dragGhost.style.left = e.clientX + 'px';
+  dragGhost.style.top = e.clientY + 'px';
+});
+
+document.addEventListener('pointerup', e => {
+  if (dragSourceCanonId !== null) {
+    tryDragDrop(dragSourceCanonId, e.clientX, e.clientY);
+  }
+  endDragCleanup();
+});
+
+document.addEventListener('pointercancel', endDragCleanup);
 
 // --- input handlers ---
 allInputs.forEach(inp => {
@@ -536,6 +719,8 @@ function dist() {
 }
 wrap.addEventListener('pointerdown', e => {
   if (e.target.closest('.ans') || e.target.closest('.zoombar')) return;
+  // In drag mode, drag-placed cells handle their own pointer events for re-drag
+  if (document.body.classList.contains('drag-mode') && e.target.closest('.cell')) return;
   e.preventDefault();
   ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
   try { wrap.setPointerCapture(e.pointerId); } catch (_) {}
@@ -585,10 +770,11 @@ if (saved) {
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
   // Restore toggle state (default to all-on color mode if missing in old state)
-  const tg = saved.toggles || { features: true, borders: true, bw: false };
+  const tg = saved.toggles || { features: true, borders: true, bw: false, drag: false };
   tFeatures.checked = tg.features !== false;
   tBorders.checked = tg.borders !== false;
   tBW.checked = tg.bw === true;
+  tDrag.checked = tg.drag === true;
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});

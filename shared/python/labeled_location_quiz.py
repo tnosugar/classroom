@@ -102,6 +102,7 @@ def _ui_default():
         "toggle_features": "Mountains + rivers",
         "toggle_borders": "Borders",
         "toggle_bw": "B&W",
+        "toggle_drag": "Drag mode",
         "msg_correct": "Correct!",
         "msg_wrong": "Wrong — try again",
         "msg_win": "Done! All correct ({total}/{total}) · total mistakes: {miss}",
@@ -191,6 +192,29 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body.no-features .keyline br:first-of-type { display: none }
  body.no-borders svg .border-path { display: none }
 
+ /* Drag mode: pre-placed cells are hidden until dropped. Legend items
+    become draggable; placed-but-wrong cells become re-draggable. */
+ body.drag-mode .cell:not(.drag-placed) { display: none }
+ body.drag-mode .cell { pointer-events: auto; cursor: grab }
+ body.drag-mode .cell .ans { pointer-events: none }
+ body.drag-mode .cell.dragging { opacity: 0.35; cursor: grabbing }
+ body.drag-mode ol.terms li { cursor: grab; padding: 2px 6px; border-radius: 4px; user-select: none; -webkit-user-select: none }
+ body.drag-mode ol.terms li:hover { background: #f3ecd8 }
+ body.drag-mode ol.terms li.dragging { opacity: 0.35 }
+ body.drag-mode ol.terms li.placed { text-decoration: line-through; color: #9b9387; cursor: default; background: transparent }
+ body.drag-mode ol.terms li.placed:hover { background: transparent }
+ body.drag-mode #stageWrap { cursor: crosshair }
+ body.drag-mode #stageWrap.grabbing { cursor: grabbing }
+ .ans.wrong-placed { background: #fdd; border-color: #b1271f; color: #b1271f }
+ .drag-ghost {
+   position: fixed; z-index: 200; pointer-events: none;
+   width: 32px; height: 32px; border: 2px solid var(--edge);
+   border-radius: 6px; background: #fff; color: var(--edge);
+   font-size: 13px; font-weight: 700; line-height: 28px; text-align: center;
+   transform: translate(-50%, -50%); box-shadow: 0 2px 8px rgba(0,0,0,.3);
+   opacity: 0.9;
+ }
+
  /* Black & white mode: grayscale palette + subtle gradient on sea */
  body.bw {
    --sea: #d4d4d4; --land: #f2f2f2; --bord: #5a5a5a; --edge: #1a1a1a;
@@ -246,6 +270,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
    <label><input type="checkbox" id="tFeatures" checked> __TGL_FEATURES__</label>
    <label><input type="checkbox" id="tBorders" checked> __TGL_BORDERS__</label>
    <label><input type="checkbox" id="tBW"> __TGL_BW__</label>
+   <label><input type="checkbox" id="tDrag"> __TGL_DRAG__</label>
   </span>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
@@ -440,11 +465,19 @@ function check(inp) {
 function saveState() {
   const answers = {};
   for (const inp of allInputs) {
-    answers[inp.dataset.id] = {  // keyed by canonical id, not display number
+    const cell = inp.parentElement;
+    const a = {
       v: inp.value,
       c: inp.classList.contains('correct'),
       m: parseInt(inp.dataset.miss, 10) || 0
     };
+    // Drag placement (only relevant in drag mode for placed cells)
+    if (cell.classList.contains('drag-placed')) {
+      a.dp = true;
+      a.px = parseFloat(cell.dataset.sx);
+      a.py = parseFloat(cell.dataset.sy);
+    }
+    answers[inp.dataset.id] = a;
   }
   const state = {
     v: STATE_VERSION,
@@ -454,7 +487,8 @@ function saveState() {
     toggles: {
       features: tFeatures.checked,
       borders: tBorders.checked,
-      bw: tBW.checked
+      bw: tBW.checked,
+      drag: tDrag.checked
     },
     answers
   };
@@ -480,13 +514,18 @@ function clearState() {
 function applyAnswers(answers) {
   for (const inp of allInputs) {
     const a = answers[inp.dataset.id];  // keyed by canonical id
+    const cell = inp.parentElement;
     inp.value = '';
     inp.readOnly = false;
-    inp.classList.remove('correct', 'wrong');
+    inp.classList.remove('correct', 'wrong', 'wrong-placed');
     inp.dataset.miss = '0';
-    const badge = inp.parentElement.querySelector('.miss');
+    const badge = cell.querySelector('.miss');
     badge.style.display = 'none';
     badge.textContent = '0';
+    // Reset drag-placed state and snap back to canonical position
+    cell.classList.remove('drag-placed', 'dragging');
+    cell.dataset.sx = cell.dataset.canonSx;
+    cell.dataset.sy = cell.dataset.canonSy;
     if (!a) continue;
     if (a.v) inp.value = a.v;
     if (a.c) {
@@ -498,6 +537,18 @@ function applyAnswers(answers) {
       badge.textContent = a.m;
       badge.style.display = 'block';
     }
+    // Restore drag placement if present in saved state
+    if (a.dp) {
+      cell.classList.add('drag-placed');
+      cell.dataset.sx = String(a.px);
+      cell.dataset.sy = String(a.py);
+      if (!a.c) inp.classList.add('wrong-placed');
+    }
+  }
+  // Restore legend "placed" strikethrough for correctly drag-placed items
+  for (const [id, li] of legendItems) {
+    const a = answers[id];
+    li.classList.toggle('placed', !!(a && a.dp && a.c));
   }
 }
 
@@ -561,20 +612,153 @@ function exportCSV() {
 }
 exportBtn.addEventListener('click', exportCSV);
 
-// --- view toggles: features / borders / b&w ---
+// --- view toggles: features / borders / b&w / drag ---
 const tFeatures = document.getElementById('tFeatures');
 const tBorders = document.getElementById('tBorders');
 const tBW = document.getElementById('tBW');
+const tDrag = document.getElementById('tDrag');
 
 function applyToggles() {
   document.body.classList.toggle('no-features', !tFeatures.checked);
   document.body.classList.toggle('no-borders', !tBorders.checked);
   document.body.classList.toggle('bw', tBW.checked);
+  document.body.classList.toggle('drag-mode', tDrag.checked);
 }
 
 [tFeatures, tBorders, tBW].forEach(t => {
   t.addEventListener('change', () => { applyToggles(); saveState(); });
 });
+
+// Drag toggle has a different effect: switching modes resets all answers
+// and clears any drag placements (cleaner mental model).
+tDrag.addEventListener('change', () => {
+  applyToggles();
+  // Clear drag-placed positions back to canonical, remove drag-placed class
+  for (const inp of allInputs) {
+    const cell = inp.parentElement;
+    cell.dataset.sx = cell.dataset.canonSx;
+    cell.dataset.sy = cell.dataset.canonSy;
+    cell.classList.remove('drag-placed', 'dragging');
+    inp.classList.remove('wrong-placed');
+  }
+  for (const [, li] of legendItems) li.classList.remove('placed', 'dragging');
+  applyAnswers({});
+  recountCorrectMiss();
+  apply();   // re-render cell positions
+  saveState();
+});
+
+// --- drag system (active only when body.drag-mode) ---
+const DRAG_THRESHOLD_PX = 40;  // base-map pixels at unzoomed scale
+let dragGhost = null;
+let dragSourceCanonId = null;
+
+function startDrag(clientX, clientY, displayLabel, sourceElement) {
+  if (!document.body.classList.contains('drag-mode')) return;
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  dragGhost.textContent = displayLabel;
+  dragGhost.style.left = clientX + 'px';
+  dragGhost.style.top = clientY + 'px';
+  document.body.appendChild(dragGhost);
+  sourceElement.classList.add('dragging');
+}
+
+function endDragCleanup() {
+  if (dragGhost) {
+    dragGhost.remove();
+    dragGhost = null;
+  }
+  for (const el of document.querySelectorAll('.dragging')) el.classList.remove('dragging');
+  dragSourceCanonId = null;
+}
+
+function tryDragDrop(canonicalId, clientX, clientY) {
+  const cell = inputsById.get(canonicalId).parentElement;
+  const inp = cell.querySelector('.ans');
+  if (inp.classList.contains('correct')) return;
+  const r = wrap.getBoundingClientRect();
+  if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) {
+    return;  // dropped outside map — abort
+  }
+  const sc = baseFit * zoom;
+  const baseX = (clientX - r.left - panX) / sc;
+  const baseY = (clientY - r.top - panY) / sc;
+  const canonX = parseFloat(cell.dataset.canonSx);
+  const canonY = parseFloat(cell.dataset.canonSy);
+  const dist = Math.hypot(baseX - canonX, baseY - canonY);
+
+  cell.classList.add('drag-placed');
+  inp.value = inp.dataset.correct;
+
+  if (dist <= DRAG_THRESHOLD_PX) {
+    // Snap to canonical, mark green, lock it
+    cell.dataset.sx = String(canonX);
+    cell.dataset.sy = String(canonY);
+    inp.classList.remove('wrong-placed');
+    inp.classList.add('correct');
+    inp.readOnly = true;
+    const li = legendItems.get(canonicalId);
+    if (li) li.classList.add('placed');
+    showMsg(MSG_CORRECT, true);
+  } else {
+    // Wrong — stay at drop location, red, draggable
+    cell.dataset.sx = String(baseX);
+    cell.dataset.sy = String(baseY);
+    inp.classList.add('wrong-placed');
+    const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
+    inp.dataset.miss = m;
+    const badge = cell.querySelector('.miss');
+    badge.textContent = m;
+    badge.style.display = 'block';
+    showMsg(MSG_WRONG, false);
+  }
+  apply();
+  recountCorrectMiss();
+  saveState();
+}
+
+// pointerdown on a legend item starts drag
+legendList.addEventListener('pointerdown', e => {
+  if (!document.body.classList.contains('drag-mode')) return;
+  const li = e.target.closest('li');
+  if (!li || li.classList.contains('placed')) return;
+  e.preventDefault();
+  const canonId = parseInt(li.dataset.id, 10);
+  dragSourceCanonId = canonId;
+  const display = currentMapping ? currentMapping.c2d[canonId] : canonId;
+  startDrag(e.clientX, e.clientY, display, li);
+});
+
+// pointerdown on a placed-wrong cell starts re-drag
+document.getElementById('overlay').addEventListener('pointerdown', e => {
+  if (!document.body.classList.contains('drag-mode')) return;
+  const cell = e.target.closest('.cell.drag-placed');
+  if (!cell) return;
+  const inp = cell.querySelector('.ans');
+  if (inp.classList.contains('correct')) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const canonId = parseInt(inp.dataset.id, 10);
+  dragSourceCanonId = canonId;
+  const display = inp.dataset.correct || '?';
+  startDrag(e.clientX, e.clientY, display, cell);
+});
+
+document.addEventListener('pointermove', e => {
+  if (!dragGhost) return;
+  dragGhost.style.left = e.clientX + 'px';
+  dragGhost.style.top = e.clientY + 'px';
+});
+
+document.addEventListener('pointerup', e => {
+  if (dragSourceCanonId !== null) {
+    tryDragDrop(dragSourceCanonId, e.clientX, e.clientY);
+  }
+  endDragCleanup();
+});
+
+document.addEventListener('pointercancel', endDragCleanup);
 
 // --- input handlers ---
 allInputs.forEach(inp => {
@@ -661,6 +845,8 @@ function dist() {
 }
 wrap.addEventListener('pointerdown', e => {
   if (e.target.closest('.ans') || e.target.closest('.zoombar')) return;
+  // In drag mode, drag-placed cells handle their own pointer events for re-drag
+  if (document.body.classList.contains('drag-mode') && e.target.closest('.cell')) return;
   e.preventDefault();
   ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
   try { wrap.setPointerCapture(e.pointerId); } catch (_) {}
@@ -710,10 +896,11 @@ if (saved) {
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
   // Restore toggle state (default to all-on color mode if missing in old state)
-  const tg = saved.toggles || { features: true, borders: true, bw: false };
+  const tg = saved.toggles || { features: true, borders: true, bw: false, drag: false };
   tFeatures.checked = tg.features !== false;
   tBorders.checked = tg.borders !== false;
   tBW.checked = tg.bw === true;
+  tDrag.checked = tg.drag === true;
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});
@@ -784,8 +971,11 @@ def render_html(spec, output_path, map_width_px=1160.0):
     for t in spec["terms"]:
         lon, lat = t["label_at"]
         x, y = px(lon, lat)
+        # data-sx/sy is the CURRENT position (mutable when dragging in drag mode);
+        # data-canon-sx/sy is the IMMUTABLE canonical position used for distance check.
         boxes += (
-            f'<div class="cell" data-sx="{x:.1f}" data-sy="{y:.1f}">'
+            f'<div class="cell" data-sx="{x:.1f}" data-sy="{y:.1f}" '
+            f'data-canon-sx="{x:.1f}" data-canon-sy="{y:.1f}">'
             f'<input class="ans" data-id="{t["id"]}" data-correct="{t["id"]}" data-miss="0" '
             f'maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number">'
             f'<span class="miss" style="display:none">0</span></div>'
@@ -827,6 +1017,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__TGL_FEATURES__": ui["toggle_features"],
         "__TGL_BORDERS__": ui["toggle_borders"],
         "__TGL_BW__": ui["toggle_bw"],
+        "__TGL_DRAG__": ui["toggle_drag"],
         "__LIST_HEADING__": ui["list_heading"],
         "__LEG_MOUNTAINS__": ui["legend_mountains"],
         "__LEG_RIVERS__": ui["legend_rivers"],

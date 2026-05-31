@@ -62,6 +62,7 @@ ui:
   toggle_features: "Planine i reke"     # menjati za nemapske kvizove (npr. "Detalji")
   toggle_borders: "Granice"
   toggle_bw: "Crno-belo"
+  toggle_drag: "Prevuci pojmove"
   resume_indicator: "Nastavak prethodne sesije — tvoj progres je sačuvan."
   msg_correct: "Tačno!"
   msg_wrong: "Pogrešno — pokušaj ponovo"
