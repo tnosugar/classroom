@@ -88,6 +88,7 @@ def _ui_default():
     return {
         "header_title": "Quiz",
         "header_subtitle": "Enter the term number into the box at its location.",
+        "header_subtitle_drag": "Drag each term from the list onto its location on the map.",
         "list_heading": "Terms",
         "legend_mountains": "▲ mountains",
         "legend_rivers": "— rivers",
@@ -138,6 +139,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
  header{padding:14px 18px;background:#fff;border-bottom:1px solid #e6e0d2;position:sticky;top:0;z-index:50}
  h1{margin:0 0 4px;font-size:19px;color:#3a3528}
  .sub{font-size:13px;color:#6b6456;margin:0;max-width:900px}
+ body:not(.drag-mode) .sub-drag{display:none}
+ body.drag-mode .sub-number{display:none}
  .bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:14px}
  .stat{background:#f3ecd8;border:1px solid #e1d8c2;border-radius:8px;padding:6px 12px}
  .stat b{font-size:16px}
@@ -252,7 +255,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <body>
 <header>
  <h1>__HDR_TITLE__</h1>
- <p class="sub">__HDR_SUB__</p>
+ <p class="sub sub-number">__HDR_SUB__</p>
+ <p class="sub sub-drag">__HDR_SUB_DRAG__</p>
  <div class="bar">
   <span class="stat">__LBL_CORRECT__: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">__TOTAL__</b></span>
   <span class="stat">__LBL_MISS__: <b class="bad" id="cMiss">0</b></span>
@@ -1006,6 +1010,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__BOXES__": boxes, "__LEG__": leg_rows,
         "__HDR_TITLE__": ui["header_title"],
         "__HDR_SUB__": ui["header_subtitle"],
+        "__HDR_SUB_DRAG__": ui["header_subtitle_drag"],
         "__LBL_CORRECT__": ui["stat_correct"],
         "__LBL_MISS__": ui["stat_miss"],
         "__BTN_RESET__": ui["btn_reset"],

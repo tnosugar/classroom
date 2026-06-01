@@ -46,8 +46,12 @@ map:
 # UI tekstovi — svi vidljivi stringovi. Za drugi jezik samo ovo menjaš.
 ui:
   header_title: "{Naslov stranice u HTML headeru}"
+  # Subtitle za "broj" mod (toggle 'Prevuci pojmove' isključen)
   header_subtitle: >
-    {Instrukcija učeniku — npr. "U svaki kvadrat upiši broj pojma sa spiska..."}
+    {Instrukcija učeniku za broj mod — npr. "U svaki kvadrat upiši broj pojma sa spiska..."}
+  # Subtitle za "drag" mod (toggle 'Prevuci pojmove' uključen) — automatski se prikazuje
+  header_subtitle_drag: >
+    {Instrukcija učeniku za drag mod — npr. "Prevuci svaki pojam sa spiska na njegovu lokaciju na karti..."}
   list_heading: "Spisak pojmova"
   legend_mountains: "▲ braon linije = planine"
   legend_rivers: "— plave linije = reke"

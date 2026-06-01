@@ -11,6 +11,8 @@
  header{padding:14px 18px;background:#fff;border-bottom:1px solid #e6e0d2;position:sticky;top:0;z-index:50}
  h1{margin:0 0 4px;font-size:19px;color:#3a3528}
  .sub{font-size:13px;color:#6b6456;margin:0;max-width:900px}
+ body:not(.drag-mode) .sub-drag{display:none}
+ body.drag-mode .sub-number{display:none}
  .bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:14px}
  .stat{background:#f3ecd8;border:1px solid #e1d8c2;border-radius:8px;padding:6px 12px}
  .stat b{font-size:16px}
@@ -125,7 +127,9 @@
 <body>
 <header>
  <h1>Evropa — geografski kviz</h1>
- <p class="sub">U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
+ <p class="sub sub-number">U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
+</p>
+ <p class="sub sub-drag"><b>Prevuci</b> svaki pojam sa spiska na njegovu lokaciju na karti. Ako spustiš pojam dovoljno blizu prave lokacije, polje se zaključa zelenim. Inače postaje crveno — prevuci ga ponovo na drugo mesto dok ne pogodiš. Broje se greške za svaki pojam.
 </p>
  <div class="bar">
   <span class="stat">Tačno: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">42</b></span>

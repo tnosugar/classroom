@@ -55,10 +55,17 @@ style:
 # UI tekstovi (lokalizovani; ako praviš verziju na drugom jeziku, samo ovo menjaš).
 ui:
   header_title: "Evropa — geografski kviz"
+  # Subtitle za "broj" mod (kad je 'Prevuci pojmove' isključen)
   header_subtitle: >
     U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi
     na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako
     pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
+  # Subtitle za "drag" mod (kad je 'Prevuci pojmove' uključen) — automatski se prikazuje
+  header_subtitle_drag: >
+    <b>Prevuci</b> svaki pojam sa spiska na njegovu lokaciju na karti. Ako
+    spustiš pojam dovoljno blizu prave lokacije, polje se zaključa zelenim.
+    Inače postaje crveno — prevuci ga ponovo na drugo mesto dok ne pogodiš.
+    Broje se greške za svaki pojam.
   list_heading: "Spisak pojmova"
   legend_mountains: "▲ braon linije = planine"
   legend_rivers: "— plave linije = reke"
