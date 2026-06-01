@@ -267,10 +267,10 @@ _HTML_TPL = r"""<!DOCTYPE html>
    </select>
   </label>
   <span class="view-toggles">
-   <label><input type="checkbox" id="tFeatures" checked> __TGL_FEATURES__</label>
-   <label><input type="checkbox" id="tBorders" checked> __TGL_BORDERS__</label>
+   <label><input type="checkbox" id="tFeatures"> __TGL_FEATURES__</label>
+   <label><input type="checkbox" id="tBorders"> __TGL_BORDERS__</label>
    <label><input type="checkbox" id="tBW"> __TGL_BW__</label>
-   <label><input type="checkbox" id="tDrag"> __TGL_DRAG__</label>
+   <label><input type="checkbox" id="tDrag" checked> __TGL_DRAG__</label>
   </span>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
@@ -895,12 +895,13 @@ if (saved) {
   setMode(saved.mode || 'all', { restoreIds: saved.visible, restoreMapping });
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
-  // Restore toggle state (default to all-on color mode if missing in old state)
-  const tg = saved.toggles || { features: true, borders: true, bw: false, drag: false };
-  tFeatures.checked = tg.features !== false;
-  tBorders.checked = tg.borders !== false;
+  // Restore toggle state. Default (when no saved state, or saved state predates
+  // the toggles object): features off, borders off, color mode, drag mode on.
+  const tg = saved.toggles || { features: false, borders: false, bw: false, drag: true };
+  tFeatures.checked = tg.features === true;
+  tBorders.checked = tg.borders === true;
   tBW.checked = tg.bw === true;
-  tDrag.checked = tg.drag === true;
+  tDrag.checked = tg.drag !== false;
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});
