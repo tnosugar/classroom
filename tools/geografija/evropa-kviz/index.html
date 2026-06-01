@@ -183,10 +183,13 @@
 </div>
 <div id="msg"></div>
 <script>
-const ALL_TERMS = [{"id": 1, "name": "Gibraltarski moreuz"}, {"id": 2, "name": "Sredozemno more"}, {"id": 3, "name": "Planina Ural"}, {"id": 4, "name": "Reka Ural"}, {"id": 5, "name": "Kaspijsko jezero"}, {"id": 6, "name": "Kavkaz"}, {"id": 7, "name": "Crno more"}, {"id": 8, "name": "Moreuz Bosfor"}, {"id": 9, "name": "Mramorno more"}, {"id": 10, "name": "Moreuz Dardaneli"}, {"id": 11, "name": "Egejsko more"}, {"id": 12, "name": "Velika Britanija"}, {"id": 13, "name": "Reka Volga"}, {"id": 14, "name": "Apeninsko poluostrvo"}, {"id": 15, "name": "Pirinejsko poluostrvo"}, {"id": 16, "name": "Balkansko poluostrvo"}, {"id": 17, "name": "Skandinavsko poluostrvo"}, {"id": 18, "name": "Krim"}, {"id": 19, "name": "Peloponez"}, {"id": 20, "name": "Jiland"}, {"id": 21, "name": "Kola"}, {"id": 22, "name": "Kanin"}, {"id": 23, "name": "Irska"}, {"id": 24, "name": "Island"}, {"id": 25, "name": "Sicilija"}, {"id": 26, "name": "Sardinija"}, {"id": 27, "name": "Malta"}, {"id": 28, "name": "Krit"}, {"id": 29, "name": "Balearska ostrva"}, {"id": 30, "name": "Pirineji"}, {"id": 31, "name": "Alpi"}, {"id": 32, "name": "Apenini"}, {"id": 33, "name": "Dinarske planine"}, {"id": 34, "name": "Balkanske planine"}, {"id": 35, "name": "Karpati"}, {"id": 36, "name": "Centralni masiv"}, {"id": 37, "name": "Vogezi"}, {"id": 38, "name": "Švarcvald"}, {"id": 39, "name": "Sudeti"}, {"id": 40, "name": "Peninske planine"}, {"id": 41, "name": "Skandinavske planine"}, {"id": 42, "name": "Šumava"}];
+const ALL_TERMS = [{"id": 1, "name": "Gibraltarski moreuz", "label_at": [-5.6, 35.95], "geometry": null, "accept": {"radius_deg": 0.6}}, {"id": 2, "name": "Sredozemno more", "label_at": [7.5, 38.6], "geometry": null, "accept": {"bbox": [-5, 30, 36, 46]}}, {"id": 3, "name": "Planina Ural", "label_at": [58.5, 57.5], "geometry": {"type": "mountain", "polyline": [[60, 68], [59.2, 64], [59, 60], [58, 56], [57, 52.5]]}, "accept": {"buffer_deg": 1.2}}, {"id": 4, "name": "Reka Ural", "label_at": [53.0, 49.3], "geometry": {"type": "river", "polyline": [[58.5, 54], [56, 52.8], [53.5, 51.2], [52, 49.5], [51.5, 47.2]]}, "accept": {"buffer_deg": 0.8}}, {"id": 5, "name": "Kaspijsko jezero", "label_at": [50.5, 42.0], "geometry": null, "accept": {"bbox": [46, 36, 55, 47]}}, {"id": 6, "name": "Kavkaz", "label_at": [44.2, 42.9], "geometry": {"type": "mountain", "polyline": [[40, 43.6], [43, 43.2], [45.5, 42.5], [48, 41.6]]}, "accept": {"buffer_deg": 1.0}}, {"id": 7, "name": "Crno more", "label_at": [34.5, 43.2], "geometry": null, "accept": {"bbox": [27, 41, 42, 47.5]}}, {"id": 8, "name": "Moreuz Bosfor", "label_at": [29.2, 41.2], "geometry": null, "accept": {"radius_deg": 0.5}}, {"id": 9, "name": "Mramorno more", "label_at": [28.2, 40.6], "geometry": null, "accept": {"bbox": [26, 40, 30, 41.5]}}, {"id": 10, "name": "Moreuz Dardaneli", "label_at": [26.3, 40.2], "geometry": null, "accept": {"radius_deg": 0.5}}, {"id": 11, "name": "Egejsko more", "label_at": [25.0, 38.4], "geometry": null, "accept": {"bbox": [22, 35, 28, 41]}}, {"id": 12, "name": "Velika Britanija", "label_at": [-1.6, 52.7], "geometry": null, "accept": {"bbox": [-8.5, 49.5, 2, 59]}}, {"id": 13, "name": "Reka Volga", "label_at": [46.8, 51.5], "geometry": {"type": "river", "polyline": [[34, 57], [37, 56.2], [43, 56.3], [47, 55], [48, 52.5], [46, 50.2], [47.5, 48], [48, 46.3]]}, "accept": {"buffer_deg": 0.8}}, {"id": 14, "name": "Apeninsko poluostrvo", "label_at": [13.6, 42.2], "geometry": null, "accept": {"bbox": [9.5, 38, 19, 47]}}, {"id": 15, "name": "Pirinejsko poluostrvo", "label_at": [-4.2, 40.0], "geometry": null, "accept": {"bbox": [-10, 36, 4, 44]}}, {"id": 16, "name": "Balkansko poluostrvo", "label_at": [22.5, 42.2], "geometry": null, "accept": {"bbox": [16, 38, 30, 47]}}, {"id": 17, "name": "Skandinavsko poluostrvo", "label_at": [15.5, 62.5], "geometry": null, "accept": {"bbox": [5, 56, 25, 71.5]}}, {"id": 18, "name": "Krim", "label_at": [34.3, 45.4], "geometry": null, "accept": {"bbox": [32, 44, 37, 46.5]}}, {"id": 19, "name": "Peloponez", "label_at": [22.2, 37.2], "geometry": null, "accept": {"bbox": [21, 36, 24, 39]}}, {"id": 20, "name": "Jiland", "label_at": [9.2, 56.2], "geometry": null, "accept": {"bbox": [8, 54, 11, 58]}}, {"id": 21, "name": "Kola", "label_at": [37.5, 67.6], "geometry": null, "accept": {"bbox": [29, 65, 41.5, 70]}}, {"id": 22, "name": "Kanin", "label_at": [44.5, 68.0], "geometry": null, "accept": {"radius_deg": 1.3}}, {"id": 23, "name": "Irska", "label_at": [-8.2, 53.3], "geometry": null, "accept": {"bbox": [-11, 51, -5, 56]}}, {"id": 24, "name": "Island", "label_at": [-18.8, 64.8], "geometry": null, "accept": {"bbox": [-25, 63, -13, 67]}}, {"id": 25, "name": "Sicilija", "label_at": [14.1, 37.5], "geometry": null, "accept": {"bbox": [12, 36, 16, 39]}}, {"id": 26, "name": "Sardinija", "label_at": [9.1, 40.1], "geometry": null, "accept": {"bbox": [8, 38.5, 10.5, 41.5]}}, {"id": 27, "name": "Malta", "label_at": [14.45, 35.9], "geometry": null, "accept": {"radius_deg": 0.4}}, {"id": 28, "name": "Krit", "label_at": [24.9, 35.2], "geometry": null, "accept": {"bbox": [23, 34.5, 27, 36]}}, {"id": 29, "name": "Balearska ostrva", "label_at": [2.8, 39.5], "geometry": null, "accept": {"bbox": [1, 38.5, 4.5, 40.5]}}, {"id": 30, "name": "Pirineji", "label_at": [0.6, 42.75], "geometry": {"type": "mountain", "polyline": [[-1.6, 43.3], [0.5, 42.8], [2.6, 42.4]]}, "accept": {"buffer_deg": 0.8}}, {"id": 31, "name": "Alpi", "label_at": [10.2, 46.4], "geometry": {"type": "mountain", "polyline": [[6, 45.0], [8, 46.2], [11, 47.1], [14.5, 47.0]]}, "accept": {"buffer_deg": 1.0}}, {"id": 32, "name": "Apenini", "label_at": [15.6, 41.0], "geometry": {"type": "mountain", "polyline": [[10.2, 44.4], [13, 43.0], [15.2, 41.4], [16.3, 40.2]]}, "accept": {"buffer_deg": 1.0}}, {"id": 33, "name": "Dinarske planine", "label_at": [18.0, 43.3], "geometry": {"type": "mountain", "polyline": [[14.8, 45.6], [17, 44.0], [18.8, 43.0], [20, 42.2]]}, "accept": {"buffer_deg": 1.0}}, {"id": 34, "name": "Balkanske planine", "label_at": [25.0, 43.0], "geometry": {"type": "mountain", "polyline": [[22.6, 43.1], [25, 43.1], [27, 42.9]]}, "accept": {"buffer_deg": 1.0}}, {"id": 35, "name": "Karpati", "label_at": [23.5, 47.6], "geometry": {"type": "mountain", "polyline": [[18.8, 49.3], [21.5, 49.2], [24, 48.0], [25.5, 46.2], [24, 45.5]]}, "accept": {"buffer_deg": 1.0}}, {"id": 36, "name": "Centralni masiv", "label_at": [3.0, 45.0], "geometry": {"type": "mountain", "polyline": [[2.2, 45.9], [3.0, 45.0], [3.6, 44.2]]}, "accept": {"buffer_deg": 0.8}}, {"id": 37, "name": "Vogezi", "label_at": [6.6, 48.2], "geometry": {"type": "mountain", "polyline": [[7.0, 48.5], [7.2, 47.9]]}, "accept": {"buffer_deg": 0.5}}, {"id": 38, "name": "Švarcvald", "label_at": [8.6, 48.1], "geometry": {"type": "mountain", "polyline": [[8.1, 48.5], [8.3, 47.7]]}, "accept": {"buffer_deg": 0.5}}, {"id": 39, "name": "Sudeti", "label_at": [16.0, 50.55], "geometry": {"type": "mountain", "polyline": [[14.8, 50.8], [16.4, 50.6], [17.2, 50.2]]}, "accept": {"buffer_deg": 0.7}}, {"id": 40, "name": "Peninske planine", "label_at": [-2.4, 54.3], "geometry": {"type": "mountain", "polyline": [[-2.2, 55.0], [-2.0, 54.0], [-1.8, 53.2]]}, "accept": {"buffer_deg": 0.6}}, {"id": 41, "name": "Skandinavske planine", "label_at": [13.2, 65.0], "geometry": {"type": "mountain", "polyline": [[12, 68.5], [14, 66], [15, 64], [13, 61.5], [9.5, 61]]}, "accept": {"buffer_deg": 1.3}}, {"id": 42, "name": "Šumava", "label_at": [13.2, 49.2], "geometry": {"type": "mountain", "polyline": [[12.6, 49.6], [13.6, 49.0], [14.2, 48.6]]}, "accept": {"buffer_deg": 0.6}}];
 const STATE_KEY = 'classroom:' + window.location.pathname;
 const STATE_VERSION = 2;
 const RANDOMIZE_NUMBERS = true;
+// Projection constants for screen-pixel ↔ lon/lat conversion (drag mode only)
+const PROJ_LON0 = -25, PROJ_LAT1 = 72;
+const PROJ_SX = 13.333333, PROJ_SY = 22.155202;
 const MSG_CORRECT = "Ta\u010dno!", MSG_WRONG = "Pogre\u0161no \u2014 poku\u0161aj ponovo", MSG_WIN_TPL = "\ud83c\udf89 Bravo! Sve ta\u010dno ({total}/{total}) \u00b7 ukupno gre\u0161aka: {miss}";
 const MODE_ALL_TPL = "Sve ({n})", MODE_RANDOM_TPL = "{n} nasumi\u010dnih";
 
@@ -527,9 +530,75 @@ tDrag.addEventListener('change', () => {
 });
 
 // --- drag system (active only when body.drag-mode) ---
-const DRAG_THRESHOLD_PX = 40;  // base-map pixels at unzoomed scale
+// Default fallback (used only if a term has no `accept` field): ~3° around label_at,
+// which corresponds to roughly 40px at the default unzoomed scale.
+const DEFAULT_ACCEPT_RADIUS_DEG = 3.0;
 let dragGhost = null;
 let dragSourceCanonId = null;
+
+// --- geometry helpers ---
+function pointInPolygon(lon, lat, polygon) {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][0], yi = polygon[i][1];
+    const xj = polygon[j][0], yj = polygon[j][1];
+    const intersect = ((yi > lat) !== (yj > lat)) &&
+                      (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+function distanceToSegment(px, py, x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1;
+  if (dx === 0 && dy === 0) return Math.hypot(px - x1, py - y1);
+  const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+}
+function distanceToPolyline(lon, lat, polyline) {
+  let minDist = Infinity;
+  for (let i = 0; i < polyline.length - 1; i++) {
+    const d = distanceToSegment(lon, lat,
+      polyline[i][0], polyline[i][1], polyline[i+1][0], polyline[i+1][1]);
+    if (d < minDist) minDist = d;
+  }
+  return minDist;
+}
+function screenToLonLat(clientX, clientY) {
+  const r = wrap.getBoundingClientRect();
+  const sc = baseFit * zoom;
+  const baseX = (clientX - r.left - panX) / sc;
+  const baseY = (clientY - r.top - panY) / sc;
+  // Inverse of px(lon,lat) = ((lon - LON0) * SX, (LAT1 - lat) * SY)
+  return [baseX / PROJ_SX + PROJ_LON0, PROJ_LAT1 - baseY / PROJ_SY];
+}
+
+// Per-term acceptance check: returns true if the drop point (lon, lat) is
+// inside the term's accept area. Any single criterion passing = accepted.
+function isDropAcceptable(term, lon, lat) {
+  if (!term) return false;
+  const acc = term.accept;
+  if (acc) {
+    if (acc.polygon && pointInPolygon(lon, lat, acc.polygon)) return true;
+    if (acc.bbox) {
+      const [lon0, lat0, lon1, lat1] = acc.bbox;
+      if (lon >= lon0 && lon <= lon1 && lat >= lat0 && lat <= lat1) return true;
+    }
+    if (acc.radius_deg != null && term.label_at) {
+      const dx = lon - term.label_at[0], dy = lat - term.label_at[1];
+      if (Math.hypot(dx, dy) <= acc.radius_deg) return true;
+    }
+    if (acc.buffer_deg != null && term.geometry && term.geometry.polyline) {
+      if (distanceToPolyline(lon, lat, term.geometry.polyline) <= acc.buffer_deg) return true;
+    }
+    return false;  // accept defined but none passed
+  }
+  // No accept field — fall back to default radius around label_at
+  if (term.label_at) {
+    const dx = lon - term.label_at[0], dy = lat - term.label_at[1];
+    return Math.hypot(dx, dy) <= DEFAULT_ACCEPT_RADIUS_DEG;
+  }
+  return false;
+}
 
 function startDrag(clientX, clientY, displayLabel, sourceElement) {
   if (!document.body.classList.contains('drag-mode')) return;
@@ -562,17 +631,18 @@ function tryDragDrop(canonicalId, clientX, clientY) {
   const sc = baseFit * zoom;
   const baseX = (clientX - r.left - panX) / sc;
   const baseY = (clientY - r.top - panY) / sc;
-  const canonX = parseFloat(cell.dataset.canonSx);
-  const canonY = parseFloat(cell.dataset.canonSy);
-  const dist = Math.hypot(baseX - canonX, baseY - canonY);
+  const [lon, lat] = screenToLonLat(clientX, clientY);
+  const term = ALL_TERMS.find(t => t.id === canonicalId);
+  const accepted = isDropAcceptable(term, lon, lat);
 
+  // Place the cell at the drop location (whether correct or wrong) — the
+  // student's action is preserved visually rather than snap-to-canonical.
   cell.classList.add('drag-placed');
+  cell.dataset.sx = String(baseX);
+  cell.dataset.sy = String(baseY);
   inp.value = inp.dataset.correct;
 
-  if (dist <= DRAG_THRESHOLD_PX) {
-    // Snap to canonical, mark green, lock it
-    cell.dataset.sx = String(canonX);
-    cell.dataset.sy = String(canonY);
+  if (accepted) {
     inp.classList.remove('wrong-placed');
     inp.classList.add('correct');
     inp.readOnly = true;
@@ -580,9 +650,6 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
   } else {
-    // Wrong — stay at drop location, red, draggable
-    cell.dataset.sx = String(baseX);
-    cell.dataset.sy = String(baseY);
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
     inp.dataset.miss = m;

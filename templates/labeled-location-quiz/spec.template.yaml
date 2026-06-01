@@ -84,28 +84,66 @@ ui:
 #   id           — redni broj (1, 2, 3, ...), istovremeno tačan odgovor
 #   name         — naziv pojma
 #   label_at     — [lon, lat] gde stoji kvadrat za unos broja na karti
+#                   (koristi se u 'broj' modu i kao fallback centar u 'drag' modu)
 #   geometry     — opciono; za pojmove koji su linije (planinski venci, reke)
 #       type: mountain | river
 #       polyline: niz [lon, lat] tačaka koje renderer crta kao liniju
+#
+#   accept       — opciono; definiše "tačnu" oblast za drag mode (toggle 'Prevuci
+#                   pojmove'). Svaki drop unutar accept oblasti se računa kao tačan.
+#                   Ako se izostavi, koristi se default radius od 3° oko label_at.
+#                   Može sadržati JEDNO ili VIŠE od sledećih (any-match):
+#       bbox: [lon0, lat0, lon1, lat1]
+#           Pravougaonik. Najlakše za authorovanje. Pogodno za more, jezero, regiju.
+#       radius_deg: 0.5
+#           Krug u stepenima oko label_at. Pogodno za moreuze, mala ostrva, Maltu.
+#       polygon: [[lon, lat], [lon, lat], ...]
+#           Proizvoljan poligon. Najpreciznije; više posla. Za peninsulu koju
+#           bbox previše uključuje (npr. Apeninsko poluostrvo ne sme prihvatati
+#           drop u Jadranu).
+#       buffer_deg: 1.0
+#           Samo za pojmove sa geometry.polyline (planine, reke). Drop unutar
+#           ovog rastojanja od polyline-a je tačan. Za uske planine 0.5°, za
+#           široke planinske venace 1.0–1.5°.
 # ----------------------------------------------------------------------------
 
 terms:
   - id: 1
     name: "{Naziv prvog pojma}"
     label_at: [50.0, 40.0]   # [lon, lat] — primer
+    accept:
+      radius_deg: 1.0        # primer: tolerancija 1° (~100km) za drag mode
+
+  # Primer: pojam sa bbox prihvatljivom oblašću (more):
+  # - id: 2
+  #   name: "Južno kinesko more"
+  #   label_at: [115, 15]
+  #   accept:
+  #     bbox: [105, 5, 122, 23]
 
   # Primer pojma sa geometrijom (planinski venac):
-  # - id: 2
+  # - id: 3
   #   name: "Himalaji"
   #   label_at: [85.0, 28.5]
   #   geometry:
   #     type: mountain
   #     polyline: [[75, 35], [80, 32], [85, 28.5], [90, 27], [95, 28]]
+  #   accept:
+  #     buffer_deg: 1.0       # 1° rastojanje od polyline-a = tačno
 
   # Primer pojma sa geometrijom (reka):
-  # - id: 3
+  # - id: 4
   #   name: "Jangcekjang"
   #   label_at: [108, 30]
   #   geometry:
   #     type: river
   #     polyline: [[91, 33], [95, 32], [100, 31], [110, 30], [120, 31.5]]
+  #   accept:
+  #     buffer_deg: 0.6       # uske reke = manji buffer
+
+  # Primer: poligon (za preciznu peninsulu gde bbox ne radi):
+  # - id: 5
+  #   name: "Indijsko poluostrvo"
+  #   label_at: [78, 20]
+  #   accept:
+  #     polygon: [[68, 23], [73, 16], [77, 8], [80, 8], [85, 12], [87, 17], [88, 22], [78, 23]]

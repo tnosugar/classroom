@@ -313,6 +313,9 @@ const ALL_TERMS = __TERMS_JSON__;
 const STATE_KEY = 'classroom:' + window.location.pathname;
 const STATE_VERSION = 2;
 const RANDOMIZE_NUMBERS = __RANDOMIZE_NUMBERS__;
+// Projection constants for screen-pixel ↔ lon/lat conversion (drag mode only)
+const PROJ_LON0 = __PROJ_LON0__, PROJ_LAT1 = __PROJ_LAT1__;
+const PROJ_SX = __PROJ_SX__, PROJ_SY = __PROJ_SY__;
 const MSG_CORRECT = __MSG_CORRECT__, MSG_WRONG = __MSG_WRONG__, MSG_WIN_TPL = __MSG_WIN__;
 const MODE_ALL_TPL = __MODE_ALL_TPL__, MODE_RANDOM_TPL = __MODE_RANDOM_TPL__;
 
@@ -653,9 +656,75 @@ tDrag.addEventListener('change', () => {
 });
 
 // --- drag system (active only when body.drag-mode) ---
-const DRAG_THRESHOLD_PX = 40;  // base-map pixels at unzoomed scale
+// Default fallback (used only if a term has no `accept` field): ~3° around label_at,
+// which corresponds to roughly 40px at the default unzoomed scale.
+const DEFAULT_ACCEPT_RADIUS_DEG = 3.0;
 let dragGhost = null;
 let dragSourceCanonId = null;
+
+// --- geometry helpers ---
+function pointInPolygon(lon, lat, polygon) {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][0], yi = polygon[i][1];
+    const xj = polygon[j][0], yj = polygon[j][1];
+    const intersect = ((yi > lat) !== (yj > lat)) &&
+                      (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+function distanceToSegment(px, py, x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1;
+  if (dx === 0 && dy === 0) return Math.hypot(px - x1, py - y1);
+  const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+}
+function distanceToPolyline(lon, lat, polyline) {
+  let minDist = Infinity;
+  for (let i = 0; i < polyline.length - 1; i++) {
+    const d = distanceToSegment(lon, lat,
+      polyline[i][0], polyline[i][1], polyline[i+1][0], polyline[i+1][1]);
+    if (d < minDist) minDist = d;
+  }
+  return minDist;
+}
+function screenToLonLat(clientX, clientY) {
+  const r = wrap.getBoundingClientRect();
+  const sc = baseFit * zoom;
+  const baseX = (clientX - r.left - panX) / sc;
+  const baseY = (clientY - r.top - panY) / sc;
+  // Inverse of px(lon,lat) = ((lon - LON0) * SX, (LAT1 - lat) * SY)
+  return [baseX / PROJ_SX + PROJ_LON0, PROJ_LAT1 - baseY / PROJ_SY];
+}
+
+// Per-term acceptance check: returns true if the drop point (lon, lat) is
+// inside the term's accept area. Any single criterion passing = accepted.
+function isDropAcceptable(term, lon, lat) {
+  if (!term) return false;
+  const acc = term.accept;
+  if (acc) {
+    if (acc.polygon && pointInPolygon(lon, lat, acc.polygon)) return true;
+    if (acc.bbox) {
+      const [lon0, lat0, lon1, lat1] = acc.bbox;
+      if (lon >= lon0 && lon <= lon1 && lat >= lat0 && lat <= lat1) return true;
+    }
+    if (acc.radius_deg != null && term.label_at) {
+      const dx = lon - term.label_at[0], dy = lat - term.label_at[1];
+      if (Math.hypot(dx, dy) <= acc.radius_deg) return true;
+    }
+    if (acc.buffer_deg != null && term.geometry && term.geometry.polyline) {
+      if (distanceToPolyline(lon, lat, term.geometry.polyline) <= acc.buffer_deg) return true;
+    }
+    return false;  // accept defined but none passed
+  }
+  // No accept field — fall back to default radius around label_at
+  if (term.label_at) {
+    const dx = lon - term.label_at[0], dy = lat - term.label_at[1];
+    return Math.hypot(dx, dy) <= DEFAULT_ACCEPT_RADIUS_DEG;
+  }
+  return false;
+}
 
 function startDrag(clientX, clientY, displayLabel, sourceElement) {
   if (!document.body.classList.contains('drag-mode')) return;
@@ -688,17 +757,18 @@ function tryDragDrop(canonicalId, clientX, clientY) {
   const sc = baseFit * zoom;
   const baseX = (clientX - r.left - panX) / sc;
   const baseY = (clientY - r.top - panY) / sc;
-  const canonX = parseFloat(cell.dataset.canonSx);
-  const canonY = parseFloat(cell.dataset.canonSy);
-  const dist = Math.hypot(baseX - canonX, baseY - canonY);
+  const [lon, lat] = screenToLonLat(clientX, clientY);
+  const term = ALL_TERMS.find(t => t.id === canonicalId);
+  const accepted = isDropAcceptable(term, lon, lat);
 
+  // Place the cell at the drop location (whether correct or wrong) — the
+  // student's action is preserved visually rather than snap-to-canonical.
   cell.classList.add('drag-placed');
+  cell.dataset.sx = String(baseX);
+  cell.dataset.sy = String(baseY);
   inp.value = inp.dataset.correct;
 
-  if (dist <= DRAG_THRESHOLD_PX) {
-    // Snap to canonical, mark green, lock it
-    cell.dataset.sx = String(canonX);
-    cell.dataset.sy = String(canonY);
+  if (accepted) {
     inp.classList.remove('wrong-placed');
     inp.classList.add('correct');
     inp.readOnly = true;
@@ -706,9 +776,6 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
   } else {
-    // Wrong — stay at drop location, red, draggable
-    cell.dataset.sx = String(baseX);
-    cell.dataset.sy = String(baseY);
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
     inp.dataset.miss = m;
@@ -991,9 +1058,22 @@ def render_html(spec, output_path, map_width_px=1160.0):
         for t in spec["terms"]
     )
 
-    # Terms JSON for client-side use (id + name for CSV export)
+    # Terms JSON for client-side use. Includes:
+    #   id, name           — for CSV export + display
+    #   label_at           — canonical center, fallback for drop check
+    #   geometry.polyline  — used by accept.buffer_deg
+    #   accept             — per-term drop acceptance criteria (any matching = correct)
     terms_json = _json.dumps(
-        [{"id": t["id"], "name": t["name"]} for t in spec["terms"]],
+        [
+            {
+                "id": t["id"],
+                "name": t["name"],
+                "label_at": t.get("label_at"),
+                "geometry": t.get("geometry"),
+                "accept": t.get("accept"),
+            }
+            for t in spec["terms"]
+        ],
         ensure_ascii=False
     )
 
@@ -1033,6 +1113,11 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__TOTAL__": str(len(spec["terms"])),
         "__TERMS_JSON__": terms_json,
         "__RANDOMIZE_NUMBERS__": "true" if spec.get("randomize_numbers", True) else "false",
+        # Projection constants — JS uses these to convert drop screen coords back to lon/lat
+        "__PROJ_LON0__": f"{extent_lon[0]}",
+        "__PROJ_LAT1__": f"{extent_lat[1]}",
+        "__PROJ_SX__": f"{(map_width_px / (extent_lon[1] - extent_lon[0])):.6f}",
+        "__PROJ_SY__": f"{(map_width_px / (extent_lon[1] - extent_lon[0])) * (1.0 / math.cos(math.radians(mid_lat))):.6f}",
         "__MSG_CORRECT__": _json.dumps(ui["msg_correct"]),
         "__MSG_WRONG__": _json.dumps(ui["msg_wrong"]),
         "__MSG_WIN__": _json.dumps(ui["msg_win"]),
