@@ -1,0 +1,734 @@
+title: Balkan vremenska osa — XIV i XV vek
+locale: sr
+description: 'Za svaki događaj upiši datum (godinu ili opseg godina). Kada je tačno, događaj se pojavi na vremenskoj osi i otvore se pitanja vezana za njega. Pokriva lekcije 17–22: kraj srpskog carstva,
+  Kosovska bitka, Bosna, osmanska osvajanja, Despotovina.
+
+  '
+timeline:
+  start_year: 1300
+  end_year: 1500
+lanes:
+- id: vladari
+  label: Vladari
+  color: '#9c5a2c'
+- id: drzave
+  label: Države
+  color: '#1f7a3a'
+- id: bitke
+  label: Bitke
+  color: '#b1271f'
+- id: dogadjaji
+  label: Događaji
+  color: '#3a6ba5'
+ui:
+  header_title: Balkan vremenska osa — XIV i XV vek
+  header_subtitle: 'Za svaki događaj upiši godinu (ili opseg godina). Kad je tačno, događaj se pojavi na vremenskoj osi i otvore se kratka pitanja. Pokriva lekcije 17–22 (kraj srpskog carstva → pad Bosne).
+
+    '
+  events_heading: Pojmovi i datumi
+  timeline_heading: Vremenska osa
+  btn_check_date: Proveri
+  btn_check_mcq: Proveri odgovore
+  btn_reset: Počni ispočetka
+  stat_correct: Tačno
+  stat_miss: Greške
+  placeholder_start: od
+  placeholder_end: do
+  placeholder_year: godina
+  placeholder_day: dan
+  placeholder_month: mesec
+  msg_date_correct: Datum tačan!
+  msg_date_wrong: Datum pogrešan — pokušaj ponovo
+  msg_mcq_correct: Tačno!
+  msg_mcq_wrong: Pogrešno — odaberi tačno sve tačne odgovore
+  msg_win: '🎉 Sve rešeno! Ukupno grešaka: {miss}'
+  mcq_instruction: Odaberi sve tačne odgovore (može biti više od jednog), pa klikni Proveri.
+  resume_indicator: Nastavak prethodne sesije — tvoj progres je sačuvan.
+events:
+- id: 3
+  name: Knez Lazar Hrebeljanović
+  lane: vladari
+  period:
+    start_year: 1371
+    end_year: 1389
+  follow_up:
+  - q: Šta je tačno o knezu Lazaru?
+    options:
+    - text: Vladar Moravske Srbije sa prestonicom u Kruševcu
+      correct: true
+    - text: Pao je u Kosovskoj bici i bio kasnije proglašen za sveca
+      correct: true
+    - text: Bio je sin Stefana Dušana
+      correct: false
+    - text: Nosio je titulu cara
+      correct: false
+    explanation: Knez Lazar je bio vladar Moravske Srbije iz Kruševca. Poginuo je na Kosovu 1389. i kasnije proglašen za sveca. Nije bio iz dinastije Nemanjića (Dušan je bio), niti je nosio carsku titulu
+      — bio je knez.
+  - q: Ko su bili glavni Lazarevi saveznici i rivali u trenutku Kosovske bitke?
+    options:
+    - text: Vuk Branković — zet i suparnik
+      correct: true
+    - text: Tvrtko I poslao bosanske pomoćne snage
+      correct: true
+    - text: Stefan Dušan se aktivno borio
+      correct: false
+    - text: Đurađ Branković bio mu je zet
+      correct: false
+    explanation: Vuk Branković je bio Lazarev zet (oženio njegovu ćerku Maru). Tvrtko I je poslao bosanske pomoćne snage. Stefan Dušan je umro 1355, decenije pre Kosova, pa nije mogao da učestvuje. Đurađ
+      Branković se rodio ~1377, bio je Vukov sin.
+  date_explanation: Lazar je postao najmoćniji vladar u srpskim zemljama posle Maričke bitke (1371) i smrti cara Uroša V iste godine. Poginuo je 15. juna 1389. u Kosovskoj bici i kasnije proglašen za sveca.
+- id: 4
+  name: Stefan Lazarević
+  lane: vladari
+  period:
+    start_year: 1389
+    end_year: 1427
+  follow_up:
+  - q: Šta o Stefanu Lazareviću je tačno?
+    options:
+    - text: Bio je sin kneza Lazara i kneginje Milice
+      correct: true
+    - text: Despotsku titulu dobio je 1402. u Carigradu
+      correct: true
+    - text: Beograd je bio njegova prestonica od 1404. do 1427.
+      correct: true
+    - text: Bio je krunisan za kralja u Mileševi
+      correct: false
+    explanation: Stefan je sin kneza Lazara i kneginje Milice. Despotski naslov dobio je u Carigradu 1402. od vizantijskog cara. Beograd mu je bio prestonica od 1404. do smrti 1427. Krunisanje za kralja
+      nije postojalo — bio je despot, ne kralj.
+  - q: 'Stefan Lazarević je takođe poznat kao:'
+    options:
+    - text: Pesnik (autor Slova ljubve)
+      correct: true
+    - text: Vojskovođa koji se borio i kao osmanski vasal i kao ugarski saveznik
+      correct: true
+    - text: Osnivač Pećke patrijaršije
+      correct: false
+    - text: Graditelj manastira Manasije (Resave)
+      correct: true
+    explanation: Stefan je pisao 'Slovo ljubve' (jedinstveno delo srpske srednjovekovne književnosti). Borio se kao osmanski vasal (u Nikopolju, u Angori) ali i kao ugarski saveznik posle 1402. Podigao
+      je Manasiju (Resavu) kao svoju zadužbinu. Pećku patrijaršiju je osnovao Stefan Dušan 1346, ne on.
+  date_explanation: Stefan je nasledio kneza Lazara, svog oca, kao mlad vladar posle Kosovske bitke 1389. Umro je iznenada 1427. kod sela Crkvine prilikom lova.
+- id: 5
+  name: Đurađ Branković
+  lane: vladari
+  period:
+    start_year: 1427
+    end_year: 1456
+  follow_up:
+  - q: Šta je tačno o Đurđu Brankoviću?
+    options:
+    - text: Naslednik Stefana Lazarevića od 1427.
+      correct: true
+    - text: Premestio prestonicu iz Beograda u Smederevo
+      correct: true
+    - text: Bio je svetac kao i knez Lazar
+      correct: false
+    - text: Njegova ćerka Mara je udata za sultana Murata II
+      correct: true
+    explanation: Đurađ je preuzeo presto 1427. posle Stefanove smrti. Preselio je prestonicu iz Beograda (vraćen Ugarskoj) u Smederevo (gradnja od 1430). Mara je njegova ćerka. Nije proglašen za sveca kao
+      Lazar.
+  - q: 'U vreme njegove vladavine dešava se:'
+    options:
+    - text: Gradnja Smedereva (od 1430.)
+      correct: true
+    - text: Prvi pad Smedereva 1439. i kasnija obnova
+      correct: true
+    - text: Bitka kod Varne 1444.
+      correct: true
+    - text: Krunisanje Stefana Dušana
+      correct: false
+    explanation: Smederevo je građeno od 1430, prvi put palo 1439, obnovljeno posle 1444. Ugarsko-osmanski rat 1444. donosi Đurđu privremenu obnovu. Dušan se krunisao 100 godina ranije.
+  date_explanation: Đurađ je nasledio strica Stefana Lazarevića po sporazumu o nasleđivanju iz 1426. Umro je prirodnom smrću 1456, samo tri godine pre konačnog pada Despotovine.
+- id: 6
+  name: Tvrtko I Kotromanić (kao kralj)
+  lane: vladari
+  period:
+    start_year: 1377
+    end_year: 1391
+  follow_up:
+  - q: 'Tvrtko I:'
+    options:
+    - text: Krunisao se 1377. u Mileševi za 'kralja Srba i Bosne'
+      correct: true
+    - text: Bio je iz dinastije Kotromanića
+      correct: true
+    - text: Smatrao je sebe naslednikom Nemanjića
+      correct: true
+    - text: Krunisao se u Smederevu
+      correct: false
+    explanation: Tvrtko I se krunisao 1377. u Mileševi i tako preuzeo nasleđe Nemanjića. Bio je iz dinastije Kotromanića. Krunisao se uz tradiciju Nemanjića (Mileševa je nemanjićka zadužbina), ne u Smederevu.
+  - q: 'Pod Tvrtkom I, bosanska država:'
+    options:
+    - text: Doživela vrhunac teritorijalne ekspanzije
+      correct: true
+    - text: Slala je pomoćne odrede u Kosovsku bitku 1389.
+      correct: true
+    - text: Padala je definitivno pod Osmanlije
+      correct: false
+    - text: Postala je deo Dušanovog carstva
+      correct: false
+    explanation: Pod Tvrtkom Bosna je dosegla maksimalnu teritorijalnu ekspanziju (uključujući deo Hrvatske, Dalmacije, Srbije). Slao je pomoćne snage u Kosovsku bitku. Konačan pad pod Osmanlije se desio
+      mnogo kasnije, 1463. Bosna nikada nije bila deo Dušanovog carstva.
+  date_explanation: Tvrtko I se krunisao za kralja u manastiru Mileševi 1377, prilikom čega je preuzeo titulu Nemanjića. Umro je 1391, što je označilo početak slabljenja Bosne.
+- id: 7
+  name: Sultan Murat I
+  lane: vladari
+  period:
+    start_year: 1362
+    end_year: 1389
+  follow_up:
+  - q: 'Murat I je:'
+    options:
+    - text: Vodio osmansku vojsku u Kosovskoj bici
+      correct: true
+    - text: Poginuo na Kosovu (prema predanju ubio ga je Miloš Obilić)
+      correct: true
+    - text: Bio sin Mehmeda II Osvajača
+      correct: false
+    - text: Vodio osvajanja na Balkanu (Marica 1371.)
+      correct: true
+    explanation: Murat I je vodio osmansku vojsku u Kosovskoj bici 1389. i tamo poginuo. Bio je sin Orhana, ne otac Mehmeda II (Mehmed II je njegov pra-pra-unuk). Vodio je veliku ekspanziju na Balkanu uključujući
+      Marički poraz Srba 1371.
+  - q: 'Tokom Muratove vladavine:'
+    options:
+    - text: Osmanlije prelaze duboko u Trakiju i Makedoniju
+      correct: true
+    - text: Pada Carigrad
+      correct: false
+    - text: Adrianopolj (Edirne) postaje osmanska prestonica
+      correct: true
+    - text: Mrnjavčevići gibu kod Marice 1371.
+      correct: true
+    explanation: Tokom Muratove vladavine (1362–1389) Osmanlije ulaze duboko u Trakiju i Makedoniju. Adrianopolj (Edirne) je postao prestonica oko 1369. Carigrad još uvek nije pao (1453. pod Mehmedom II).
+  date_explanation: Murat I je postao sultan 1362. proširujući Osmanlije na Balkan. Poginuo je u Kosovskoj bici 1389. (po srpskoj tradiciji od ruke Miloša Obilića).
+- id: 8
+  name: Bajazit I (Munja)
+  lane: vladari
+  period:
+    start_year: 1389
+    end_year: 1402
+  follow_up:
+  - q: 'Bajazit I:'
+    options:
+    - text: Nasledio Murata I posle Kosova
+      correct: true
+    - text: Bio je oženjen Olivierom, ćerkom kneza Lazara
+      correct: true
+    - text: Vodio Osmanlije do poraza kod Angore 1402.
+      correct: true
+    - text: Osvojio Carigrad
+      correct: false
+    explanation: Bajazit je naslednik Murata I posle Kosova 1389. Oženio se Olivierom (Mariom Lazarević), ćerkom kneza Lazara, što je politički vezalo Srbe za Osmanlije. Zarobljen kod Angore 1402. od Timura.
+      Carigrad još nije pao.
+  - q: 'Pod Bajazitom:'
+    options:
+    - text: Pao je Trnovo i okončano bugarsko Trnovsko carstvo (1393.)
+      correct: true
+    - text: Razbijena je vojska krstaša kod Nikopolja 1396.
+      correct: true
+    - text: Pao je u zarobljeništvo kod Timura kod Angore
+      correct: true
+    - text: Krunisan je u Carigradu za cara
+      correct: false
+    explanation: 'Pod Bajazitom: Trnovo (i Bugarsko carstvo) pada 1393; krstaši su razbijeni kod Nikopolja 1396; Bajazit zarobljen kod Angore 1402. Nije se krunisao u Carigradu — bio je sultan, a Carigrad
+      je vizantijski tada.'
+  date_explanation: Bajazit je naslednik Murata I, preuzeo presto posle Kosova 1389. Zarobljen je od Timura kod Angore 1402. i umro u zarobljeništvu.
+- id: 9
+  name: Mehmed II Osvajač
+  lane: vladari
+  period:
+    start_year: 1444
+    end_year: 1481
+  follow_up:
+  - q: 'Mehmed II je najpoznatiji po:'
+    options:
+    - text: Osvajanju Carigrada 1453.
+      correct: true
+    - text: Osvajanju Despotovine i pada Smedereva 1459.
+      correct: true
+    - text: Osvajanju Bosne 1463.
+      correct: true
+    - text: Bici kod Marice 1371.
+      correct: false
+    explanation: Mehmed je osvojio Carigrad 1453, Smederevo (kraj Despotovine) 1459, Bosnu 1463. Marička bitka 1371. odigrala se pre Mehmedovog rođenja (1432).
+  - q: Šta je tačno o Mehmedu II?
+    options:
+    - text: Vladao je u dva navrata (1444–1446 i 1451–1481)
+      correct: true
+    - text: Mara Branković bila mu je očeva žena (maćeha)
+      correct: true
+    - text: Bio je vasal kneza Lazara
+      correct: false
+    - text: Carigrad je preimenovao u Istanbul nakon osvajanja
+      correct: true
+    explanation: Mehmed II je vladao u dva navrata (1444–1446 kao tinejdžer; 1451–1481). Mara Branković bila je očeva žena, dakle Mehmedova maćeha. Carigrad je preimenovan u Istanbul postepeno tokom osmanskog
+      perioda. Nije bio vasal kneza Lazara — Lazar je davno mrtav kad se Mehmed rodio.
+  date_explanation: Mehmed je dva puta vladao Osmanlijama. Prva (1444–1446) kao tinejdžer, druga (1451–1481) sa osvajanjem Carigrada, Despotovine i Bosne. Vremenska osa pokazuje period njegovih osvajanja.
+- id: 10
+  name: Srpsko carstvo (trajanje)
+  lane: drzave
+  period:
+    start_year: 1346
+    end_year: 1371
+  follow_up:
+  - q: Šta o srpskom carstvu (1346–1371) je tačno?
+    options:
+    - text: Krunisanje Dušana za cara označava početak
+      correct: true
+    - text: Smrt Uroša V (1371.) označava prestanak dinastije Nemanjića
+      correct: true
+    - text: Imalo je sopstvenu patrijaršiju u Peći
+      correct: true
+    - text: Prestonica je bila Smederevo
+      correct: false
+    explanation: Krunisanje 1346. označava početak carstva. Smrt Uroša V 1371. označava kraj dinastije Nemanjića. Pećka patrijaršija je osnovana 1346. zajedno sa krunisanjem. Prestonica nije Smederevo —
+      to je bila Despotovina vek kasnije.
+  - q: 'Najveći vladar carstva, Stefan Dušan:'
+    options:
+    - text: Naslednik je Stefana Dečanskog
+      correct: true
+    - text: Sazvao je Sabor i doneo zakonik (Dušanov zakonik 1349.)
+      correct: true
+    - text: Naslednik mu je Stefan Lazarević
+      correct: false
+    - text: Carstvo se proširilo na Makedoniju, Tesaliju i Epir
+      correct: true
+    explanation: Stefan Dušan je naslednik svog oca Stefana Dečanskog. Dušanov zakonik je donet 1349, dopunjen 1354. Carstvo se proširilo na Makedoniju, Tesaliju i Epir. Stefan Lazarević je živeo dva veka
+      kasnije, nije Dušanov naslednik.
+  date_explanation: Srpsko carstvo počinje krunisanjem Stefana Dušana za cara u Skoplju 1346. Prestaje smrću Stefana Uroša V 1371. — godina koja označava i kraj dinastije Nemanjića.
+- id: 11
+  name: Despotovina (Srpska)
+  lane: drzave
+  period:
+    start_year: 1402
+    end_year: 1459
+  follow_up:
+  - q: 'Despotovina:'
+    options:
+    - text: Nastala iz Moravske Srbije posle Stefanovog despotskog naslova
+      correct: true
+    - text: Prestala je da postoji padom Smedereva 1459.
+      correct: true
+    - text: Imala je dve prestonice — prvo Beograd, kasnije Smederevo
+      correct: true
+    - text: Bila je deo Osmanskog carstva tokom celog perioda
+      correct: false
+    explanation: 'Despotovina je nastala iz Moravske Srbije kada je Stefan Lazarević dobio despotski naslov 1402. Pala je 1459. padom Smedereva. Imala je dve prestonice: Beograd (Stefan) i Smederevo (Đurađ).
+      Bila je sopstvena država, ne deo Osmanskog carstva (bila je vasal).'
+  - q: 'Glavni vladari despotovine bili su:'
+    options:
+    - text: Stefan Lazarević (1402–1427)
+      correct: true
+    - text: Đurađ Branković (1427–1456)
+      correct: true
+    - text: Knez Lazar Hrebeljanović
+      correct: false
+    - text: Lazar Branković (Đurđev sin, 1456–1458)
+      correct: true
+    explanation: 'Glavni vladari Despotovine: Stefan Lazarević (1402–1427), Đurađ Branković (1427–1456), Lazar Branković (1456–1458). Knez Lazar je živeo pre nastanka Despotovine.'
+  date_explanation: Despotovina nastaje kad Stefan Lazarević dobija despotski naslov u Carigradu 1402. Završava se padom Smedereva 1459. pod Mehmedom II.
+- id: 12
+  name: Bosanska kraljevina
+  lane: drzave
+  period:
+    start_year: 1377
+    end_year: 1463
+  follow_up:
+  - q: Šta o bosanskoj kraljevini je tačno?
+    options:
+    - text: Tvrtko I se krunisao za kralja 1377.
+      correct: true
+    - text: Pala je 1463. pod Mehmeda II Osvajača
+      correct: true
+    - text: Imala je Bosansku crkvu (i bogumile, tzv. krstjane)
+      correct: true
+    - text: Bila je deo Vizantijskog carstva
+      correct: false
+    explanation: Tvrtko se krunisao 1377. u Mileševi. Pala je 1463. pod Mehmeda II. Imala je Bosansku crkvu sa krstjanima (bogumili). Nije bila deo Vizantijskog carstva — vekovima nezavisna od Vizantije.
+  - q: 'Krunisanje Tvrtka I:'
+    options:
+    - text: Odigralo se u manastiru Mileševi (nemanjićka zadužbina)
+      correct: true
+    - text: Tvrtko je sebe smatrao naslednikom Nemanjića
+      correct: true
+    - text: Odigralo se u Smederevu
+      correct: false
+    - text: Titula je bila 'kralj Srba, Bosne i Pomorja'
+      correct: true
+    explanation: Tvrtko se krunisao u Mileševi (zadužbina Nemanjića), preuzimajući njihovo nasleđe. Titula je bila 'kralj Srba i Bosne i Pomorja'. Nije se krunisao u Smederevu — Smederevo nije postojalo
+      1377.
+  date_explanation: Bosanska kraljevina počinje krunisanjem Tvrtka I 1377. u Mileševi. Pada 1463. kad Mehmed II osvaja zemlju i pogublja poslednjeg kralja Stjepana Tomaševića.
+- id: 13
+  name: Pad Trnovskog carstva
+  lane: dogadjaji
+  period:
+    year: 1393
+  follow_up:
+  - q: 'Pad Trnovskog (Drugog bugarskog) carstva 1393.:'
+    options:
+    - text: Trnovo osvajaju Osmanlije pod Bajazitom I
+      correct: true
+    - text: Označava kraj samostalne srednjovekovne bugarske države
+      correct: true
+    - text: Pala je u istom danu kao Carigrad
+      correct: false
+    - text: Bugarska je imala svoju patrijaršiju u Trnovu pre pada
+      correct: true
+    explanation: Trnovo je palo 1393. pod Bajazita I. Označava kraj Drugog bugarskog (Trnovskog) carstva. Bugarska je imala patrijaršiju u Trnovu (uzdignuta 1235). Carigrad je pao 60 godina kasnije (1453).
+  - q: 'Veza Bugara i Srba u XIV veku:'
+    options:
+    - text: Stefan Dečanski je pobedio bugarsku vojsku kod Velbužda 1330.
+      correct: true
+    - text: Bugarski car Mihailo Šišman gibe kod Velbužda
+      correct: true
+    - text: Bugari su pomogli Srbima u Kosovskoj bici
+      correct: false
+    - text: Dušan je oženio bugarsku princezu Jelenu
+      correct: true
+    explanation: Stefan Dečanski je pobedio Mihaila Šišmana kod Velbužda 1330; Mihailo je tamo i poginuo. Dušan se oženio bugarskom princezom Jelenom Šišman (Mihailovom rođakom). Bugari nisu pomogli Srbima
+      u Kosovu (bili pod osmanskim pritiskom).
+  date_explanation: Trnovo, prestonica Drugog bugarskog (Trnovskog) carstva, pada 1393. pod Bajazita I. Označava kraj samostalne srednjovekovne bugarske države.
+- id: 14
+  name: Bitka kod Velbužda
+  lane: bitke
+  period:
+    day: 28
+    month: 7
+    year: 1330
+  follow_up:
+  - q: 'Bitka kod Velbužda 1330.:'
+    options:
+    - text: Srpsku vojsku vodio je Stefan Dečanski
+      correct: true
+    - text: Bugarski car Mihailo Šišman je poginuo
+      correct: true
+    - text: Završila se pobedom Srba
+      correct: true
+    - text: Bila je sukob Srba i Osmanlija
+      correct: false
+    explanation: Bitku kod Velbužda 28. jula 1330. vodio je Stefan Dečanski. Bugarski car Mihailo Šišman tamo je poginuo. Pobeda je bila srpska. Nije bila sa Osmanlijama — Osmanlije još nisu bile na Balkanu.
+  - q: 'Posledica bitke:'
+    options:
+    - text: Srbija postaje dominantna sila na Balkanu
+      correct: true
+    - text: Otvara put Dušanovom uzdizanju
+      correct: true
+    - text: Bugarska prestaje da postoji odmah
+      correct: false
+    - text: Krunisanje Stefana Dečanskog se desilo posle ove bitke
+      correct: false
+    explanation: Velbužd je učvrstio srpsku dominaciju na Balkanu. Otvorio je put Dušanovom uzdizanju. Bugarska nije propala odmah — opstala je još 60 godina. Krunisanje Dečanskog se desilo 1322, pre Velbužda.
+  date_explanation: Bitka se odigrala 28. jula 1330. blizu današnjeg Kjustendila u Bugarskoj. Srpsku vojsku je vodio Stefan Dečanski; bugarski car Mihailo Šišman je poginuo.
+- id: 15
+  name: Marička bitka (na Maricinom polju)
+  lane: bitke
+  period:
+    year: 1371
+  follow_up:
+  - q: 'Marička bitka 1371.:'
+    options:
+    - text: Srpsku vojsku vodili su Vukašin i Uglješa Mrnjavčević
+      correct: true
+    - text: Oba brata Mrnjavčevića su poginula
+      correct: true
+    - text: Pobedu su odneli Osmanlije
+      correct: true
+    - text: Vodio je knez Lazar
+      correct: false
+    explanation: Marička bitka 1371. — Vukašina i Uglješu Mrnjavčevića su predvodili srpsku vojsku; oba su poginula. Pobeda je bila osmanska. Knez Lazar nije bio na Marici — bio je u Moravskoj Srbiji.
+  - q: 'Šta je usledilo:'
+    options:
+    - text: Slom Mrnjavčevića otvorio je Osmanlijama dublju Trakiju
+      correct: true
+    - text: Marko Kraljević je preživeo i postao vasal Osmanlija
+      correct: true
+    - text: U istoj godini umro je Uroš V — kraj Nemanjića
+      correct: true
+    - text: Srbija je odmah postala deo Osmanskog carstva
+      correct: false
+    explanation: Posle Marice Osmanlije nesmetano prodiru u Trakiju. Marko Kraljević (Vukašinov sin) preživeo i postao osmanski vasal. Iste godine umro je Uroš V (decembar 1371) — to označava kraj Nemanjića.
+      Srbija nije odmah postala deo Osmanskog carstva — to je proces koji traje skoro vek.
+  date_explanation: Bitka je vođena 26. septembra 1371. na reci Marici (današnja Trakija). Braca Mrnjavčevići — Vukašin i Uglješa — poginuli su, otvorivši Osmanlijama prolaz dublje u Balkan.
+- id: 16
+  name: Kosovska bitka
+  lane: bitke
+  period:
+    day: 15
+    month: 6
+    year: 1389
+  follow_up:
+  - q: 'Kosovska bitka 1389.:'
+    options:
+    - text: Knez Lazar je predvodio srpsku vojsku
+      correct: true
+    - text: Sultan Murat I poginuo je u bici (prema tradiciji Miloš Obilić)
+      correct: true
+    - text: Lazar je zarobljen i pogubljen po naređenju Bajazita
+      correct: true
+    - text: Srbi su odneli ubedljivu pobedu
+      correct: false
+    explanation: Knez Lazar je vodio srpsku vojsku. Po tradiciji Miloš Obilić se infiltrirao u osmanski logor i ubio Murata I. Lazar je zarobljen i pogubljen po Bajazitovom naređenju. Srbi nisu odneli pobedu
+      — obe vojske su pretrpele teške gubitke.
+  - q: 'Učesnici i okolnosti bitke:'
+    options:
+    - text: Vuk Branković bio je deo Lazarove koalicije
+      correct: true
+    - text: Bosanske pomoćne snage (od Tvrtka I) bile su prisutne
+      correct: true
+    - text: Bila je glavna srpsko-osmanska bitka XIV veka
+      correct: true
+    - text: Odigrala se u Smederevu
+      correct: false
+    explanation: Vuk Branković je bio deo Lazareve koalicije (njegova teritorija je obuhvatala Kosovo). Bosanske jedinice (Vlatko Vuković) takođe su učestvovale. Bila je glavna srpsko-osmanska bitka. Nije
+      bila u Smederevu — bila je na Kosovu Polju.
+  date_explanation: Kosovska bitka odigrala se 15. juna 1389. po Julijanskom kalendaru (28. juna po Gregorijanskom — otuda Vidovdan). To je jedna od najpoznatijih bitaka srednjeg veka.
+- id: 17
+  name: Nikopoljska bitka
+  lane: bitke
+  period:
+    year: 1396
+  follow_up:
+  - q: 'Bitka kod Nikopolja 1396.:'
+    options:
+    - text: Krstaška vojska (uglavnom Ugarska i zapadnoevropski vitezovi)
+      correct: true
+    - text: Vodio je ugarski kralj Sigismund
+      correct: true
+    - text: Pobedu su odneli Osmanlije pod Bajazitom I
+      correct: true
+    - text: Srbi pod Stefanom Lazarevićem borili su se na strani Osmanlija (kao vasali)
+      correct: true
+    explanation: Nikopolj 1396 — krstašku vojsku činili su uglavnom Ugri sa zapadnoevropskim vitezovima. Vodio je je Sigismund Luksemburški. Bajazit I je pobedio. Stefan Lazarević je bio u osmanskoj vojsci
+      kao vasal.
+  - q: 'Posledica bitke:'
+    options:
+    - text: Cela Bugarska konačno potpada pod Osmanlije
+      correct: true
+    - text: Osmanlije sad nesmetano nastupaju ka srednjoj Evropi
+      correct: true
+    - text: Krstaška ideja je pretrpela ozbiljan udarac
+      correct: true
+    - text: Bila je deo Prvog krstaškog rata
+      correct: false
+    explanation: Posle Nikopolja Bugarska je konačno potpala pod Osmanlije. Osmanlije sada slobodno nastupaju prema srednjoj Evropi. Krstaški pokret je oslabljen. Nije bio deo Prvog krstaškog rata — to
+      je bio prelaz XI/XII veka.
+  date_explanation: Nikopoljska bitka odigrala se 25. septembra 1396. Bajazit I je razbio ujedinjenu krstašku vojsku predvodjenu ugarskim kraljem Sigismundom; Stefan Lazarević je učestvovao na osmanskoj
+    strani kao vasal.
+- id: 18
+  name: Bitka kod Angore
+  lane: bitke
+  period:
+    year: 1402
+  follow_up:
+  - q: 'Bitka kod Angore 1402.:'
+    options:
+    - text: Sukob osmanske vojske Bajazita I i Timura (Tamerlan)
+      correct: true
+    - text: Bajazit je zarobljen, što je oslabilo Osmanlije na 20 godina
+      correct: true
+    - text: Stefan Lazarević je u toj bici dobio despotski naslov
+      correct: false
+    - text: Bila je deo krstaških ratova
+      correct: false
+    explanation: Bitka kod Angore (Ankara) 1402 — sukob osmanske Bajazitove vojske i mongolskog Timura. Bajazit je zarobljen i umro u zarobljeništvu. Stefan Lazarević je tek nakon bitke (iste godine) dobio
+      despotski naslov u Carigradu, ne u bici. Nije deo krstaških ratova.
+  - q: 'Posledice za Balkan:'
+    options:
+    - text: Privremeno slabljenje osmanskog pritiska na srpske zemlje
+      correct: true
+    - text: Stefan Lazarević dobija despotski naslov iste godine (u Carigradu)
+      correct: true
+    - text: Despotovina počinje da se razvija u ovo vreme
+      correct: true
+    - text: Pao je Carigrad
+      correct: false
+    explanation: Posle Angore Osmanlije su privremeno oslabljeni — što je dalo predah Srbima i drugima na Balkanu. Stefan dobija despotski naslov iste 1402. godine. Despotovina počinje da se razvija. Carigrad
+      je pao tek 1453.
+  date_explanation: Bitka kod Angore (današnji Ankara) odigrala se 28. jula 1402. Timur (Tamerlan) je zarobio Bajazita I, čime je Osmansko carstvo oslabljeno na nekoliko decenija.
+- id: 19
+  name: Bitka kod Varne
+  lane: bitke
+  period:
+    year: 1444
+  follow_up:
+  - q: 'Bitka kod Varne 1444.:'
+    options:
+    - text: Krstaška vojska protiv Osmanlija
+      correct: true
+    - text: Hrišćansku vojsku vodili su Vladislav III Jagelonac i Jan Hunjadi
+      correct: true
+    - text: Pobedili su Osmanlije pod Muratom II
+      correct: true
+    - text: Pobedu su odneli krstaši
+      correct: false
+    explanation: Bitka kod Varne 1444 — krstaška vojska protiv Osmanlija. Predvodili su je Vladislav III (Poljska i Ugarska) i Jan Hunjadi. Pobedili su Osmanlije pod Muratom II, ne krstaši.
+  - q: 'Posledice:'
+    options:
+    - text: Krunisanje Vladislava III padom bitke je prekinuto — Vladislav gibe
+      correct: true
+    - text: Osmanska prisutnost na Balkanu se učvršćuje
+      correct: true
+    - text: Pokrenuto je Drugo Kosovo (1448.)
+      correct: true
+    - text: Despotovina prestaje da postoji
+      correct: false
+    explanation: Vladislav III je poginuo u bici, dok je Murat II osigurao osmanski uticaj na Balkanu. To je vodilo ka Drugoj kosovskoj bici 1448. Despotovina je nastavila da postoji još 15 godina posle
+      Varne.
+  date_explanation: Bitka kod Varne odigrala se 10. novembra 1444. Murat II je razbio krstašku vojsku, a poljsko-ugarski kralj Vladislav III je poginuo.
+- id: 21
+  name: Pad Carigrada
+  lane: bitke
+  period:
+    day: 29
+    month: 5
+    year: 1453
+  follow_up:
+  - q: 'Pad Carigrada 29. maja 1453.:'
+    options:
+    - text: Osvojio ga je Mehmed II Osvajač
+      correct: true
+    - text: Označava simbolički kraj srednjeg veka (po istoričarima Istoka)
+      correct: true
+    - text: Poslednji vizantijski car Konstantin XI gibe braneći grad
+      correct: true
+    - text: Carigrad je preimenovan u Solun
+      correct: false
+    explanation: Carigrad je pao 29. maja 1453. pod Mehmeda II posle dugotrajne opsade. Kraj srednjeg veka (po istočnoj periodizaciji). Konstantin XI Paleolog je poginuo braneći grad. Nije preimenovan u
+      Solun — preimenovan je u Istanbul postepeno.
+  - q: 'Posledice:'
+    options:
+    - text: Osmanlije postaju neosporna sila istočnog Mediterana
+      correct: true
+    - text: Carigrad postaje nova osmanska prestonica
+      correct: true
+    - text: Mnogi vizantijski učenjaci beže u Italiju i podstiču renesansu
+      correct: true
+    - text: Bugarska je pala iste godine
+      correct: false
+    explanation: Osmanlije postaju neosporna sila istočnog Mediterana. Carigrad postaje osmanska prestonica. Vizantijski učenjaci beže u Italiju i podstiču renesansu. Bugarska je pala mnogo ranije, 1393.
+  date_explanation: Carigrad je pao 29. maja 1453. po Gregorijanskom kalendaru. Mehmed II Osvajač je posle 53 dana opsade konačno probio zidine. Poslednji vizantijski car Konstantin XI je poginuo braneći
+    grad.
+- id: 22
+  name: Krunisanje Tvrtka I za kralja
+  lane: dogadjaji
+  period:
+    year: 1377
+  follow_up:
+  - q: 'Krunisanje 1377.:'
+    options:
+    - text: Tvrtko I se krunisao u Mileševi
+      correct: true
+    - text: Tvrtko je tako postao prvi bosanski kralj
+      correct: true
+    - text: Krunisao se za 'kralja Srba i Bosne i Pomorja'
+      correct: true
+    - text: Krunisao ga je papa lično u Rimu
+      correct: false
+    explanation: Tvrtko se krunisao 1377. u manastiru Mileševi (nemanjićka zadužbina). Postao je prvi bosanski kralj. Titula je obuhvatala Srbe i Bosnu — preuzeo je nasleđe Nemanjića. Krunisanje nije bilo
+      u Rimu od strane pape.
+  - q: 'Šta je značilo krunisanje:'
+    options:
+    - text: Tvrtko se smatrao naslednikom Nemanjića
+      correct: true
+    - text: Bosna postaje politički ravnopravna sa Srbijom
+      correct: true
+    - text: Otvorilo je period vrhunca bosanske države
+      correct: true
+    - text: Bosna se odmah priključila Despotovini
+      correct: false
+    explanation: Krunisanjem Tvrtko se prozvao naslednikom Nemanjića. Bosna postaje ravnopravna sa Srbijom. Period je vrhunac bosanske države. Bosna nikada nije bila deo Despotovine.
+  date_explanation: Tvrtko I se krunisao za kralja 1377. u manastiru Mileševi. Titula 'kralj Srba i Bosne i Pomorja' označava da je preuzeo nasleđe Nemanjića posle gašenja te dinastije.
+- id: 23
+  name: Stefan Lazarević dobija despotski naslov
+  lane: dogadjaji
+  period:
+    year: 1402
+  follow_up:
+  - q: 'Stefan dobija despotski naslov:'
+    options:
+    - text: U Carigradu, od vizantijskog cara
+      correct: true
+    - text: Iste godine kao bitka kod Angore (1402.)
+      correct: true
+    - text: To je najviša titula posle careve u vizantijskoj hijerarhiji
+      correct: true
+    - text: Krunisao ga je papa rimski
+      correct: false
+    explanation: Stefan je dobio despot naslov u Carigradu od vizantijskog cara. Ista godina (1402) kao bitka kod Angore. Despot je najviša vizantijska titula posle careve. Krunisanje od pape rimskog nije
+      postojalo (vizantijska tradicija).
+  - q: 'Šta je značio despotski naslov:'
+    options:
+    - text: Davao je legitimitet srpskoj državi posle Kosova
+      correct: true
+    - text: Vezivao je Stefana za vizantijski svet (ne za Osmanlije)
+      correct: true
+    - text: Označava nastanak Despotovine kao posebne države
+      correct: true
+    - text: Identičan je sa carskom titulom Dušana
+      correct: false
+    explanation: Despotski naslov je dao legitimitet srpskoj državi posle Kosova. Vezao je Stefana za vizantijski svet, ne za Osmanlije. Označava nastanak Despotovine. Nije isto kao carska titula Dušana
+      (carska > despotska).
+  date_explanation: Stefan Lazarević dobija despotski naslov 1402. u Carigradu od vizantijskog cara Jovana VII Paleologa. Ista godina kao bitka kod Angore — što je politički koristio.
+- id: 25
+  name: Pad Smedereva
+  lane: dogadjaji
+  period:
+    day: 20
+    month: 6
+    year: 1459
+  follow_up:
+  - q: 'Pad Smedereva 20. juna 1459.:'
+    options:
+    - text: Označava kraj Despotovine
+      correct: true
+    - text: Smederevo je dotad bilo despotska prestonica (od 1430.)
+      correct: true
+    - text: Osmanlije ga zauzimaju pod Mehmedom II
+      correct: true
+    - text: Pao je Carigrad iste godine
+      correct: false
+    explanation: Pad Smedereva 20. juna 1459. označava kraj Despotovine. Smederevo je bilo prestonica od 1430. Mehmed II ga osvaja. Carigrad je pao 6 godina ranije, ne iste godine.
+  - q: 'Posle pada Smedereva:'
+    options:
+    - text: Mnogi Srbi sele se u Ugarsku (kao despoti pod ugarskom vlašću)
+      correct: true
+    - text: Despotska titula nastavlja se kod ugarsko-srpskih despota
+      correct: true
+    - text: Pomorske i Beograd ostaju pod Ugarskom još neko vreme
+      correct: true
+    - text: Despotovina nestaje, ali Bosna ostaje slobodna još 4 godine
+      correct: true
+    explanation: Posle pada Smedereva mnogi Srbi sele se u Ugarsku. Despotska titula se nastavlja kod ugarsko-srpskih despota. Pomorja i deo Beograda ostaju pod Ugarskom još neko vreme. Bosna je pala 4
+      godine kasnije (1463).
+  date_explanation: Smederevo je palo 20. juna 1459. Mehmed II je osvojio prestonicu Despotovine, čime je nestala srpska srednjovekovna država.
+- id: 26
+  name: Pad Bosne (Jajce)
+  lane: dogadjaji
+  period:
+    year: 1463
+  follow_up:
+  - q: 'Pad Bosne 1463.:'
+    options:
+    - text: Mehmed II osvaja bosansku kraljevinu
+      correct: true
+    - text: Poslednji bosanski kralj Stjepan Tomašević je pogubljen
+      correct: true
+    - text: Pala je u istom danu kao Smederevo
+      correct: false
+    - text: Jajce kao bosanska prestonica posebno se pominje u toj sezoni
+      correct: true
+    explanation: Bosna je pala 1463. pod Mehmedom II. Stjepan Tomašević, poslednji kralj, je pogubljen u Jajcu. Smederevo je palo 4 godine ranije (1459). Jajce je važan grad u toj sezoni osvajanja.
+  - q: 'Posle pada:'
+    options:
+    - text: Bosna postaje deo Osmanskog carstva
+      correct: true
+    - text: Velik deo bosanskog plemstva prima islam (kasnije razvija se bošnjačka muslimanska zajednica)
+      correct: true
+    - text: Hercegovina pada nešto kasnije (1482.)
+      correct: true
+    - text: Bosna ostaje hrišćanska država pod Mehmedom II
+      correct: false
+    explanation: Bosna postaje deo Osmanskog carstva. Bošnjačka muslimanska zajednica se razvija postepenim prelaskom plemstva. Hercegovina je pala 1482, nakon Bosne. Bosna nije ostala hrišćanska — postala
+      je deo Osmanskog carstva.
+  date_explanation: Bosna je pala 1463. pod Mehmeda II. Poslednji bosanski kralj Stjepan Tomašević je pogubljen u Jajcu. Hercegovina (vojvodstvo Stefana Vukčića) pala je nešto kasnije, 1482.
