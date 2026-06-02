@@ -290,13 +290,17 @@ const placedSubRows = {};
 LANES.forEach(l => placedSubRows[l.id] = []);
 
 function eventInterval(ev) {
-  // Extend each event's effective end by a label buffer (~22 years) so that
-  // single-year events with adjacent years don't visually overlap with their
-  // labels. The overlap algorithm then places them in different sub-rows.
-  const LABEL_BUFFER_YEARS = 22;
+  // Per-event label buffer based on rendered name length. Each char ≈ 1.3
+  // years of horizontal space at default SVG scale (font-size 11, viewBox
+  // ~5.5 units per year).
   const p = ev.period;
-  if ('start_year' in p) return [p.start_year, p.end_year + LABEL_BUFFER_YEARS];
-  return [p.year, p.year + LABEL_BUFFER_YEARS];
+  let label = ev.name;
+  if ('year' in p && !('start_year' in p)) {
+    label = label + ' (' + p.year + ')';
+  }
+  const buffer = Math.round(label.length * 1.3) + 5;
+  if ('start_year' in p) return [p.start_year, p.end_year + buffer];
+  return [p.year, p.year + buffer];
 }
 
 function findOrCreateSubRow(laneId, start, end, eventId) {
@@ -747,16 +751,21 @@ def _escape(s):
 
 
 def _event_interval(ev):
-    """Return (start_year, effective_end_year) for an event for overlap testing.
-    The effective end year is extended by a 'label buffer' to account for
-    the horizontal space the event's text label occupies in the rendered SVG —
-    otherwise single-year events with adjacent years (e.g., 1389 and 1396)
-    would be placed in the same sub-row even though their labels overlap visually."""
-    LABEL_BUFFER_YEARS = 22
+    """Return (start_year, effective_end_year) for overlap testing. The
+    effective end is extended by a buffer based on the rendered label length —
+    longer names (e.g. 'Marička bitka (na Maricinom polju)') occupy more
+    horizontal space and need a bigger buffer to avoid visual overlap."""
     p = ev["period"]
+    label = ev["name"]
+    # Single-year events also display the year in the label: "Name (year)"
+    if "year" in p and "start_year" not in p:
+        label = f"{label} ({p['year']})"
+    # Heuristic: each rendered character is ~1.3 years of horizontal space
+    # at default SVG scale (font-size 11 in viewBox of ~5.5 units per year).
+    buffer = int(len(label) * 1.3) + 5
     if "start_year" in p:
-        return p["start_year"], p["end_year"] + LABEL_BUFFER_YEARS
-    return p["year"], p["year"] + LABEL_BUFFER_YEARS
+        return p["start_year"], p["end_year"] + buffer
+    return p["year"], p["year"] + buffer
 
 
 def _assign_subrows(events):

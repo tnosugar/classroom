@@ -185,13 +185,17 @@ const placedSubRows = {};
 LANES.forEach(l => placedSubRows[l.id] = []);
 
 function eventInterval(ev) {
-  // Extend each event's effective end by a label buffer (~22 years) so that
-  // single-year events with adjacent years don't visually overlap with their
-  // labels. The overlap algorithm then places them in different sub-rows.
-  const LABEL_BUFFER_YEARS = 22;
+  // Per-event label buffer based on rendered name length. Each char ≈ 1.3
+  // years of horizontal space at default SVG scale (font-size 11, viewBox
+  // ~5.5 units per year).
   const p = ev.period;
-  if ('start_year' in p) return [p.start_year, p.end_year + LABEL_BUFFER_YEARS];
-  return [p.year, p.year + LABEL_BUFFER_YEARS];
+  let label = ev.name;
+  if ('year' in p && !('start_year' in p)) {
+    label = label + ' (' + p.year + ')';
+  }
+  const buffer = Math.round(label.length * 1.3) + 5;
+  if ('start_year' in p) return [p.start_year, p.end_year + buffer];
+  return [p.year, p.year + buffer];
 }
 
 function findOrCreateSubRow(laneId, start, end, eventId) {
