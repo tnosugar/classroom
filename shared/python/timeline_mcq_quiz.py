@@ -290,9 +290,13 @@ const placedSubRows = {};
 LANES.forEach(l => placedSubRows[l.id] = []);
 
 function eventInterval(ev) {
+  // Extend each event's effective end by a label buffer (~22 years) so that
+  // single-year events with adjacent years don't visually overlap with their
+  // labels. The overlap algorithm then places them in different sub-rows.
+  const LABEL_BUFFER_YEARS = 22;
   const p = ev.period;
-  if ('start_year' in p) return [p.start_year, p.end_year];
-  return [p.year, p.year];
+  if ('start_year' in p) return [p.start_year, p.end_year + LABEL_BUFFER_YEARS];
+  return [p.year, p.year + LABEL_BUFFER_YEARS];
 }
 
 function findOrCreateSubRow(laneId, start, end, eventId) {
@@ -743,11 +747,16 @@ def _escape(s):
 
 
 def _event_interval(ev):
-    """Return (start_year, end_year) for an event for overlap testing."""
+    """Return (start_year, effective_end_year) for an event for overlap testing.
+    The effective end year is extended by a 'label buffer' to account for
+    the horizontal space the event's text label occupies in the rendered SVG —
+    otherwise single-year events with adjacent years (e.g., 1389 and 1396)
+    would be placed in the same sub-row even though their labels overlap visually."""
+    LABEL_BUFFER_YEARS = 22
     p = ev["period"]
     if "start_year" in p:
-        return p["start_year"], p["end_year"]
-    return p["year"], p["year"]
+        return p["start_year"], p["end_year"] + LABEL_BUFFER_YEARS
+    return p["year"], p["year"] + LABEL_BUFFER_YEARS
 
 
 def _assign_subrows(events):
