@@ -16,10 +16,15 @@ azurirano: 2026-06-04
 
 ## Sažetak
 
-Najveće poluostrvo u Evropi (~750.000 km²), na severu kontinenta. Obuhvata Norvešku,
-Švedsku i severozapadni deo Finske. Ime potiče od regije **Skanija** na jugu, preko
-kulturnog pojma "Skandinavija". Geološki počiva na **Baltičkom štitu**; obala je razuđena
-fjordovima nastalim glacijacijom.
+Najveće poluostrvo u Evropi (~750.000 km²), na krajnjem severu kontinenta — veće od
+Balkanskog, Iberijskog i Apeninskog. Dugo je oko 1.850 km i široko 370–805 km, a obuhvata
+Norvešku, Švedsku i severozapadni deo Finske. Ime potiče od regije **Skanija** (Skåne) na
+jugu, preko kulturnog pojma „Skandinavija". Oko jedne četvrtine poluostrva leži severno od
+arktičkog kruga. Okružuju ga Baltičko more (sa Botničkim zalivom) na istoku, Severno more
+na jugozapadu, Norveško more na zapadu i Barencovo more na severu. Geološki počiva na
+**Baltičkom štitu** od starih kristalnih stena; obala je razuđena fjordovima nastalim
+glacijacijom, a teren se i danas postglacijalno izdiže (~1 m po veku). Bogato je gvožđem,
+bakrom i drvetom; najveći gradovi su Stokholm, Oslo, Geteborg, Malme i Bergen.
 
 ## Ključne činjenice
 

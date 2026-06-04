@@ -17,9 +17,15 @@ azurirano: 2026-06-04
 ## Sažetak
 
 Planinski venac koji se proteže duž zapadnog ruba Skandinavskog poluostrva, kroz Norvešku,
-Švedsku i krajnji severozapad Finske. Zapadne padine se strmo spuštaju u more i grade
-fjordove; istočne se blago spuštaju ka Finskoj. Najviši vrh je Galdhepigen (2.469 m),
-ujedno najviši vrh Severne Evrope.
+Švedsku i krajnji severozapad Finske. Dug je oko 1.700 km i širok do ~320 km, što ga čini
+jednom od najdužih planinskih celina Evrope. Zapadne padine se strmo spuštaju u Severno i
+Norveško more i grade fjordove, dok se istočne blago spuštaju ka Finskoj; na severu venac
+čini prirodnu granicu između Norveške i Švedske. Najviši vrh je Galdhepigen (2.469 m),
+ujedno najviši vrh Severne Evrope, dok je na švedskoj strani najviši Kebnekajse (2.104 m).
+Kombinacija severnog položaja i vlage iz Atlantika stvorila je brojne glečere, među kojima
+je Jostedalsbren najveći glečer kopnene Evrope. Venac se često pogrešno poistovećuje sa
+Skandinavskim kaledonima — drevnom orogenezom istog područja — iako se radi o različitim
+geološkim pojmovima.
 
 ## Ključne činjenice
 

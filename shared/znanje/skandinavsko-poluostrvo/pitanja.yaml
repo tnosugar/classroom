@@ -1,0 +1,34 @@
+# Test-pitanja za: Skandinavsko poluostrvo. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Skandinavsko poluostrvo?"
+    odgovori:
+      - {tekst: "Najveće je poluostrvo u Evropi", tacan: true}
+      - {tekst: "Na njemu su Norveška i Švedska", tacan: true}
+      - {tekst: "Obuhvata i severozapadni deo Finske", tacan: true}
+      - {tekst: "Nalazi se na jugu Evrope", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koje vode okružuju Skandinavsko poluostrvo?"
+    odgovori:
+      - {tekst: "Baltičko more", tacan: true}
+      - {tekst: "Norveško more", tacan: true}
+      - {tekst: "Barencovo more", tacan: true}
+      - {tekst: "Crno more", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o geologiji poluostrva?"
+    odgovori:
+      - {tekst: "Počiva na Baltičkom štitu", tacan: true}
+      - {tekst: "Teren se postglacijalno izdiže (~1 m po veku)", tacan: true}
+      - {tekst: "Fjordovi su nastali glacijacijom rečnih dolina", tacan: true}
+      - {tekst: "Površina mu je oko 75.000 km²", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Ime potiče od regije Skanija (Skåne)", tacan: true}
+    - {tekst: "Zbog rude gvožđa izgrađena je pruga do luke Narvik", tacan: true}
+    - {tekst: "Prvi generalni sekretar UN bio je Norvežanin (Trigve Li)", tacan: true}
+    - {tekst: "Najsevernija tačka je rt Nordkap kod Bergena", tacan: false}

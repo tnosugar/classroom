@@ -66,6 +66,40 @@ greškom izlazi sledeći hint u side-panelu. Pravila pisanja:
   (nema generičkih hintova).
 - `vrsta`, izvori i pun opis se **ne** prikazuju dok je nerešeno — samo hintovi.
 
+## `pitanja.yaml` — test-pitanja (test mod kviza)
+
+Opciono, uz `index.md`. Kviz ima dva moda: **Učenje** (hintovi + opisi iz `index.md`) i
+**Test** (bez hintova/opisa; po tačnom lociranju pojma izlaze pitanja iz ovog fajla).
+
+```yaml
+# shared/znanje/{slug}/pitanja.yaml
+pitanja:                          # tačno 3: lako, srednje, teško
+  - tezina: lako                  # lako | srednje | tesko
+    pitanje: "Tekst pitanja?"
+    odgovori:                     # 4 ponuđena; jedan ILI više tačnih
+      - {tekst: "Odgovor A", tacan: true}
+      - {tekst: "Odgovor B", tacan: false}
+      - {tekst: "Odgovor C", tacan: true}
+      - {tekst: "Odgovor D", tacan: false}
+  - tezina: srednje
+    ...
+  - tezina: tesko
+    ...
+bonus:                            # otključava se kad se sva 3 reše
+  pitanje: "Pitanje koje traži poznavanje celog članka?"
+  odgovori: [ {tekst, tacan} × 4 ]
+```
+
+**Bodovanje u test modu** (sprovodi kviz, ne ovaj fajl):
+- Pogrešno lociranje pojma na karti = +1 greška.
+- Po pitanju: dugme „Proveri"; ako izbor **nije tačno jednak** skupu tačnih odgovora
+  (promašen tačan ili obeležen netačan) = **+1 greška**, pa pokušaj ponovo dok ne pogodiš.
+- Bonus ima **odvojen skor**; pogrešan bonus se **ne** broji kao greška.
+
+Pitanja moraju biti **odgovorljiva iz materijala koji je u bazi** (`index.md` + `izvori/`).
+Bonus sme da traži detalj iz celog članka — zato `izvori/wikipedia.md` drži iscrpnu
+faktografiju (parafrazu celog članka, ne doslovan prepis).
+
 ## Veze: slug-ovi, ne nazivi
 
 Cilj svake veze je **slug** drugog pojma — ne prikazni naziv. Slug koji još **nema svoj
