@@ -1447,14 +1447,10 @@ allInputs.forEach(inp => {
 });
 
 resetBtn.addEventListener('click', () => {
-  // Always re-shuffle numbering on reset (if randomization is enabled)
-  // and within the same mode (pick fresh random subset for N-mode).
-  if (currentMode !== 'all') {
-    const n = parseInt(currentMode, 10);
-    setMode(currentMode, { restoreIds: shuffleIds(n) });
-  } else {
-    setMode('all', {});
-  }
+  // Full reset: setMode() with no restore opts picks a fresh subset (for N-mode)
+  // AND clears the board (applyAnswers({}) → cells, drawings, answers all reset).
+  setMode(currentMode, {});
+  apply();   // re-render cleared cell positions
   resumeBanner.classList.remove('show');
   clearState();
 });
