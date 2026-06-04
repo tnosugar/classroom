@@ -31,10 +31,7 @@ ui:
     ponovo. Broje se greške za svako polje.
 
     '
-  header_subtitle_drag: '<b>Prevuci</b> svaki pojam sa spiska na njegovu lokaciju na karti. Ako spustiš pojam dovoljno blizu prave lokacije, polje se zaključa zelenim. Inače postaje crveno — prevuci ga
-    ponovo na drugo mesto dok ne pogodiš. Broje se greške za svaki pojam.
-
-    '
+  header_subtitle_drag: '<b>Prevuci</b> svaki pojam sa spiska na njegovo mesto na karti. Ako ga spustiš dovoljno blizu, zaključa se zelenim i nacrta se na karti; inače pocrveni — prevuci ga ponovo dok ne pogodiš. Gore biraš <b>mod</b>: u <b>Učenju</b> svaka greška otkriva po jedan hint, a kad pogodiš izlazi pun opis pojma (bez bodovanja — tu se uči). U <b>Testu</b> nema hintova ni opisa: kad pojam tačno postaviš, dobijaš tri pitanja (lako, srednje, teško) sa po četiri odgovora od kojih je jedan ili više tačnih, a posle njih i bonus pitanje. U testu se broje greške — i za pogrešno mesto i za pogrešan odgovor.'
   list_heading: Spisak pojmova
   legend_mountains: ▲ braon linije = planine
   legend_rivers: — plave linije = reke

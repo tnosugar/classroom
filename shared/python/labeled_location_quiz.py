@@ -513,16 +513,18 @@ function countedIds() {
 }
 
 function recountCorrectMiss() {
+  const ids = countedIds();   // includes the demo term during the demo (→ 43), else 42
   let correct = 0, miss = 0;
-  for (const id of countedIds()) {
+  for (const id of ids) {
     const inp = inputsById.get(id);
     if (!inp) continue;
     if (inp.classList.contains('correct')) correct++;
     miss += parseInt(inp.dataset.miss, 10) || 0;
   }
   cCorrect.textContent = correct;
+  cTotal.textContent = ids.length;
   cMiss.textContent = miss;
-  if (correct === visibleIds.length && visibleIds.length > 0) {
+  if (correct === ids.length && ids.length > 0) {
     showWin(correct, miss);
   } else {
     win.style.display = 'none';
@@ -563,8 +565,10 @@ function panelSetFoot(d) {
   }
 }
 function panelOpenEl() {
+  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.add('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
+  if (!was) fit();   // re-fit the map to the narrower column so it stays fully visible
 }
 
 // Render the panel according to the term's current state:
@@ -624,8 +628,10 @@ function maybeHintPanel(canonId) {
 }
 
 function closePanel() {
+  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.remove('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'true');
+  if (was) fit();    // panel closed → restore the map to full width
 }
 
 panelClose.addEventListener('click', closePanel);
@@ -1117,6 +1123,7 @@ function isDropAcceptable(term, lon, lat) {
 
 function startDrag(clientX, clientY, displayLabel, sourceElement) {
   if (!document.body.classList.contains('drag-mode')) return;
+  closePanel();   // taking the next term hides the info panel so the whole map shows
   dragGhost = document.createElement('div');
   dragGhost.className = 'drag-ghost';
   dragGhost.textContent = displayLabel;

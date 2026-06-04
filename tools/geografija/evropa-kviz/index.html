@@ -182,8 +182,7 @@
  <h1>Evropa — geografski kviz</h1>
  <p class="sub sub-number">U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
 </p>
- <p class="sub sub-drag"><b>Prevuci</b> svaki pojam sa spiska na njegovu lokaciju na karti. Ako spustiš pojam dovoljno blizu prave lokacije, polje se zaključa zelenim. Inače postaje crveno — prevuci ga ponovo na drugo mesto dok ne pogodiš. Broje se greške za svaki pojam.
-</p>
+ <p class="sub sub-drag"><b>Prevuci</b> svaki pojam sa spiska na njegovo mesto na karti. Ako ga spustiš dovoljno blizu, zaključa se zelenim i nacrta se na karti; inače pocrveni — prevuci ga ponovo dok ne pogodiš. Gore biraš <b>mod</b>: u <b>Učenju</b> svaka greška otkriva po jedan hint, a kad pogodiš izlazi pun opis pojma (bez bodovanja — tu se uči). U <b>Testu</b> nema hintova ni opisa: kad pojam tačno postaviš, dobijaš tri pitanja (lako, srednje, teško) sa po četiri odgovora od kojih je jedan ili više tačnih, a posle njih i bonus pitanje. U testu se broje greške — i za pogrešno mesto i za pogrešan odgovor.</p>
  <div class="bar">
   <span class="mode-switch">Mod:
    <button type="button" id="modeLearn" class="ms-btn active">Učenje</button><button type="button" id="modeTest" class="ms-btn">Test</button>
@@ -370,16 +369,18 @@ function countedIds() {
 }
 
 function recountCorrectMiss() {
+  const ids = countedIds();   // includes the demo term during the demo (→ 43), else 42
   let correct = 0, miss = 0;
-  for (const id of countedIds()) {
+  for (const id of ids) {
     const inp = inputsById.get(id);
     if (!inp) continue;
     if (inp.classList.contains('correct')) correct++;
     miss += parseInt(inp.dataset.miss, 10) || 0;
   }
   cCorrect.textContent = correct;
+  cTotal.textContent = ids.length;
   cMiss.textContent = miss;
-  if (correct === visibleIds.length && visibleIds.length > 0) {
+  if (correct === ids.length && ids.length > 0) {
     showWin(correct, miss);
   } else {
     win.style.display = 'none';
@@ -420,8 +421,10 @@ function panelSetFoot(d) {
   }
 }
 function panelOpenEl() {
+  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.add('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
+  if (!was) fit();   // re-fit the map to the narrower column so it stays fully visible
 }
 
 // Render the panel according to the term's current state:
@@ -481,8 +484,10 @@ function maybeHintPanel(canonId) {
 }
 
 function closePanel() {
+  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.remove('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'true');
+  if (was) fit();    // panel closed → restore the map to full width
 }
 
 panelClose.addEventListener('click', closePanel);
@@ -974,6 +979,7 @@ function isDropAcceptable(term, lon, lat) {
 
 function startDrag(clientX, clientY, displayLabel, sourceElement) {
   if (!document.body.classList.contains('drag-mode')) return;
+  closePanel();   // taking the next term hides the info panel so the whole map shows
   dragGhost = document.createElement('div');
   dragGhost.className = 'drag-ghost';
   dragGhost.textContent = displayLabel;
