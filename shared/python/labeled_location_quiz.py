@@ -106,6 +106,7 @@ def _ui_default():
         "toggle_drag": "Drag mode",
         "msg_correct": "Correct!",
         "msg_wrong": "Wrong — try again",
+        "msg_revealed": "10 attempts used — the location has been revealed.",
         "msg_win": "Done! All correct ({total}/{total}) · total mistakes: {miss}",
         "resume_indicator": "Resumed previous session — your progress is restored.",
         "zoom_hint": "Zoom: + / − / wheel / dblclick · Drag to pan",
@@ -301,6 +302,9 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .ans{pointer-events:auto;width:28px;height:28px;border:2px solid var(--edge);border-radius:6px;background:#fff;text-align:center;font-size:13px;font-weight:700;color:var(--edge);padding:0;outline:none;box-shadow:0 1px 2px rgba(0,0,0,.15)}
  .ans:focus{border-color:#1f7a3a;box-shadow:0 0 0 3px rgba(31,122,58,.25)}
  .ans.correct{background:#d8f0dd;border-color:#1f7a3a;color:#1f7a3a;cursor:default}
+ .ans.correct.revealed-loc{background:#fde7c9;border-color:#c98a2c;color:#8a5a14}  /* otkriveno (10 pokušaja) */
+ ol.terms li.revealed-loc b{color:#c98a2c}
+ svg .reveal-area{fill:rgba(201,138,44,.10);stroke:#c98a2c;stroke-width:1.6;stroke-dasharray:5 3;pointer-events:none}
  .ans.wrong{animation:shake .3s;background:#fdd;border-color:#b1271f}
  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
  .miss{position:absolute;top:-9px;right:-9px;background:#b1271f;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;line-height:16px;text-align:center;border-radius:9px;padding:0 3px}
@@ -470,6 +474,8 @@ const RANDOMIZE_NUMBERS = __RANDOMIZE_NUMBERS__;
 const PROJ_LON0 = __PROJ_LON0__, PROJ_LAT1 = __PROJ_LAT1__;
 const PROJ_SX = __PROJ_SX__, PROJ_SY = __PROJ_SY__;
 const MSG_CORRECT = __MSG_CORRECT__, MSG_WRONG = __MSG_WRONG__, MSG_WIN_TPL = __MSG_WIN__;
+const MSG_REVEALED = __MSG_REVEALED__;
+const MAX_LOC_ATTEMPTS = 10;   // after 10 wrong drops, the location is revealed & locked
 const MODE_ALL_TPL = __MODE_ALL_TPL__, MODE_RANDOM_TPL = __MODE_RANDOM_TPL__;
 
 const allInputs = [...document.querySelectorAll('.ans')];
@@ -1070,7 +1076,8 @@ function saveState() {
       v: inp.value,
       c: inp.classList.contains('correct'),
       m: parseInt(inp.dataset.miss, 10) || 0,
-      lm: parseInt(inp.dataset.locmiss, 10) || 0
+      lm: parseInt(inp.dataset.locmiss, 10) || 0,
+      rv: inp.classList.contains('revealed-loc')
     };
     // Drag placement (only relevant in drag mode for placed cells)
     if (cell.classList.contains('drag-placed')) {
@@ -1136,9 +1143,16 @@ function applyAnswers(answers) {
     if (!a) continue;
     if (a.v) inp.value = a.v;
     if (a.c) {
+      const cid = parseInt(inp.dataset.id, 10);
       inp.classList.add('correct');
       inp.readOnly = true;
-      revealGeometry(parseInt(inp.dataset.id, 10));
+      revealGeometry(cid);
+      if (a.rv) {
+        inp.classList.add('revealed-loc');
+        const rli = legendItems.get(cid);
+        if (rli) rli.classList.add('revealed-loc');
+        drawRevealArea(ALL_TERMS.find(t => t.id === cid));
+      }
     }
     if (a.m && a.m > 0) {
       inp.dataset.miss = String(a.m);
@@ -1246,9 +1260,63 @@ function revealGeometry(canonId) {
   }
 }
 function hideAllGeometry() {
-  for (const el of document.querySelectorAll('svg .revealed')) {
-    el.classList.remove('revealed');
+  for (const el of document.querySelectorAll('svg .revealed')) el.classList.remove('revealed');
+  for (const el of document.querySelectorAll('svg .reveal-area')) el.remove();
+}
+
+// Draw the accept-area outline (circle / rectangle / polygon) so a revealed term
+// shows roughly WHERE it is, even when it has no drawn line geometry.
+function lonLatToBase(lon, lat) { return [(lon - PROJ_LON0) * PROJ_SX, (PROJ_LAT1 - lat) * PROJ_SY]; }
+function svgEl(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
+function drawRevealArea(term) {
+  const svg = document.querySelector('#stage svg');
+  if (!svg || !term || !term.accept) return;
+  for (const el of svg.querySelectorAll('.reveal-area[data-term="' + term.id + '"]')) el.remove();
+  const acc = term.accept;
+  const pts = a => a.map(p => lonLatToBase(p[0], p[1]).map(v => v.toFixed(1)).join(',')).join(' ');
+  let shape = null;
+  if (acc.polygon) {
+    shape = svgEl('polygon'); shape.setAttribute('points', pts(acc.polygon));
+  } else if (acc.bbox) {
+    const [lo0, la0, lo1, la1] = acc.bbox;
+    shape = svgEl('polygon'); shape.setAttribute('points', pts([[lo0, la1], [lo1, la1], [lo1, la0], [lo0, la0]]));
+  } else if (acc.radius_deg != null && term.label_at) {
+    const [cx, cy] = lonLatToBase(term.label_at[0], term.label_at[1]);
+    shape = svgEl('circle');
+    shape.setAttribute('cx', cx.toFixed(1)); shape.setAttribute('cy', cy.toFixed(1));
+    shape.setAttribute('r', (acc.radius_deg * PROJ_SX).toFixed(1));
+  } else {
+    return;   // buffer_deg terms already show their polyline geometry
   }
+  shape.setAttribute('class', 'reveal-area');
+  shape.setAttribute('data-term', term.id);
+  svg.appendChild(shape);
+}
+
+// After MAX_LOC_ATTEMPTS wrong drops, reveal & lock the term at its correct spot.
+function revealLocation(canonId) {
+  const inp = inputsById.get(canonId);
+  if (!inp || inp.classList.contains('correct')) return;
+  const cell = inp.parentElement;
+  inp.classList.remove('wrong-placed');
+  inp.classList.add('correct', 'revealed-loc');
+  inp.readOnly = true;
+  inp.value = inp.dataset.correct;
+  cell.classList.add('drag-placed');
+  cell.dataset.sx = cell.dataset.canonSx;
+  cell.dataset.sy = cell.dataset.canonSy;
+  const li = legendItems.get(canonId);
+  if (li) { li.classList.add('placed'); li.classList.add('revealed-loc'); }
+  const term = ALL_TERMS.find(t => t.id === canonId);
+  revealGeometry(canonId);
+  drawRevealArea(term);
+  showMsg(MSG_REVEALED, false);
+  updateLegendMarks(canonId);
+  showPanelFor(canonId);
+  apply();
+  recountCorrectMiss();
+  saveState();
+  maybeAutoAnalyze();
 }
 
 // --- drag system (active only when body.drag-mode) ---
@@ -1385,10 +1453,12 @@ function applyDrop(canonicalId, accepted, baseX, baseY) {
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
     inp.dataset.miss = m;
-    inp.dataset.locmiss = (parseInt(inp.dataset.locmiss, 10) || 0) + 1;  // location-only mistakes
+    const lm = (parseInt(inp.dataset.locmiss, 10) || 0) + 1;   // location-only mistakes
+    inp.dataset.locmiss = lm;
     const badge = cell.querySelector('.miss');
     badge.textContent = m;
     badge.style.display = 'block';
+    if (lm >= MAX_LOC_ATTEMPTS) { revealLocation(canonicalId); return; }  // give up → reveal
     showMsg(MSG_WRONG, false);
     maybeHintPanel(canonicalId);
   }
@@ -1731,6 +1801,8 @@ const ANALYSIS_USER = 'Na osnovu sledećih podataka o učinku na geografskom kvi
   'Skala: >=80% tačno = dobar; 50-80% = ima prostora za napredak; <50% = slab (treba se više potruditi). ' +
   'Pokrij u 3-5 kratkih pasusa: ukupan utisak; u čemu je učenik dobar; gde ima prostora za napredak; gde je slab i treba se potruditi. ' +
   'Budi konkretan: pomeni vrste pojmova (mora, planine, reke...) i težine pitanja, i RAZLIKUJ greške u lociranju na mapi od grešaka u odgovorima na pitanja. ' +
+  'Uzmi u obzir i BROJ POKUŠAJA lociranja: greske_lociranja po pojmu i lokPokusaji ukupno (manje je bolje). ' +
+  'Pojmovi sa otkriven:true znače da učenik nije uspeo da ih locira ni iz 10 pokušaja pa mu je lokacija otkrivena — to su izrazito slabe tačke. ' +
   'Bez markdown naslova. Podaci (JSON):\n';
 
 const analysisEl = document.getElementById('analysis');
@@ -1746,7 +1818,7 @@ let analysisRunning = false, analysisDone = false;
 
 function buildAnalysisData() {
   const byTezina = {}, byVrsta = {};
-  const faza = { lokUkupno: 0, lokPostavljeno: 0, lokIzPrve: 0,
+  const faza = { lokUkupno: 0, lokPostavljeno: 0, lokIzPrve: 0, lokOtkriveno: 0, lokPokusaji: 0,
                  pitUkupno: 0, pitTacno: 0, pitPogresno: 0, pitNereseno: 0,
                  bonusUkupno: 0, bonusTacno: 0, bonusPogresno: 0, bonusNereseno: 0 };
   const pojmovi = [];
@@ -1757,9 +1829,12 @@ function buildAnalysisData() {
     const located = !!(inp && inp.classList.contains('correct'));
     const locmiss = inp ? (parseInt(inp.dataset.locmiss, 10) || 0) : 0;
     const locFirst = located && locmiss === 0;
+    const otkriven = !!(inp && inp.classList.contains('revealed-loc'));
     const vr = (t.desc && t.desc.vrsta) ? t.desc.vrsta.replace(/_/g, ' ') : 'ostalo';
     const p = quizProgress.get(id) || { solved: [], wrong: [], bonus: false, bonusWrong: false };
-    faza.lokUkupno++; if (located) { faza.lokPostavljeno++; if (locFirst) faza.lokIzPrve++; }
+    faza.lokUkupno++; faza.lokPokusaji += locmiss;
+    if (located) { faza.lokPostavljeno++; if (locFirst) faza.lokIzPrve++; }
+    if (otkriven) faza.lokOtkriveno++;
     byVrsta[vr] = byVrsta[vr] || { lokUkupno: 0, lokIzPrve: 0, pitUkupno: 0, pitTacno: 0, pitPogresno: 0, pitNereseno: 0 };
     byVrsta[vr].lokUkupno++; if (locFirst) byVrsta[vr].lokIzPrve++;
     const qd = [];
@@ -1782,7 +1857,7 @@ function buildAnalysisData() {
       faza.bonusUkupno++;
       if (p.bonus) faza.bonusTacno++; else if (p.bonusWrong) faza.bonusPogresno++; else faza.bonusNereseno++;
     }
-    pojmovi.push({ naziv: t.name, vrsta: vr, lociran: located, greske_lociranja: locmiss, pitanja: qd, bonus: bonus });
+    pojmovi.push({ naziv: t.name, vrsta: vr, lociran: located, otkriven: otkriven, greske_lociranja: locmiss, pitanja: qd, bonus: bonus });
   }
   return { faza: faza, po_tezini: byTezina, po_vrsti: byVrsta, pojmovi: pojmovi };
 }
@@ -2250,6 +2325,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__PROJ_SY__": f"{(map_width_px / (extent_lon[1] - extent_lon[0])) * (1.0 / math.cos(math.radians(mid_lat))):.6f}",
         "__MSG_CORRECT__": _json.dumps(ui["msg_correct"]),
         "__MSG_WRONG__": _json.dumps(ui["msg_wrong"]),
+        "__MSG_REVEALED__": _json.dumps(ui["msg_revealed"]),
         "__MSG_WIN__": _json.dumps(ui["msg_win"]),
         "__MODE_ALL_TPL__": _json.dumps(ui["mode_all"]),
         "__MODE_RANDOM_TPL__": _json.dumps(ui["mode_random"]),

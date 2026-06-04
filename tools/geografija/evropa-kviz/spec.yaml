@@ -52,6 +52,7 @@ ui:
   zoom_hint: 'Zumiraj: dugmad +/−, točkić miša ili dvoklik · Prevuci za pomeranje'
   msg_correct: Tačno!
   msg_wrong: Pogrešno — pokušaj ponovo
+  msg_revealed: Iskorišćeno 10 pokušaja — lokacija je otkrivena.
   msg_win: '🎉 Bravo! Sve tačno ({total}/{total}) · ukupno grešaka: {miss}'
   pdf_title_quiz: EVROPA — geografski pojmovi
   pdf_title_answer: EVROPA — geografski pojmovi (REŠENJA)
