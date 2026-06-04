@@ -202,7 +202,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body.demo-running ol.terms{pointer-events:none}
  /* Demo overlay: animated pointer + speech bubble */
  #demoCursor{position:fixed;z-index:300;pointer-events:none;font-size:26px;line-height:1;transition:left .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
- #demoBubble{position:fixed;z-index:301;max-width:280px;background:#2b2b2b;color:#fff;font-size:13px;line-height:1.45;padding:10px 13px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:left .6s,top .6s}
+ #demoBubble{position:fixed;z-index:301;left:14px;bottom:16px;width:300px;height:190px;display:flex;flex-direction:column;background:#2b2b2b;color:#fff;font-size:13px;line-height:1.45;padding:10px 13px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+ #demoBubble .demo-text{flex:1;overflow:auto;margin:2px 0}
  #demoBubble .demo-step{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#ffd27a;margin-bottom:3px}
  #demoBubble .demo-ctrls{margin-top:9px;display:flex;gap:8px;justify-content:flex-end}
  #demoBubble button{font:inherit;font-size:12px;padding:4px 12px;border-radius:7px;cursor:pointer;border:1px solid #fff;background:#fff;color:#2b2b2b}
@@ -1444,13 +1445,9 @@ const DEMO_STEPS = [
 ];
 
 function demoPositionBubble(at) {
-  // Pin the bubble to the bottom-left, over the legend column — so it never
-  // covers the map markers or the side panel while the demo runs.
-  demoBubbleEl.style.left = '14px';
-  demoBubbleEl.style.right = 'auto';
-  demoBubbleEl.style.top = 'auto';
-  demoBubbleEl.style.bottom = '16px';
-  // Move the pointer to the relevant control (map drops move it themselves).
+  // The bubble has a fixed size/position via CSS (bottom-left, over the legend),
+  // so the "Dalje" button stays in the exact same spot on every step.
+  // Here we only move the animated pointer to the relevant control.
   if (at === 'mode') {
     demoCursorToEl(modeTest);
   } else if (at === 'panel') {
@@ -1468,7 +1465,7 @@ function renderDemoStep(i) {
   const nextLabel = last ? 'Završi' : 'Dalje';
   demoBubbleEl.innerHTML =
     '<div class="demo-step">' + (i + 1) + '/' + DEMO_STEPS.length + ' · ' + step.l + '</div>' +
-    '<div>' + step.t + '</div>' +
+    '<div class="demo-text">' + step.t + '</div>' +
     '<div class="demo-ctrls">' +
     '<button class="demo-skip" id="demoSkip">Preskoči</button>' +
     '<button id="demoNext">' + nextLabel + '</button></div>';
