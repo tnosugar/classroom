@@ -14,21 +14,21 @@ pitanja:
     odgovori:
       - {tekst: "Sa Atlantskim okeanom preko Gibraltarskog moreuza", tacan: true}
       - {tekst: "Sa Crnim morem preko Bosfora", tacan: true}
-      - {tekst: "Sa Crvenim morem preko Sueckog kanala", tacan: true}
-      - {tekst: "Sa Baltičkim morem preko Kilskog kanala", tacan: false}
+      - {tekst: "Sa Crvenim morem preko Kilskog kanala", tacan: false}
+      - {tekst: "Sa Baltičkim morem preko Sueckog kanala", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o vodnom bilansu i podeli mora?"
     odgovori:
       - {tekst: "Ima negativan bilans vode — leti ispari više nego što dobije", tacan: true}
-      - {tekst: "Bez dotoka iz Atlantika presušilo bi za oko 1.500 godina", tacan: true}
-      - {tekst: "Sicilijanski prag deli more na istočni i zapadni deo", tacan: true}
-      - {tekst: "Salinitet mu je niži od salinitita Baltičkog mora", tacan: false}
+      - {tekst: "Bez dotoka iz Atlantika nikada ne bi presušilo", tacan: false}
+      - {tekst: "Salinitet mu je niži od saliniteta Baltičkog mora", tacan: false}
+      - {tekst: "Najveća dubina mu je manja od 500 m", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Tokom Mesinske krize saliniteta more se gotovo potpuno isušilo", tacan: true}
-    - {tekst: "Ponovo je napunjeno Zanklijanskom poplavom kroz Gibraltarski moreuz", tacan: true}
     - {tekst: "Ime potiče od latinskog mediterraneus — usred kopna", tacan: true}
-    - {tekst: "Dno mora je u potpunosti od kontinentalne kore starije od pet milijardi godina", tacan: false}
+    - {tekst: "Dno mora je u potpunosti od kore starije od pet milijardi godina", tacan: false}
+    - {tekst: "More se puni isključivo iz Crvenog mora, bez veze sa Atlantikom", tacan: false}

@@ -21,14 +21,14 @@ pitanja:
     pitanje: "Šta je tačno o ostrvima i nazivima Egejskog mora?"
     odgovori:
       - {tekst: "Ostrva se dele na sedam arhipelaga", tacan: true}
-      - {tekst: "Kikladi i Dodekani su deo egejskih arhipelaga", tacan: true}
-      - {tekst: "Arhaični slovenski naziv je Belo more", tacan: true}
       - {tekst: "Sva ostrva u moru pripadaju Turskoj", tacan: false}
+      - {tekst: "Arhaični slovenski naziv mu je Crveno more", tacan: false}
+      - {tekst: "Krit pripada arhipelagu Kikladskih ostrva", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Luka Pirej u Atini je glavna grčka luka", tacan: true}
-    - {tekst: "Krit je jedan od egejskih arhipelaga", tacan: true}
     - {tekst: "Drevni grad Troja nalazi se na turskoj obali Egejskog mora", tacan: true}
     - {tekst: "Maksimalna dubina mora je preko 5.000 m", tacan: false}
+    - {tekst: "Najveća putnička luka u Evropi nalazi se u Turskoj", tacan: false}

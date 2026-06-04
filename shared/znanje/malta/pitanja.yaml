@@ -4,10 +4,10 @@ pitanja:
   - tezina: lako
     pitanje: "Gde se nalazi ostrvo Malta?"
     odgovori:
-      - {tekst: "U centralnom delu Sredozemnog mora", tacan: true}
-      - {tekst: "Južno od obala Sicilije", tacan: true}
-      - {tekst: "Istočno od obala Tunisa", tacan: true}
+      - {tekst: "U centralnom delu Sredozemnog mora, južno od Sicilije", tacan: true}
       - {tekst: "U Atlantskom okeanu, severno od Španije", tacan: false}
+      - {tekst: "U Egejskom moru, istočno od Grčke", tacan: false}
+      - {tekst: "U Crnom moru, severno od Turske", tacan: false}
 
   - tezina: srednje
     pitanje: "Šta je tačno za vode i reljef Malte?"
@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Površina ostrva je 246 km²", tacan: true}
       - {tekst: "Najviša tačka je Ta'Dmejrek (253 m)", tacan: true}
-      - {tekst: "Glavni grad države Valeta nalazi se na severnoj obali", tacan: true}
       - {tekst: "Najviša tačka prelazi 1.000 m", tacan: false}
+      - {tekst: "Glavni grad Valeta nalazi se na krajnjem jugu ostrva", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Moreuz Gozo razdvaja Maltu od ostrva Goco", tacan: true}
     - {tekst: "Najveći grad ostrva je Birkirkara", tacan: true}
-    - {tekst: "Severne obale izlaze na Malteški prolaz", tacan: true}
+    - {tekst: "Malta je deo Atlantskog arhipelaga uz obale Portugala", tacan: false}
     - {tekst: "U vegetaciji dominira tropska prašuma", tacan: false}

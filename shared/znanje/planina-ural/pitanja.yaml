@@ -12,10 +12,10 @@ pitanja:
   - tezina: srednje
     pitanje: "Šta je tačno o veličini i vrhovima Urala?"
     odgovori:
-      - {tekst: "Dugačke su oko 2.100 km", tacan: true}
       - {tekst: "Najviši vrh je Narodnaja (1.895 m)", tacan: true}
-      - {tekst: "Prostiru se kroz Rusiju i Kazahstan", tacan: true}
       - {tekst: "Najviši vrh je viši od 5.000 m", tacan: false}
+      - {tekst: "Dugačke su svega oko 200 km", tacan: false}
+      - {tekst: "Prostiru se kroz Francusku i Nemačku", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o geologiji i podeli Urala?"
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Nezvanična prestonica regiona je Jekaterinburg", tacan: true}
     - {tekst: "Region je bogat malahitom, zlatom i aleksandritom", tacan: true}
-    - {tekst: "Postrojenje Majak kod Čeljabinska teško je zagadilo deo regiona", tacan: true}
-    - {tekst: "Ural nema nijedan rezervat prirode", tacan: false}
+    - {tekst: "Ural je najmlađi planinski lanac na svetu, star manje od milion godina", tacan: false}
+    - {tekst: "Najviši vrh Urala je Elbrus (5.642 m)", tacan: false}

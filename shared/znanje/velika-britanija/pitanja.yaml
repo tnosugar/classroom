@@ -13,22 +13,22 @@ pitanja:
     pitanje: "Šta je tačno za ostrvo Veliku Britaniju?"
     odgovori:
       - {tekst: "Najveće je ostrvo u Evropi", tacan: true}
-      - {tekst: "Od kopna ga odvajaju Severno more i Lamanš", tacan: true}
-      - {tekst: "Sa kopnom je povezano Evrotunelom", tacan: true}
       - {tekst: "Nalazi se u Sredozemnom moru", tacan: false}
+      - {tekst: "Najmanje je ostrvo u grupi Britanskih ostrva", tacan: false}
+      - {tekst: "Sa kopnom je povezano mostom preko Gibraltara", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o nazivima i položaju ostrva?"
     odgovori:
       - {tekst: "Najstariji poznati naziv je Albion", tacan: true}
       - {tekst: "Najviši vrh je Ben Nevis", tacan: true}
-      - {tekst: "Zapadno od njega leži manje ostrvo Irska", tacan: true}
-      - {tekst: "Najmanje je ostrvo u grupi Britanskih ostrva", tacan: false}
+      - {tekst: "Zapadno od njega leži veće ostrvo Island", tacan: false}
+      - {tekst: "Od kopna ga odvaja samo reka Temza", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Treće je najnaseljenije ostrvo na svetu, posle Jave i Honšua", tacan: true}
     - {tekst: "Naziv Albion verovatno potiče od belih litica Dovera", tacan: true}
-    - {tekst: "Evrotunel je završen 1993. godine", tacan: true}
     - {tekst: "Ostrvo nikada nije bilo povezano sa kontinentalnom Evropom", tacan: false}
+    - {tekst: "Evrotunel je završen pre Prvog svetskog rata", tacan: false}

@@ -21,14 +21,14 @@ pitanja:
     pitanje: "Šta je tačno o struji i obliku Bosfora?"
     odgovori:
       - {tekst: "Površinska struja iznosi manje slanu vodu iz Crnog mora", tacan: true}
-      - {tekst: "Dubinska struja suprotnog smera nosi vodu velikog saliniteta", tacan: true}
-      - {tekst: "U suštini je potopljena rečna dolina sa strmim obalama", tacan: true}
       - {tekst: "Širok je preko 50 km u najužem delu", tacan: false}
+      - {tekst: "Dug je oko 300 km i deli Afriku od Azije", tacan: false}
+      - {tekst: "Dubok je preko 2.000 m duž celog toka", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na dnu Bosfora otkriven je podmorski kanal (podvodna reka)", tacan: true}
     - {tekst: "Tri mosta u Istanbulu spajaju evropsku i azijsku obalu", tacan: true}
-    - {tekst: "Hipoteza o potopu Crnog mora vezuje nastanak Bosfora za ~5600. p. n. e.", tacan: true}
     - {tekst: "Preko Bosfora nikada nije izgrađen nijedan most", tacan: false}
+    - {tekst: "Bosfor povezuje Crno more direktno sa Atlantskim okeanom", tacan: false}

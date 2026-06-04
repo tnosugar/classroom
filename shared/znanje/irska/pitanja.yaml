@@ -15,16 +15,16 @@ pitanja:
     odgovori:
       - {tekst: "Od Velike Britanije ga dele Irsko more i Prolaz Svetog Đorđa", tacan: true}
       - {tekst: "Drugo je po veličini među Britanskim ostrvima", tacan: true}
-      - {tekst: "Površina je oko 84.421 km²", tacan: true}
       - {tekst: "Najveće je ostrvo u Evropi", tacan: false}
+      - {tekst: "Površina mu je oko 25.000 km²", tacan: false}
 
   - tezina: tesko
-    pitanje: "Šta je tačno o reljefu, klimi i podeli ostrva?"
+    pitanje: "Šta je tačno o reljefu i visinama ostrva?"
     odgovori:
       - {tekst: "Reljef čine niske planine oko središnje ravnice", tacan: true}
-      - {tekst: "Klima je umerena okeanska, sa blagim zimama i obilnim padavinama", tacan: true}
-      - {tekst: "Politički je podeljeno na Republiku Irsku i Severnu Irsku", tacan: true}
       - {tekst: "Najviši vrh prelazi 3.000 m nadmorske visine", tacan: false}
+      - {tekst: "Najviši vrh, Karantul, dostiže oko 2.500 m", tacan: false}
+      - {tekst: "Unutrašnjost je visoka planinska oblast bez ravnica", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"

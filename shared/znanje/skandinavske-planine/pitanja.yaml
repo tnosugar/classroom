@@ -14,16 +14,16 @@ pitanja:
     odgovori:
       - {tekst: "Galdhepigen je najviši vrh (2.469 m)", tacan: true}
       - {tekst: "Kebnekajse je najviši vrh na švedskoj strani (2.104 m)", tacan: true}
-      - {tekst: "Najviša tačka Finske je padina Halti", tacan: true}
       - {tekst: "Najviši vrh celog venca nalazi se u Švedskoj", tacan: false}
+      - {tekst: "Najviša tačka Finske, Halti, prelazi 2.500 m", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o geologiji i nastanku venca?"
     odgovori:
       - {tekst: "Građen je od veoma starih stena (~400 miliona godina)", tacan: true}
-      - {tekst: "Često se pogrešno poistovećuje sa Skandinavskim kaledonima", tacan: true}
-      - {tekst: "Izdizanjem zapadne strane reke su usmerene ka istoku", tacan: true}
       - {tekst: "Nastao je vulkanskom aktivnošću pre ~50 miliona godina", tacan: false}
+      - {tekst: "Mlađi je od Alpa i nastao u poslednjem ledenom dobu", tacan: false}
+      - {tekst: "Izdizanjem istočne strane reke teku ka zapadu, u Norveško more", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"

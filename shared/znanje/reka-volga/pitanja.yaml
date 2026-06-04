@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Najvažnije pritoke su Kama i Oka", tacan: true}
       - {tekst: "Tok se deli na gornji, srednji i donji", tacan: true}
-      - {tekst: "Na celoj dužini ima vrlo mali pad", tacan: true}
       - {tekst: "Glavna pritoka joj je Dunav", tacan: false}
+      - {tekst: "Na celoj dužini ima veoma veliki pad i brojne vodopade", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Kod Volgograda (nekada Staljingrad) odigrala se velika bitka", tacan: true}
-    - {tekst: "Astrahan u delti je centar kavijarske industrije", tacan: true}
-    - {tekst: "Ušće Volge je najveći estuar u Evropi", tacan: true}
     - {tekst: "Volga se nikada ne zamrzava", tacan: false}
+    - {tekst: "Ušće Volge je najmanji estuar u Evropi", tacan: false}
+    - {tekst: "Astrahan se nalazi na samom izvoru reke", tacan: false}

@@ -21,9 +21,9 @@ pitanja:
     pitanje: "Šta je tačno o reljefu i nazivu poluostrva?"
     odgovori:
       - {tekst: "Najviši vrh je Musala (2.925 m) na planini Rila", tacan: true}
-      - {tekst: "Presecaju ga Dinarski, Karpatski i Rodopski sistemi", tacan: true}
-      - {tekst: "Sve češće se koristi naziv jugoistočna Evropa", tacan: true}
+      - {tekst: "Najviši vrh poluostrva nalazi se u Dinarskim planinama", tacan: false}
       - {tekst: "Severne granice poluostrva su potpuno precizno utvrđene", tacan: false}
+      - {tekst: "Poluostrvo ne presecaju nikakvi planinski sistemi", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
@@ -31,4 +31,4 @@ bonus:
     - {tekst: "Na turskom 'balkan' znači venac šumovitih planina", tacan: true}
     - {tekst: "Đerdapska klisura je najveća klisura u Evropi", tacan: true}
     - {tekst: "Samo je evropski deo Turske deo Balkanskog poluostrva", tacan: true}
-    - {tekst: "Najviši vrh poluostrva nalazi se u Dinarskim planinama", tacan: false}
+    - {tekst: "Najveći grad na poluostrvu je Beograd", tacan: false}

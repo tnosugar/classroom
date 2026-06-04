@@ -22,7 +22,7 @@ pitanja:
     odgovori:
       - {tekst: "Dele se na Visoke, Srednje (Peščarne) i Niske Vogeze", tacan: true}
       - {tekst: "Sa Palatinskom šumom čine jedinstvenu geomorfološku jedinicu", tacan: true}
-      - {tekst: "Od 1871. do 1918. najvećim delom su činili granicu Nemačke i Francuske", tacan: true}
+      - {tekst: "Od 1871. do 1918. najvećim delom su činili granicu Francuske i Španije", tacan: false}
       - {tekst: "Najviši vrh nalazi se u Nemačkoj", tacan: false}
 
 bonus:
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Zaobljeni vrhovi Visokih Vogeza nose reč „Ballon“ (balon)", tacan: true}
     - {tekst: "Francuski departman Vogezi dobio je ime po vencu", tacan: true}
-    - {tekst: "Stene su iz paleozoika i mezozoika (granit, gnajs, peščar)", tacan: true}
+    - {tekst: "Stene su pretežno mlade vulkanske, iz kvartara", tacan: false}
     - {tekst: "Venac u celini leži u Nemačkoj", tacan: false}

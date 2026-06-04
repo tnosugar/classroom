@@ -131,10 +131,23 @@ def _ui_default():
         "btn_proveri": "Proveri",
         "q_correct": "Tačno!",
         "q_wrong": "Pogrešno — pokušaj ponovo",
+        "q_incorrect": "Netačno (tačni odgovori su označeni).",
         "bonus_label": "Bonus",
         "bonus_locked": "Reši sva 3 pitanja da otključaš bonus.",
         "bonus_note": "Da bi odgovorio na bonus pitanje, potrebno je da istražuješ o geografskom pojmu u ponuđenim izvorima.",
         "test_no_questions": "Nema test-pitanja za ovaj pojam.",
+        "analysis_title": "Analiza učinka",
+        "analysis_run": "Analiziraj",
+        "analysis_key_link": "API ključ",
+        "analysis_key_label": "Claude API ključ (čuva se samo u ovom pregledaču):",
+        "analysis_key_save": "Sačuvaj",
+        "analysis_key_clear": "Obriši",
+        "analysis_idle": "Analiza se pojavi kad lociraš sve pojmove i rešiš sva pitanja, ili je pokreni dugmetom 'Analiziraj'.",
+        "analysis_note": "Analiza koristi Claude API i šalje samo tvoje rezultate (procente i oznake odgovora) radi ocene. Ključ se čuva lokalno u pregledaču i nije deo koda.",
+        "analysis_loading": "Generišem analizu…",
+        "analysis_no_key": "Za analizu je potreban Claude API ključ. Klikni 'API ključ', unesi ga (čuva se lokalno), pa ponovo 'Analiziraj'.",
+        "analysis_error": "Greška pri analizi:",
+        "analysis_empty": "Nema dovoljno podataka — prvo uradi bar nešto u testu.",
     }
 
 
@@ -173,7 +186,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  button.secondary:hover{background:#1f7a3a;color:#fff}
  .mode-selector{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:#3a3528}
  .mode-selector select{font:inherit;padding:4px 8px;border:1px solid #6b6456;border-radius:6px;background:#fff;color:#3a3528;cursor:pointer}
- .resume-banner{display:none;margin-top:8px;background:#fffbe6;border:1px solid #f0d878;border-radius:8px;padding:6px 12px;font-size:13px;color:#7a5a00}
+ .resume-banner{display:none;margin:14px 4px 0;background:#fffbe6;border:1px solid #f0d878;border-radius:8px;padding:6px 12px;font-size:13px;color:#7a5a00}
  .resume-banner.show{display:block}
  .layout{display:flex;align-items:flex-start;gap:0;width:100%}
  .qcol{flex:0 0 260px;width:260px;padding:12px 14px;border-right:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
@@ -206,6 +219,21 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .desc-modal-x{position:absolute;top:10px;right:12px;border:none;background:transparent;font-size:26px;line-height:1;color:#6b6456;cursor:pointer;padding:0 4px}
  .desc-modal-x:hover{background:transparent;color:#b1271f}
  .desc-ok{margin-top:18px}
+ /* Performance analysis section below the map (test mode) */
+ .analysis{margin:14px 4px 28px;padding:14px 16px;border:1px solid #e1d8c2;border-radius:10px;background:#fff}
+ body:not(.test-mode) .analysis{display:none}
+ .analysis-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+ .analysis-head h2{margin:0;font-size:16px;color:#3a3528;flex:1}
+ .analysis-key{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;font-size:13px}
+ .analysis-key input{font:inherit;padding:5px 8px;border:1px solid #6b6456;border-radius:6px;min-width:240px}
+ .analysis-body{font-size:13.5px;line-height:1.6;color:#2b2b2b}
+ .analysis-body h3{font-size:14px;color:#3a3528;margin:12px 0 4px}
+ .analysis-body p{margin:0 0 9px} .analysis-body ul{margin:0 0 9px;padding-left:18px}
+ .analysis-body .placeholder{color:#9b9387;font-style:italic}
+ .analysis-body .loading{color:#6b6456} .analysis-body .err{color:#b1271f}
+ .analysis-note{margin:10px 0 0;font-size:11px;color:#9b9387}
+ .link-btn{border:none;background:transparent;color:#6b6456;text-decoration:underline;cursor:pointer;padding:0;font:inherit;font-size:12.5px}
+ .link-btn:hover{background:transparent;color:#b1271f}
  .cell:has(.ans.correct){cursor:pointer}
  /* Demo term (Srbija): gray legend item + small-caps badge; click runs the demo */
  ol.terms li.demo-item{color:#777;font-style:italic}
@@ -251,6 +279,9 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .quiz .q.solved{background:#eef7f0;border-color:#bfe0c8}
  .quiz .q.solved .opt input{pointer-events:none}
  .quiz .opt.reveal-correct{color:#1f7a3a;font-weight:600}
+ .quiz .opt.miss-correct{color:#1f7a3a;text-decoration:underline;font-weight:600}
+ .quiz .opt.chosen-wrong{color:#b1271f;font-weight:600}
+ .quiz .q.answered-wrong,.quiz .bonus.answered-wrong{background:#fdecec;border-color:#e6b0b0}
  .quiz .bonus{background:#fff7e6;border-color:#f0d878}
  .quiz .bonus.locked .opt input,.quiz .bonus.locked .q-proveri{pointer-events:none;opacity:.5}
  .quiz .bonus .q-tezina{background:#fce9b8;border-color:#f0d878;color:#7a5a00}
@@ -334,7 +365,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
    .ans{width:32px;height:32px;font-size:14px}
  }
  @media print {
-   header .bar, .zoombar, .zhint, #msg, .resume-banner, button, .panelcol { display: none !important; }
+   header .bar, .zoombar, .zhint, #msg, .resume-banner, button, .panelcol, .analysis { display: none !important; }
    header { position: static; border-bottom: 1px solid #ccc }
    .qcol { position: static; max-height: none; overflow: visible; flex: 0 0 280px; width: 280px }
    #stageWrap { overflow: visible; cursor: auto; height: auto !important; }
@@ -369,7 +400,6 @@ _HTML_TPL = r"""<!DOCTYPE html>
   </label>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
- <div id="resumeBanner" class="resume-banner">__RESUME_MSG__</div>
 </header>
 <div id="descModal" class="desc-modal" hidden>
  <div class="desc-modal-box">
@@ -404,6 +434,22 @@ _HTML_TPL = r"""<!DOCTYPE html>
    </div>
    <div id="overlay">__BOXES__</div>
   </div>
+  <div id="resumeBanner" class="resume-banner">__RESUME_MSG__</div>
+  <section id="analysis" class="analysis">
+   <div class="analysis-head">
+    <h2>__ANALYSIS_TITLE__</h2>
+    <button id="analysisRun" class="secondary">__ANALYSIS_RUN__</button>
+    <button id="analysisKeyToggle" class="link-btn">__ANALYSIS_KEY_LINK__</button>
+   </div>
+   <div id="analysisKeyRow" class="analysis-key" hidden>
+    <label>__ANALYSIS_KEY_LABEL__</label>
+    <input type="password" id="analysisKey" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+    <button id="analysisKeySave">__ANALYSIS_KEY_SAVE__</button>
+    <button id="analysisKeyClear" class="link-btn">__ANALYSIS_KEY_CLEAR__</button>
+   </div>
+   <div id="analysisBody" class="analysis-body"><p class="placeholder">__ANALYSIS_IDLE__</p></div>
+   <p class="analysis-note">__ANALYSIS_NOTE__</p>
+  </section>
  </main>
  <aside class="panelcol" id="panelcol" aria-hidden="true">
   <div class="panelhead">
@@ -676,7 +722,7 @@ document.getElementById('overlay').addEventListener('click', e => {
 
 // --- test mode (Učenje / Test) ---
 const BTN_PROVERI = __BTN_PROVERI__;
-const Q_CORRECT = __Q_CORRECT__, Q_WRONG = __Q_WRONG__;
+const Q_CORRECT = __Q_CORRECT__, Q_WRONG = __Q_WRONG__, Q_INCORRECT = __Q_INCORRECT__;
 const BONUS_LABEL = __BONUS_LABEL__, BONUS_LOCKED = __BONUS_LOCKED__;
 const BONUS_NOTE = __BONUS_NOTE__;
 const TEST_NO_Q = __TEST_NO_Q__;
@@ -692,14 +738,17 @@ const cAnswersTotal = document.getElementById('cAnswersTotal');
 function isTestMode() { return document.body.classList.contains('test-mode'); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-// Per-term quiz progress: canonId → { solved: bool[], bonus: bool }
+// Per-term quiz progress. A question is single-attempt: once answered it is
+// terminal — 'solved' (correct) or 'wrong'. `chosen` keeps the picked options so
+// a wrong question re-renders with the same red/green feedback within the session.
 const quizProgress = new Map();
 function getQP(canonId) {
   let p = quizProgress.get(canonId);
   if (!p) {
     const t = ALL_TERMS.find(x => x.id === canonId);
     const n = (t && t.quiz && t.quiz.questions) ? t.quiz.questions.length : 0;
-    p = { solved: new Array(n).fill(false), wrong: new Array(n).fill(false), bonus: false, bonusWrong: false };
+    p = { solved: new Array(n).fill(false), wrong: new Array(n).fill(false),
+          chosen: {}, bonus: false, bonusWrong: false, bonusChosen: null };
     quizProgress.set(canonId, p);
   }
   return p;
@@ -712,45 +761,65 @@ function optionsMatch(selectedSet, options) {
   return true;
 }
 
-function optsHTML(options, solved) {
+// state: 'todo' | 'solved' | 'wrong'. chosen: array of picked indices (for 'wrong').
+function optsHTML(options, state, chosen) {
+  const sel = new Set(chosen || []);
   return options.map((o, oi) => {
-    const checked = (solved && o.c) ? ' checked' : '';
-    const cls = (solved && o.c) ? ' reveal-correct' : '';
-    const dis = solved ? ' disabled' : '';
+    let cls = '', checked = '', dis = (state === 'todo') ? '' : ' disabled';
+    if (state === 'solved') {
+      if (o.c) { cls = ' reveal-correct'; checked = ' checked'; }
+    } else if (state === 'wrong') {
+      if (sel.has(oi)) checked = ' checked';
+      if (o.c && sel.has(oi)) cls = ' reveal-correct';        // correct, picked
+      else if (o.c && !sel.has(oi)) cls = ' miss-correct';    // correct, missed → green underline
+      else if (!o.c && sel.has(oi)) cls = ' chosen-wrong';    // wrong, picked → red
+    }
     return '<label class="opt' + cls + '"><input type="checkbox" data-oi="' + oi + '"' +
       checked + dis + '> ' + esc(o.t) + '</label>';
   }).join('');
 }
 
-function questionHTML(q, qi, solved) {
-  return '<div class="q' + (solved ? ' solved' : '') + '" data-qi="' + qi + '">' +
-    '<div class="q-head"><span class="q-tezina">' + esc(q.tezina || '') + '</span> ' +
-    '<span class="q-txt">' + esc(q.pitanje) + '</span></div>' +
-    optsHTML(q.options, solved) +
-    '<div><button type="button" class="q-proveri"' + (solved ? ' style="display:none"' : '') + '>' +
-    BTN_PROVERI + '</button>' +
-    '<span class="q-status ' + (solved ? 'ok' : '') + '">' + (solved ? Q_CORRECT : '') + '</span></div></div>';
+function qStateClass(state) { return state === 'solved' ? ' solved' : (state === 'wrong' ? ' answered-wrong' : ''); }
+function qStatusHTML(state) {
+  if (state === 'solved') return '<span class="q-status ok">' + Q_CORRECT + '</span>';
+  if (state === 'wrong') return '<span class="q-status bad">' + Q_INCORRECT + '</span>';
+  return '<span class="q-status"></span>';
 }
 
-function bonusHTML(bonus, unlocked, solved) {
-  let h = '<div class="bonus' + (unlocked ? '' : ' locked') + '" data-bonus>' +
+function questionHTML(q, qi, state, chosen) {
+  const done = state !== 'todo';
+  return '<div class="q' + qStateClass(state) + '" data-qi="' + qi + '">' +
+    '<div class="q-head"><span class="q-tezina">' + esc(q.tezina || '') + '</span> ' +
+    '<span class="q-txt">' + esc(q.pitanje) + '</span></div>' +
+    optsHTML(q.options, state, chosen) +
+    '<div><button type="button" class="q-proveri"' + (done ? ' style="display:none"' : '') + '>' +
+    BTN_PROVERI + '</button>' + qStatusHTML(state) + '</div></div>';
+}
+
+function bonusHTML(bonus, unlocked, state, chosen) {
+  const done = state !== 'todo';
+  let h = '<div class="bonus' + (unlocked ? '' : ' locked') + qStateClass(state) + '" data-bonus>' +
     '<div class="q-head"><span class="q-tezina">' + BONUS_LABEL + '</span> ' +
     '<span class="q-txt">' + esc(bonus.pitanje) + '</span></div>' +
     '<div class="bonus-note">' + BONUS_NOTE + '</div>' +
-    optsHTML(bonus.options, solved) +
-    '<div><button type="button" class="q-proveri" data-bonus-btn' + (solved ? ' style="display:none"' : '') + '>' +
-    BTN_PROVERI + '</button>' +
-    '<span class="q-status ' + (solved ? 'ok' : '') + '">' + (solved ? Q_CORRECT : '') + '</span></div>';
+    optsHTML(bonus.options, state, chosen) +
+    '<div><button type="button" class="q-proveri" data-bonus-btn' + (done ? ' style="display:none"' : '') + '>' +
+    BTN_PROVERI + '</button>' + qStatusHTML(state) + '</div>';
   if (!unlocked) h += '<div class="bonus-lock-msg">' + BONUS_LOCKED + '</div>';
   return h + '</div>';
 }
 
+function qStateOf(p, i) { return p.solved[i] ? 'solved' : (p.wrong[i] ? 'wrong' : 'todo'); }
+
 function renderQuiz(canonId, quiz) {
   const p = getQP(canonId);
-  const allSolved = p.solved.length > 0 && p.solved.every(Boolean);
+  const allAnswered = p.solved.length > 0 && p.solved.every((s, i) => s || p.wrong[i]);
   let h = '<div class="quiz" data-canon="' + canonId + '">';
-  quiz.questions.forEach((q, qi) => { h += questionHTML(q, qi, p.solved[qi]); });
-  if (quiz.bonus) h += bonusHTML(quiz.bonus, allSolved, p.bonus);
+  quiz.questions.forEach((q, qi) => { h += questionHTML(q, qi, qStateOf(p, qi), p.chosen[qi]); });
+  if (quiz.bonus) {
+    const bState = p.bonus ? 'solved' : (p.bonusWrong ? 'wrong' : 'todo');
+    h += bonusHTML(quiz.bonus, allAnswered, bState, p.bonusChosen);
+  }
   return h + '</div>';
 }
 
@@ -773,12 +842,12 @@ function showTestPanel(canonId, term) {
 
 function markBlockSolved(block, options) {
   block.classList.add('solved');
-  const inputs = [...block.querySelectorAll('input[type=checkbox]')];
-  inputs.forEach((c, i) => {
-    c.checked = !!options[i].c;
+  block.querySelectorAll('input[type=checkbox]').forEach(c => {
+    const oi = parseInt(c.dataset.oi, 10);
+    c.checked = !!options[oi].c;
     c.disabled = true;
     const lbl = c.closest('.opt');
-    if (lbl && options[i].c) lbl.classList.add('reveal-correct');
+    if (lbl && options[oi].c) lbl.classList.add('reveal-correct');
   });
   const pv = block.querySelector('.q-proveri');
   if (pv) pv.style.display = 'none';
@@ -787,9 +856,31 @@ function markBlockSolved(block, options) {
   st.textContent = Q_CORRECT;
 }
 
+// Wrong answer is terminal: lock the question, mark picked-wrong red and
+// correct-not-picked green (underline); the question can no longer be changed.
+function markBlockWrong(block, options) {
+  block.classList.add('answered-wrong');
+  block.querySelectorAll('input[type=checkbox]').forEach(c => {
+    const oi = parseInt(c.dataset.oi, 10);
+    const picked = c.checked;
+    c.disabled = true;
+    const lbl = c.closest('.opt');
+    if (!lbl) return;
+    if (options[oi].c && picked) lbl.classList.add('reveal-correct');
+    else if (options[oi].c && !picked) lbl.classList.add('miss-correct');
+    else if (!options[oi].c && picked) lbl.classList.add('chosen-wrong');
+  });
+  const pv = block.querySelector('.q-proveri');
+  if (pv) pv.style.display = 'none';
+  const st = block.querySelector('.q-status');
+  st.className = 'q-status bad';
+  st.textContent = Q_INCORRECT;
+}
+
 function maybeUnlockBonus(canonId) {
   const p = getQP(canonId);
-  if (p.solved.length > 0 && p.solved.every(Boolean)) {
+  // Bonus unlocks once all 3 questions are ANSWERED (correct or wrong).
+  if (p.solved.length > 0 && p.solved.every((s, i) => s || p.wrong[i])) {
     const b = panelBody.querySelector('.bonus');
     if (b) {
       b.classList.remove('locked');
@@ -879,32 +970,26 @@ panelBody.addEventListener('click', e => {
   const isBonus = btn.hasAttribute('data-bonus-btn');
   const block = btn.closest(isBonus ? '.bonus' : '.q');
   if (block.classList.contains('locked')) return;
+  // Single attempt: an already-answered question can't be changed.
+  if (block.classList.contains('solved') || block.classList.contains('answered-wrong')) return;
   const options = isBonus
     ? term.quiz.bonus.options
     : term.quiz.questions[parseInt(block.dataset.qi, 10)].options;
   const selected = new Set([...block.querySelectorAll('input[type=checkbox]')]
     .filter(c => c.checked).map(c => parseInt(c.dataset.oi, 10)));
-  const status = block.querySelector('.q-status');
+  const chosenArr = [...selected];
   const p = getQP(canonId);
-  if (optionsMatch(selected, options)) {
-    if (isBonus) { p.bonus = true; p.bonusWrong = false; markBlockSolved(block, options); }
-    else {
-      const qi = parseInt(block.dataset.qi, 10);
-      p.solved[qi] = true; p.wrong[qi] = false;
-      markBlockSolved(block, options); maybeUnlockBonus(canonId);
-    }
-    recountAnswers();
-    recountBonus();
-    updateLegendMarks(canonId);
-    saveState();
+  const correct = optionsMatch(selected, options);
+  if (isBonus) {
+    if (correct) { p.bonus = true; p.bonusWrong = false; markBlockSolved(block, options); }
+    else { p.bonusWrong = true; p.bonus = false; p.bonusChosen = chosenArr; markBlockWrong(block, options); }
+    // bonus wrong does NOT count as a mistake
   } else {
-    status.className = 'q-status bad';
-    status.textContent = Q_WRONG;
-    if (isBonus) {
-      p.bonusWrong = true;
-    } else {
-      const qi = parseInt(block.dataset.qi, 10);
-      p.wrong[qi] = true;
+    const qi = parseInt(block.dataset.qi, 10);
+    if (correct) { p.solved[qi] = true; p.wrong[qi] = false; markBlockSolved(block, options); }
+    else {
+      p.wrong[qi] = true; p.solved[qi] = false; p.chosen[qi] = chosenArr;
+      markBlockWrong(block, options);
       // wrong answer counts as a mistake on the term (same counter as bad location)
       const inp = inputsById.get(canonId);
       const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -914,9 +999,13 @@ panelBody.addEventListener('click', e => {
       badge.style.display = 'block';
       recountCorrectMiss();
     }
-    updateLegendMarks(canonId);
-    saveState();
+    maybeUnlockBonus(canonId);
   }
+  recountAnswers();
+  recountBonus();
+  updateLegendMarks(canonId);
+  saveState();
+  maybeAutoAnalyze();
 });
 
 function setTestMode(on, opts) {
@@ -980,7 +1069,8 @@ function saveState() {
     const a = {
       v: inp.value,
       c: inp.classList.contains('correct'),
-      m: parseInt(inp.dataset.miss, 10) || 0
+      m: parseInt(inp.dataset.miss, 10) || 0,
+      lm: parseInt(inp.dataset.locmiss, 10) || 0
     };
     // Drag placement (only relevant in drag mode for placed cells)
     if (cell.classList.contains('drag-placed')) {
@@ -1035,6 +1125,7 @@ function applyAnswers(answers) {
     inp.readOnly = false;
     inp.classList.remove('correct', 'wrong', 'wrong-placed');
     inp.dataset.miss = '0';
+    inp.dataset.locmiss = '0';
     const badge = cell.querySelector('.miss');
     badge.style.display = 'none';
     badge.textContent = '0';
@@ -1054,6 +1145,7 @@ function applyAnswers(answers) {
       badge.textContent = a.m;
       badge.style.display = 'block';
     }
+    if (a.lm) inp.dataset.locmiss = String(a.lm);
     // Restore drag placement if present in saved state
     if (a.dp) {
       cell.classList.add('drag-placed');
@@ -1110,6 +1202,7 @@ function setMode(mode, opts) {
   recountBonus();
   recountAnswers();
   refreshAllLegendMarks();
+  resetAnalysis();
 }
 
 modeSelect.addEventListener('change', () => {
@@ -1287,10 +1380,12 @@ function applyDrop(canonicalId, accepted, baseX, baseY) {
     revealGeometry(canonicalId);
     updateLegendMarks(canonicalId);
     showPanelFor(canonicalId);
+    maybeAutoAnalyze();
   } else {
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
     inp.dataset.miss = m;
+    inp.dataset.locmiss = (parseInt(inp.dataset.locmiss, 10) || 0) + 1;  // location-only mistakes
     const badge = cell.querySelector('.miss');
     badge.textContent = m;
     badge.style.display = 'block';
@@ -1508,14 +1603,12 @@ function demoAnswerQuestion(qi, correct) {
   const quizEl = panelBody.querySelector('.quiz');
   if (!quizEl) return;
   const block = quizEl.querySelector('.q[data-qi="' + qi + '"]');
-  if (!block || block.classList.contains('solved')) {
-    // if already solved (the correct pass), nothing to do
-    if (correct) return;
-  }
-  if (!block) return;
+  if (!block || block.classList.contains('solved') || block.classList.contains('answered-wrong')) return;
   const opts = DEMO_TERM.quiz.questions[qi].options;
-  const boxes = [...block.querySelectorAll('input[type=checkbox]')];
-  boxes.forEach((c, i) => { c.checked = correct ? !!opts[i].c : !opts[i].c; });
+  block.querySelectorAll('input[type=checkbox]').forEach(c => {
+    const oi = parseInt(c.dataset.oi, 10);
+    c.checked = correct ? !!opts[oi].c : !opts[oi].c;
+  });
   const pv = block.querySelector('.q-proveri');
   if (pv) pv.click();
 }
@@ -1523,9 +1616,12 @@ function demoBonus() {
   demoEnsureQuiz();
   const block = panelBody.querySelector('.bonus');
   if (!block) return;
+  if (block.classList.contains('solved') || block.classList.contains('answered-wrong')) return;
   const opts = DEMO_TERM.quiz.bonus.options;
-  const boxes = [...block.querySelectorAll('input[type=checkbox]')];
-  boxes.forEach((c, i) => { c.checked = !!opts[i].c; });
+  block.querySelectorAll('input[type=checkbox]').forEach(c => {
+    const oi = parseInt(c.dataset.oi, 10);
+    c.checked = !!opts[oi].c;
+  });
   const pv = block.querySelector('.q-proveri[data-bonus-btn]');
   if (pv) pv.click();
 }
@@ -1539,12 +1635,10 @@ const DEMO_STEPS = [
   { l: 'Test: greška 1', t: 'I u testu pogrešno lociranje broji grešku — <b>0</b> na prvo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.22, MH * 0.30), at: 'map' },
   { l: 'Test: greška 2', t: '...pa <b>0</b> na drugo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.33, MH * 0.58), at: 'map' },
   { l: 'Test: tačno', t: 'Pa <b>0</b> na tačno mesto — otvaraju se tri pitanja.', a: demoDropCorrect, at: 'map' },
-  { l: 'Pitanje 1', t: 'Prvo pitanje rešavam tačno iz prve.', a: () => demoAnswerQuestion(0, true), at: 'panel' },
-  { l: 'Pitanje 2', t: 'Drugo pitanje prvo namerno pogrešim — broji se jedna greška.', a: () => demoAnswerQuestion(1, false), at: 'panel' },
-  { l: 'Pitanje 2', t: '...pa ga ispravim na tačno.', a: () => demoAnswerQuestion(1, true), at: 'panel' },
-  { l: 'Pitanje 3', t: 'Treće pitanje opet prvo pogrešim...', a: () => demoAnswerQuestion(2, false), at: 'panel' },
-  { l: 'Pitanje 3', t: '...pa ispravim na tačno. Sva tri rešena — otključava se <b>bonus</b>.', a: () => demoAnswerQuestion(2, true), at: 'panel' },
-  { l: 'Bonus', t: 'Da bi tačno odgovorio na bonus, treba da klikneš na <b>sve izvore</b> iz kojih je nastao opis ovog pojma. Odgovaram tačno.', a: demoBonus, at: 'panel' },
+  { l: 'Pitanje 1', t: 'Prvo pitanje odgovaram tačno.', a: () => demoAnswerQuestion(0, true), at: 'panel' },
+  { l: 'Pitanje 2', t: 'Drugo pitanje namerno pogrešim — pitanje se <b>zaključa</b>: pogrešan odgovor pocrveni, a tačni se označe zeleno. Ispravka nije moguća; broji se greška.', a: () => demoAnswerQuestion(1, false), at: 'panel' },
+  { l: 'Pitanje 3', t: 'Treće pitanje odgovaram tačno. Sva tri su odgovorena — otključava se <b>bonus</b>.', a: () => demoAnswerQuestion(2, true), at: 'panel' },
+  { l: 'Bonus', t: 'Za bonus treba pregledati <b>sve izvore</b> iz kojih je nastao opis. Odgovaram tačno.', a: demoBonus, at: 'panel' },
   { l: 'Kraj', t: 'To je ceo tok kviza — učenje, pa test, pa bonus. Srbija sada nestaje sa spiska. Srećno!', a: null, at: 'mode' },
 ];
 
@@ -1628,6 +1722,158 @@ function endDemo() {
   hideDemoTerm();
   saveState();
 }
+
+// --- performance analysis (optional, uses the teacher's own Claude API key) ---
+const ANALYSIS_KEY_LS = 'classroom-claude-key';      // teacher's key, local only — never in code
+const ANALYSIS_MODEL = 'claude-3-5-haiku-latest';    // editable if the model name changes
+const ANALYSIS_LOADING = __ANALYSIS_LOADING__;
+const ANALYSIS_NO_KEY = __ANALYSIS_NO_KEY__;
+const ANALYSIS_ERROR = __ANALYSIS_ERROR__;
+const ANALYSIS_EMPTY = __ANALYSIS_EMPTY__;
+const ANALYSIS_SYS = 'Ti si iskusan i ohrabrujući nastavnik geografije. Pišeš kratku, konkretnu analizu učinka učenika na srpskom (latinica).';
+const ANALYSIS_USER = 'Na osnovu sledećih podataka o učinku na geografskom kvizu napiši analizu. ' +
+  'Skala: >=80% tačno = dobar; 50-80% = ima prostora za napredak; <50% = slab (treba se više potruditi). ' +
+  'Pokrij u 3-5 kratkih pasusa: ukupan utisak; u čemu je učenik dobar; gde ima prostora za napredak; gde je slab i treba se potruditi. ' +
+  'Budi konkretan: pomeni vrste pojmova (mora, planine, reke...) i težine pitanja, i RAZLIKUJ greške u lociranju na mapi od grešaka u odgovorima na pitanja. ' +
+  'Bez markdown naslova. Podaci (JSON):\n';
+
+const analysisEl = document.getElementById('analysis');
+const analysisRun = document.getElementById('analysisRun');
+const analysisBody = document.getElementById('analysisBody');
+const analysisKeyToggle = document.getElementById('analysisKeyToggle');
+const analysisKeyRow = document.getElementById('analysisKeyRow');
+const analysisKey = document.getElementById('analysisKey');
+const analysisKeySave = document.getElementById('analysisKeySave');
+const analysisKeyClear = document.getElementById('analysisKeyClear');
+const ANALYSIS_IDLE_HTML = analysisBody.innerHTML;   // keep the idle placeholder
+let analysisRunning = false, analysisDone = false;
+
+function buildAnalysisData() {
+  const byTezina = {}, byVrsta = {};
+  const faza = { lokUkupno: 0, lokPostavljeno: 0, lokIzPrve: 0,
+                 pitUkupno: 0, pitTacno: 0, pitPogresno: 0, pitNereseno: 0,
+                 bonusUkupno: 0, bonusTacno: 0, bonusPogresno: 0, bonusNereseno: 0 };
+  const pojmovi = [];
+  for (const id of countedIds()) {
+    const t = ALL_TERMS.find(x => x.id === id);
+    if (!t || !t.quiz) continue;
+    const inp = inputsById.get(id);
+    const located = !!(inp && inp.classList.contains('correct'));
+    const locmiss = inp ? (parseInt(inp.dataset.locmiss, 10) || 0) : 0;
+    const locFirst = located && locmiss === 0;
+    const vr = (t.desc && t.desc.vrsta) ? t.desc.vrsta.replace(/_/g, ' ') : 'ostalo';
+    const p = quizProgress.get(id) || { solved: [], wrong: [], bonus: false, bonusWrong: false };
+    faza.lokUkupno++; if (located) { faza.lokPostavljeno++; if (locFirst) faza.lokIzPrve++; }
+    byVrsta[vr] = byVrsta[vr] || { lokUkupno: 0, lokIzPrve: 0, pitUkupno: 0, pitTacno: 0, pitPogresno: 0, pitNereseno: 0 };
+    byVrsta[vr].lokUkupno++; if (locFirst) byVrsta[vr].lokIzPrve++;
+    const qd = [];
+    t.quiz.questions.forEach((q, i) => {
+      const solved = !!(p.solved && p.solved[i]);
+      const wrong = !!(p.wrong && p.wrong[i]);
+      const status = solved ? 'tacno' : (wrong ? 'pogresno' : 'nereseno');
+      const tz = q.tezina || 'nepoznato';
+      byTezina[tz] = byTezina[tz] || { ukupno: 0, tacno: 0, pogresno: 0, nereseno: 0 };
+      byTezina[tz].ukupno++; byTezina[tz][status]++;
+      faza.pitUkupno++;
+      if (status === 'tacno') faza.pitTacno++; else if (status === 'pogresno') faza.pitPogresno++; else faza.pitNereseno++;
+      byVrsta[vr].pitUkupno++;
+      if (status === 'tacno') byVrsta[vr].pitTacno++; else if (status === 'pogresno') byVrsta[vr].pitPogresno++; else byVrsta[vr].pitNereseno++;
+      qd.push({ tezina: tz, status: status });
+    });
+    let bonus = null;
+    if (t.quiz.bonus) {
+      bonus = p.bonus ? 'tacno' : (p.bonusWrong ? 'pogresno' : 'nereseno');
+      faza.bonusUkupno++;
+      if (p.bonus) faza.bonusTacno++; else if (p.bonusWrong) faza.bonusPogresno++; else faza.bonusNereseno++;
+    }
+    pojmovi.push({ naziv: t.name, vrsta: vr, lociran: located, greske_lociranja: locmiss, pitanja: qd, bonus: bonus });
+  }
+  return { faza: faza, po_tezini: byTezina, po_vrsti: byVrsta, pojmovi: pojmovi };
+}
+
+function analysisTextToHTML(text) {
+  return esc(text).split(/\n\n+/).filter(s => s.trim()).map(s => '<p>' + s.replace(/\n/g, '<br>') + '</p>').join('');
+}
+
+async function callClaudeAnalysis(apiKey, data) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: ANALYSIS_MODEL,
+      max_tokens: 1000,
+      system: ANALYSIS_SYS,
+      messages: [{ role: 'user', content: ANALYSIS_USER + JSON.stringify(data) }]
+    })
+  });
+  if (!resp.ok) {
+    let detail = '';
+    try { detail = (await resp.text()).slice(0, 300); } catch (e) {}
+    throw new Error('HTTP ' + resp.status + ' ' + detail);
+  }
+  const j = await resp.json();
+  return (j.content && j.content[0] && j.content[0].text) ? j.content[0].text : '';
+}
+
+async function runAnalysis() {
+  if (analysisRunning) return;
+  const key = (localStorage.getItem(ANALYSIS_KEY_LS) || '').trim();
+  if (!key) {
+    analysisKeyRow.hidden = false;
+    analysisKey.value = '';
+    analysisBody.innerHTML = '<p class="placeholder">' + ANALYSIS_NO_KEY + '</p>';
+    return;
+  }
+  const data = buildAnalysisData();
+  if (!data.pojmovi.length || (data.faza.lokPostavljeno === 0 && data.faza.pitTacno === 0 && data.faza.pitPogresno === 0)) {
+    analysisBody.innerHTML = '<p class="placeholder">' + ANALYSIS_EMPTY + '</p>';
+    return;
+  }
+  analysisRunning = true;
+  analysisBody.innerHTML = '<p class="loading">' + ANALYSIS_LOADING + '</p>';
+  try {
+    const text = await callClaudeAnalysis(key, data);
+    analysisBody.innerHTML = analysisTextToHTML(text) || ('<p class="placeholder">' + ANALYSIS_EMPTY + '</p>');
+    analysisDone = true;
+  } catch (e) {
+    analysisBody.innerHTML = '<p class="err">' + ANALYSIS_ERROR + ' ' + esc(String((e && e.message) || e)) + '</p>';
+  } finally {
+    analysisRunning = false;
+  }
+}
+
+function maybeAutoAnalyze() {
+  if (!isTestMode() || analysisDone || analysisRunning) return;
+  const f = buildAnalysisData().faza;
+  const complete = f.lokUkupno > 0 && f.lokPostavljeno === f.lokUkupno &&
+                   f.pitUkupno > 0 && (f.pitTacno + f.pitPogresno) === f.pitUkupno;
+  if (complete) runAnalysis();
+}
+
+function resetAnalysis() {
+  analysisDone = false;
+  if (!analysisRunning) analysisBody.innerHTML = ANALYSIS_IDLE_HTML;
+}
+
+analysisRun.addEventListener('click', runAnalysis);
+analysisKeyToggle.addEventListener('click', () => {
+  analysisKeyRow.hidden = !analysisKeyRow.hidden;
+  if (!analysisKeyRow.hidden) analysisKey.value = localStorage.getItem(ANALYSIS_KEY_LS) || '';
+});
+analysisKeySave.addEventListener('click', () => {
+  try { localStorage.setItem(ANALYSIS_KEY_LS, analysisKey.value.trim()); } catch (e) {}
+  analysisKeyRow.hidden = true;
+  runAnalysis();
+});
+analysisKeyClear.addEventListener('click', () => {
+  try { localStorage.removeItem(ANALYSIS_KEY_LS); } catch (e) {}
+  analysisKey.value = '';
+});
 
 // --- title/description modal ---
 const descModal = document.getElementById('descModal');
@@ -1824,14 +2070,22 @@ def _term_questions(spec):
     if not znanje:
         return result
 
+    import hashlib as _hashlib
+    import random as _random
+
     def _conv(q):
+        opts = [
+            {"t": o.get("tekst", ""), "c": bool(o.get("tacan"))}
+            for o in (q.get("odgovori") or [])
+        ]
+        # Deterministic shuffle (seeded by the question text) so correct answers
+        # are not clustered first, while the build stays reproducible.
+        seed = int(_hashlib.md5((q.get("pitanje", "")).encode("utf-8")).hexdigest(), 16)
+        _random.Random(seed).shuffle(opts)
         return {
             "tezina": q.get("tezina"),
             "pitanje": q.get("pitanje", ""),
-            "options": [
-                {"t": o.get("tekst", ""), "c": bool(o.get("tacan"))}
-                for o in (q.get("odgovori") or [])
-            ],
+            "options": opts,
         }
 
     for t in spec["terms"]:
@@ -1915,7 +2169,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         boxes += (
             f'<div class="cell"{demo_attr} data-sx="{x:.1f}" data-sy="{y:.1f}" '
             f'data-canon-sx="{x:.1f}" data-canon-sy="{y:.1f}">'
-            f'<input class="ans" data-id="{t["id"]}" data-correct="{t["id"]}" data-miss="0" '
+            f'<input class="ans" data-id="{t["id"]}" data-correct="{t["id"]}" data-miss="0" data-locmiss="0" '
             f'maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number">'
             f'<span class="miss" style="display:none">0</span></div>'
         )
@@ -2020,10 +2274,23 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__BTN_PROVERI__": _json.dumps(ui["btn_proveri"]),
         "__Q_CORRECT__": _json.dumps(ui["q_correct"]),
         "__Q_WRONG__": _json.dumps(ui["q_wrong"]),
+        "__Q_INCORRECT__": _json.dumps(ui["q_incorrect"]),
         "__BONUS_LABEL__": _json.dumps(ui["bonus_label"]),
         "__BONUS_LOCKED__": _json.dumps(ui["bonus_locked"]),
         "__BONUS_NOTE__": _json.dumps(ui["bonus_note"]),
         "__TEST_NO_Q__": _json.dumps(ui["test_no_questions"]),
+        "__ANALYSIS_TITLE__": _html.escape(ui["analysis_title"]),
+        "__ANALYSIS_RUN__": _html.escape(ui["analysis_run"]),
+        "__ANALYSIS_KEY_LINK__": _html.escape(ui["analysis_key_link"]),
+        "__ANALYSIS_KEY_LABEL__": _html.escape(ui["analysis_key_label"]),
+        "__ANALYSIS_KEY_SAVE__": _html.escape(ui["analysis_key_save"]),
+        "__ANALYSIS_KEY_CLEAR__": _html.escape(ui["analysis_key_clear"]),
+        "__ANALYSIS_IDLE__": _html.escape(ui["analysis_idle"]),
+        "__ANALYSIS_NOTE__": _html.escape(ui["analysis_note"]),
+        "__ANALYSIS_LOADING__": _json.dumps(ui["analysis_loading"]),
+        "__ANALYSIS_NO_KEY__": _json.dumps(ui["analysis_no_key"]),
+        "__ANALYSIS_ERROR__": _json.dumps(ui["analysis_error"]),
+        "__ANALYSIS_EMPTY__": _json.dumps(ui["analysis_empty"]),
     }
     html = _HTML_TPL
     for k, v in repl.items():

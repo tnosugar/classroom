@@ -10,12 +10,12 @@ pitanja:
       - {tekst: "Holandija", tacan: false}
 
   - tezina: srednje
-    pitanje: "Koja mora i moreuzi okružuju Jiland?"
+    pitanje: "Koje more se prostire uz zapadnu obalu Jilanda?"
     odgovori:
-      - {tekst: "Severno more na zapadu", tacan: true}
-      - {tekst: "Skagerak na severu", tacan: true}
-      - {tekst: "Baltičko more na istoku", tacan: true}
-      - {tekst: "Crno more na jugu", tacan: false}
+      - {tekst: "Severno more", tacan: true}
+      - {tekst: "Crno more", tacan: false}
+      - {tekst: "Sredozemno more", tacan: false}
+      - {tekst: "Jadransko more", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno za Jiland?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Severnojutlandsko ostrvo je od kopna odvojeno Limfjordom posle poplave 1825.", tacan: true}
-    - {tekst: "Angli, Sasi i Jiti su oko 450. g. migrirali u Britaniju", tacan: true}
     - {tekst: "Najjužniji deo poluostrva (Šlezvig-Holštajn) pripada Nemačkoj", tacan: true}
-    - {tekst: "Poluostrvo nikada nije bilo povezano kopnom sa ostatkom Evrope", tacan: false}
+    - {tekst: "Angli, Sasi i Jiti su oko 450. g. migrirali iz Britanije na Jiland", tacan: false}
+    - {tekst: "Skagerak se prostire uz južnu granicu poluostrva", tacan: false}

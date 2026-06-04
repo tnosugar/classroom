@@ -28,7 +28,7 @@ pitanja:
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
-    - {tekst: "Kamarinalski prag na zapadu ograničava mešanje atlantske i sredozemne vode", tacan: true}
-    - {tekst: "Tokom Drugog svetskog rata nemačke podmornice koristile su struje za prolaz", tacan: true}
     - {tekst: "Ime Gibraltar potiče od Tarikove stene (Džebel Tarik)", tacan: true}
     - {tekst: "Kroz moreuz je već izgrađen podmorski železnički tunel", tacan: false}
+    - {tekst: "Moreuz razdvaja Severnu i Južnu Ameriku", tacan: false}
+    - {tekst: "Najuži deo moreuza širok je oko 500 km", tacan: false}

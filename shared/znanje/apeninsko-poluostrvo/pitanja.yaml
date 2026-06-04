@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za Apeninsko poluostrvo?"
     odgovori:
       - {tekst: "Ima karakterističan oblik čizme", tacan: true}
-      - {tekst: "Unutar njega se pružaju Apenini", tacan: true}
       - {tekst: "Na njemu su mini-države San Marino i Vatikan", tacan: true}
       - {tekst: "Nalazi se u severnoj Evropi", tacan: false}
+      - {tekst: "Kroz njega se pruža planinski venac Pirineji", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o morima i vulkanu na poluostrvu?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Jedno je od tri velika poluostrva južne Evrope", tacan: true}
-    - {tekst: "Oblik čizme čine Kalabrija, Salento i Gargano", tacan: true}
-    - {tekst: "Proteže se oko 1.000 km od doline reke Po do Sredozemnog mora", tacan: true}
     - {tekst: "Padska nizija je najviši planinski deo poluostrva", tacan: false}
+    - {tekst: "Oblik čizme čine poluostrva Krit i Peloponez", tacan: false}
+    - {tekst: "Proteže se oko 5.000 km u pravcu istok-zapad", tacan: false}

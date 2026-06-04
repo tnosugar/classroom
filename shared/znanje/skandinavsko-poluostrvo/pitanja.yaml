@@ -14,21 +14,21 @@ pitanja:
     odgovori:
       - {tekst: "Baltičko more", tacan: true}
       - {tekst: "Norveško more", tacan: true}
-      - {tekst: "Barencovo more", tacan: true}
       - {tekst: "Crno more", tacan: false}
+      - {tekst: "Kaspijsko jezero", tacan: false}
 
   - tezina: tesko
-    pitanje: "Šta je tačno o geologiji poluostrva?"
+    pitanje: "Šta je tačno o geologiji i visini poluostrva?"
     odgovori:
       - {tekst: "Počiva na Baltičkom štitu", tacan: true}
-      - {tekst: "Teren se postglacijalno izdiže (~1 m po veku)", tacan: true}
-      - {tekst: "Fjordovi su nastali glacijacijom rečnih dolina", tacan: true}
       - {tekst: "Površina mu je oko 75.000 km²", tacan: false}
+      - {tekst: "Najviši vrh je Galdhepigen visok svega 469 m", tacan: false}
+      - {tekst: "Teren se postglacijalno spušta oko 1 km po veku", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Ime potiče od regije Skanija (Skåne)", tacan: true}
-    - {tekst: "Zbog rude gvožđa izgrađena je pruga do luke Narvik", tacan: true}
-    - {tekst: "Prvi generalni sekretar UN bio je Norvežanin (Trigve Li)", tacan: true}
     - {tekst: "Najsevernija tačka je rt Nordkap kod Bergena", tacan: false}
+    - {tekst: "Zbog rude gvožđa izgrađena je pruga do luke u Lisabonu", tacan: false}
+    - {tekst: "Prvi generalni sekretar UN bio je Italijan", tacan: false}

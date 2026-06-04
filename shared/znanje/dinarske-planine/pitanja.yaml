@@ -5,17 +5,17 @@ pitanja:
     pitanje: "Šta je tačno za Dinarske planine (Dinaride)?"
     odgovori:
       - {tekst: "Protežu se zapadnim delom Balkanskog poluostrva", tacan: true}
-      - {tekst: "Prolaze kroz Srbiju, Crnu Goru, BiH, Hrvatsku, Sloveniju i Albaniju", tacan: true}
       - {tekst: "Ime su dobile po planini Dinari", tacan: true}
       - {tekst: "Nalaze se u severnoj Skandinaviji", tacan: false}
+      - {tekst: "Prostiru se kroz Španiju i Portugal", tacan: false}
 
   - tezina: srednje
     pitanje: "Šta je tačno o pravcu, dužini i vrhovima Dinarida?"
     odgovori:
       - {tekst: "Pružaju se pravcem severozapad–jugoistok", tacan: true}
-      - {tekst: "Najviša planina su Prokletije (Jezerski vrh, 2.694 m)", tacan: true}
-      - {tekst: "Dužina lanca je oko 645 km", tacan: true}
       - {tekst: "Pružaju se pravcem istok–zapad", tacan: false}
+      - {tekst: "Najviša planina su im Karpati", tacan: false}
+      - {tekst: "Dužina lanca je svega oko 60 km", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o reljefu i spajanju Dinarida?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na jugoistoku se spajaju sa Šarsko-pindskim vencem", tacan: true}
-    - {tekst: "Smatra se da su 'Dinarci' među najvišim ljudima u Evropi", tacan: true}
-    - {tekst: "Glavne privredne grane kraja su šumarstvo i rudarstvo", tacan: true}
     - {tekst: "Rimljani su Ilire pokorili za samo nekoliko godina", tacan: false}
+    - {tekst: "Najviša planina Dinarida je Mon Blan", tacan: false}
+    - {tekst: "Dinaridi ne prolaze kroz Srbiju ni Crnu Goru", tacan: false}

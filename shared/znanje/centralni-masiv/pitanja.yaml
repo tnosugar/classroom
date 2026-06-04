@@ -13,22 +13,22 @@ pitanja:
     pitanje: "Šta je tačno za Centralni masiv?"
     odgovori:
       - {tekst: "Najviši vrh je Pij de Sansi (1.886 m)", tacan: true}
-      - {tekst: "Obuhvata oko 450 ugaslih vulkana", tacan: true}
       - {tekst: "Od Alpa ga odvajaju doline reka Rone i Sone", tacan: true}
       - {tekst: "Najviši vrh prelazi 4.000 m", tacan: false}
+      - {tekst: "Cela oblast nalazi se u severnoj Italiji", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o postanku i površini masiva?"
     odgovori:
       - {tekst: "To su stare gromadne planine, formirane pre ~500 miliona godina", tacan: true}
       - {tekst: "Pokriva oko 85.000 km² (~15% Francuske)", tacan: true}
-      - {tekst: "Ima najveću koncentraciju vulkana na svetu", tacan: true}
+      - {tekst: "Ima najveću koncentraciju ugaslih vulkana na svetu", tacan: true}
       - {tekst: "Nastao je alpskom orogenezom pre ~50 miliona godina", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "U masivu se nalaze regioni Overnja i Limuzen", tacan: true}
-    - {tekst: "Najveći gradovi su Klermon-Feran i Sent-Etjen", tacan: true}
-    - {tekst: "Vulkanska aktivnost prestala je pre oko 10.000 godina", tacan: true}
+    - {tekst: "Najveći gradovi su Marsej i Lion", tacan: false}
+    - {tekst: "Vulkanska aktivnost prestala je pre oko milion godina", tacan: false}
     - {tekst: "Najviši vrh je Mon Blan", tacan: false}

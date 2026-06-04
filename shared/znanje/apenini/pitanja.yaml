@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Najvažnije reke su Tibar i Arno", tacan: true}
       - {tekst: "Na Korno Grande nalazi se Kalderone, jedini glečer na Apeninima", tacan: true}
-      - {tekst: "Duž lanca su aktivni vulkani Vezuv i Etna", tacan: true}
       - {tekst: "Reke su uglavnom duge i mirne", tacan: false}
+      - {tekst: "Lanac je potpuno seizmički miran, bez zemljotresa", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Najviši vrh je na planini Gran Saso", tacan: true}
-    - {tekst: "Od 11. veka dokumentovano je više od 40.000 zemljotresa", tacan: true}
     - {tekst: "Najveće jezero u njihovom području je Trazimensko", tacan: true}
     - {tekst: "Apenini se na severozapadu spajaju sa Karpatima", tacan: false}
+    - {tekst: "Najviši vrh Apenina prelazi 4.000 m", tacan: false}

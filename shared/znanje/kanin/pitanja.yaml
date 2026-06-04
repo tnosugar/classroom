@@ -12,25 +12,25 @@ pitanja:
       - {tekst: "Jezero", tacan: false}
 
   - tezina: srednje
-    pitanje: "Gde se nalazi poluostrvo Kanin?"
+    pitanje: "Šta je tačno za položaj poluostrva Kanin?"
     odgovori:
       - {tekst: "Na krajnjem severu evropske Rusije", tacan: true}
       - {tekst: "Uz Belo more", tacan: true}
-      - {tekst: "U Sredozemnom moru", tacan: false}
-      - {tekst: "Na jugu Grčke", tacan: false}
+      - {tekst: "Razdvaja Belo more od Barencovog mora", tacan: true}
+      - {tekst: "Nalazi se na jugu Grčke, u Sredozemnom moru", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno za Kanin prema srpskim izvorima?"
     odgovori:
       - {tekst: "Svrstava se u manja evropska poluostrva (uz Jiland, Kolu, Krim, Peloponez)", tacan: true}
       - {tekst: "Reka Kija na njemu se uliva u Belo more", tacan: true}
-      - {tekst: "Razdvaja Belo more od Barencovog mora", tacan: true}
       - {tekst: "To je najveće poluostrvo Evrope", tacan: false}
+      - {tekst: "Po površini je veće od celog Skandinavskog poluostrva", tacan: false}
 
 bonus:
-  pitanje: "Šta je tačno o izvorima za Kanin?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Srpska Wikipedija nema zaseban članak o ovom poluostrvu", tacan: true}
-    - {tekst: "Pojam je potvrđen u opštem članku „Polustrvo“", tacan: true}
-    - {tekst: "Postoji srodna odrednica o reci Kija (Kanin)", tacan: true}
     - {tekst: "O Kaninu postoji opširan zaseban srpski članak sa svim brojčanim podacima", tacan: false}
+    - {tekst: "Pojam se ne pominje ni u jednom srpskom izvoru", tacan: false}
+    - {tekst: "Srpski izvori navode tačnu površinu i najvišu tačku poluostrva", tacan: false}

@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za Pirinejsko poluostrvo?"
     odgovori:
       - {tekst: "Od ostatka Evrope odvajaju ga Pirineji", tacan: true}
-      - {tekst: "Drugi naziv mu je Iberijsko poluostrvo", tacan: true}
-      - {tekst: "Na jugu ga Gibraltarski moreuz odvaja od Afrike", tacan: true}
       - {tekst: "Nalazi se na krajnjem severoistoku Evrope", tacan: false}
+      - {tekst: "Drugi naziv mu je Apeninsko poluostrvo", tacan: false}
+      - {tekst: "Na jugu ga Bosfor odvaja od Azije", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o geografiji poluostrva?"
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Rimljani su poluostrvo nazivali Hispanija", tacan: true}
     - {tekst: "Mavari su jug poluostrva nazivali Al-Andaluz", tacan: true}
-    - {tekst: "Rekonkista je završena padom Granade 1492.", tacan: true}
     - {tekst: "Baskijski jezik je blizak srodnik španskog", tacan: false}
+    - {tekst: "Rekonkista je završena padom Madrida 1812.", tacan: false}

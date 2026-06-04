@@ -20,15 +20,15 @@ pitanja:
   - tezina: tesko
     pitanje: "Šta je tačno o položaju i klimi Islanda?"
     odgovori:
-      - {tekst: "Arktički polarni krug prolazi tik uz njegovu severnu obalu", tacan: true}
-      - {tekst: "Najbliže kopno na zapadu je Grenland (~290 km)", tacan: true}
       - {tekst: "Klimu ublažava topla Severnoatlantska (Irmingerova) struja", tacan: true}
+      - {tekst: "Najbliže kopno na zapadu je Grenland (~290 km)", tacan: true}
       - {tekst: "Najnaseljenija je država Evrope", tacan: false}
+      - {tekst: "Najbliže kopno mu je Sicilija, udaljena svega ~50 km", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Rt Bjargtangar na Islandu je ujedno najzapadnija tačka Evrope", tacan: true}
-    - {tekst: "Na Islandu je registrovano oko 30 aktivnih vulkanskih sistema", tacan: true}
-    - {tekst: "Oko dve trećine stanovništva živi u Rejkjaviku i okolini", tacan: true}
     - {tekst: "Reke Islanda su duge, spore i plovne velikim brodovima", tacan: false}
+    - {tekst: "Na Islandu nema nijednog aktivnog vulkanskog sistema", tacan: false}
+    - {tekst: "Gotovo niko ne živi u Rejkjaviku — stanovništvo je raštrkano po unutrašnjosti", tacan: false}

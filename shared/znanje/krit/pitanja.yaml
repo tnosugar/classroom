@@ -14,21 +14,21 @@ pitanja:
     odgovori:
       - {tekst: "Peto je po veličini ostrvo na Mediteranu", tacan: true}
       - {tekst: "Najviši vrh je Ida (2.456 m)", tacan: true}
-      - {tekst: "Pretežno je planinsko, sa ravnicama na severu", tacan: true}
       - {tekst: "Potpuno je ravničarsko, bez planina", tacan: false}
+      - {tekst: "Najviši vrh mu je niži od 500 m", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o istoriji i položaju Krita?"
     odgovori:
       - {tekst: "Glavni grad minojskog Krita bio je Knosos", tacan: true}
-      - {tekst: "Ostrvce Gavdos je najjužnija naseljena tačka Evrope", tacan: true}
-      - {tekst: "Krićani su u doba najveće moći imali jaku flotu i vladali Egejskim morem", tacan: true}
       - {tekst: "Minojsku civilizaciju osnovali su Rimljani", tacan: false}
+      - {tekst: "Najjužnija naseljena tačka Evrope je grad Iraklion", tacan: false}
+      - {tekst: "Krit se nalazi na krajnjem severu Egejskog mora", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Glavni grad i upravno središte ostrva danas je Iraklion", tacan: true}
     - {tekst: "Minojska moć je naglo prekinuta oko 1400. p. n. e.", tacan: true}
-    - {tekst: "Krit je upravno posebna grčka periferija sa 4 okruga", tacan: true}
     - {tekst: "Dužina obale ostrva je svega oko 100 km", tacan: false}
+    - {tekst: "Ostrvce Gavdos je najsevernija tačka Grčke", tacan: false}

@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Izgrađene su od stena karbonske starosti", tacan: true}
       - {tekst: "Kameni ugalj iz podnožja učinio ih je industrijskim krajem", tacan: true}
-      - {tekst: "Protežu se od reke Taj do reke Trent", tacan: true}
       - {tekst: "Nastale su vulkanskom aktivnošću u kvartaru", tacan: false}
+      - {tekst: "Protežu se od reke Temze do reke Severn", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na istočnim padinama su Jorkšir i grad Njukasl", tacan: true}
-    - {tekst: "Na zapadnim padinama je Lankašir", tacan: true}
-    - {tekst: "Pre industrijske revolucije bili su siromašan poljoprivredni kraj pod šumama", tacan: true}
+    - {tekst: "Na zapadnim padinama je oblast Andaluzija", tacan: false}
+    - {tekst: "Pre industrijske revolucije bili su gusto naseljen rudarski centar bez šuma", tacan: false}
     - {tekst: "Najviši vrh Kros Fel nalazi se u Škotskoj", tacan: false}

@@ -22,8 +22,8 @@ pitanja:
     odgovori:
       - {tekst: "Napaja se uglavnom otapanjem snega (60–70%)", tacan: true}
       - {tekst: "Kod ušća gradi razgranatu, prstastu deltu", tacan: true}
-      - {tekst: "U gornjem toku je tipična planinska reka", tacan: true}
       - {tekst: "Nikada se ne ledi jer protiče kroz tropski pojas", tacan: false}
+      - {tekst: "Izvire u Kaspijskom jezeru i teče ka severu", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"

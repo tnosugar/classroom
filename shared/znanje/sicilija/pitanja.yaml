@@ -10,12 +10,12 @@ pitanja:
       - {tekst: "Najsevernije", tacan: false}
 
   - tezina: srednje
-    pitanje: "Šta je tačno za Siciliju?"
+    pitanje: "Koji vulkan se diže na Siciliji?"
     odgovori:
-      - {tekst: "Od kopnene Italije deli je Mesinski moreuz", tacan: true}
-      - {tekst: "Na severu je zapljuskuje Tirensko more", tacan: true}
-      - {tekst: "Na njoj se nalazi vulkan Etna", tacan: true}
-      - {tekst: "Pripada Španiji", tacan: false}
+      - {tekst: "Etna", tacan: true}
+      - {tekst: "Vezuv", tacan: false}
+      - {tekst: "Hekla", tacan: false}
+      - {tekst: "Krakatau", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o reljefu i geologiji Sicilije?"
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Ima trougaoni oblik (vrhovi Kapo Peloro, Kapo Boeo, Kapo Pasero)", tacan: true}
     - {tekst: "Pred severnom obalom leže Eolska (Liparska) ostrva", tacan: true}
-    - {tekst: "Drugi po visini vrh je Pico Karbonara (1.977 m)", tacan: true}
     - {tekst: "Sicilija je oko 160 km udaljena od Grenlanda", tacan: false}
+    - {tekst: "Od kopnene Italije je deli Mesinski moreuz širok preko 200 km", tacan: false}

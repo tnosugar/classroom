@@ -2,7 +2,7 @@
 # Odgovorljivo iz index.md + izvori/wikipedia.md.
 pitanja:
   - tezina: lako
-    pitanje: "U kom pravcu se pružaju Balkanske planine?"
+    pitanje: "U kom pravcu se pružaju Balkanske planine i do kog mora izlaze?"
     odgovori:
       - {tekst: "Zapad–istok, do Crnog mora", tacan: true}
       - {tekst: "Sever–jug, do Jadranskog mora", tacan: false}
@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Deo su Alpsko-himalajskog sistema", tacan: true}
       - {tekst: "Severno podnožje nosi naziv Predbalkan", tacan: true}
-      - {tekst: "Južno podnožje naziva se Srednjegorje (Srednja gora)", tacan: true}
+      - {tekst: "Južno podnožje naziva se Dinaridi", tacan: false}
       - {tekst: "Pripadaju Skandinavskim kaledonima", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Naziv „Balkan“ je persijskog porekla i znači „brdoviti kraj“", tacan: true}
-    - {tekst: "Rimsko ime masiva bilo je Haemus", tacan: true}
-    - {tekst: "U Srbiji je najviši vrh Midžor (2.169 m), na granici sa Bugarskom", tacan: true}
+    - {tekst: "Rimsko ime masiva bilo je Karpates", tacan: false}
+    - {tekst: "U Srbiji je najviši vrh Triglav (2.864 m)", tacan: false}
     - {tekst: "Venac se na istoku završava kod Gibraltarskog moreuza", tacan: false}

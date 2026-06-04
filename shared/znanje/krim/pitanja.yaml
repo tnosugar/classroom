@@ -21,14 +21,14 @@ pitanja:
     pitanje: "Šta je tačno o istoriji i stanovništvu Krima?"
     odgovori:
       - {tekst: "Antičko ime poluostrva bilo je Taurika (Taurida)", tacan: true}
-      - {tekst: "1954. je prebačen iz sovjetske Rusije u sovjetsku Ukrajinu", tacan: true}
       - {tekst: "Po popisu iz 2001. većinu čine etnički Rusi", tacan: true}
       - {tekst: "Poluostrvo nikada nije bilo pod osmanskom vlašću", tacan: false}
+      - {tekst: "1954. je prebačen iz sovjetske Ukrajine u sovjetsku Rusiju", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Knez Vladimir I je 988. kršten u gradu Hersonesu na Krimu", tacan: true}
-    - {tekst: "Najvažnija grčka kolonija bio je Hersones Taurijski (osnovan 422. p. n. e.)", tacan: true}
     - {tekst: "Krimski kanat je od 1475. postao vazal Osmanskog carstva", tacan: true}
     - {tekst: "Najviše padavina na Krimu ima na krajnjem severu poluostrva", tacan: false}
+    - {tekst: "Najvažnija grčka kolonija bio je Hersones Taurijski, osnovan tek u 5. veku n. e.", tacan: false}

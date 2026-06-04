@@ -4,18 +4,18 @@ pitanja:
   - tezina: lako
     pitanje: "Kakav oblik ima venac Karpata i u kojoj državi mu je najveći deo?"
     odgovori:
-      - {tekst: "Oblik velikog luka; najveći deo u Rumuniji", tacan: true}
-      - {tekst: "Pravolinijski pravac sever–jug; najveći deo u Poljskoj", tacan: false}
-      - {tekst: "Oblik prstena; najveći deo u Mađarskoj", tacan: false}
-      - {tekst: "Pravolinijski pravac zapad–istok; najveći deo u Srbiji", tacan: false}
+      - {tekst: "Oblik velikog luka", tacan: true}
+      - {tekst: "Najveći deo se nalazi u Rumuniji", tacan: true}
+      - {tekst: "Pravolinijski pravac sever–jug, kroz celu Poljsku", tacan: false}
+      - {tekst: "Najveći deo se nalazi u Mađarskoj", tacan: false}
 
   - tezina: srednje
-    pitanje: "Šta je tačno za Karpate?"
+    pitanje: "Šta je tačno za najviši vrh Karpata?"
     odgovori:
       - {tekst: "Najviši vrh je Gerlahovski štit (2.655 m) u Slovačkoj", tacan: true}
-      - {tekst: "Na zapadu se graniče sa Alpima", tacan: true}
-      - {tekst: "Prostiru se i kroz istočnu Srbiju", tacan: true}
-      - {tekst: "Najviši vrh nalazi se u Rumuniji", tacan: false}
+      - {tekst: "Najviši vrh je Moldoveanu (2.543 m) u Rumuniji", tacan: false}
+      - {tekst: "Najviši vrh je u rumunskom delu venca", tacan: false}
+      - {tekst: "Najviši vrh nalazi se u Visokim Beskidima u Poljskoj", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o podeli i prirodi Karpata?"
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Naziv prvi beleži geograf Ptolemej u 2. veku", tacan: true}
     - {tekst: "U Karpatima izviru reke Tisa, Visla, Odra, Dnjestar i Prut", tacan: true}
-    - {tekst: "Rumunija ima najveće rezerve gasa, južno od Transilvanijskih Alpa", tacan: true}
+    - {tekst: "Rumunija ima najmanje rezerve gasa u Evropi, severno od Tatri", tacan: false}
     - {tekst: "Najviši vrh Gerlahovski štit nalazi se u Beskidima u Poljskoj", tacan: false}

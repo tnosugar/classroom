@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Grupa Gimnezijas obuhvata Majorku, Menorku i Kabreru", tacan: true}
       - {tekst: "Grupa Pitijusas obuhvata Ibizu i Formenteru", tacan: true}
-      - {tekst: "Najveće ostrvo je Majorka", tacan: true}
       - {tekst: "Sva ostrva pripadaju jednoj jedinstvenoj grupi", tacan: false}
+      - {tekst: "Najveće ostrvo arhipelaga je Formentera", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Mavare je sa ostrva isterao aragonski kralj Đaume I 1229. godine", tacan: true}
-    - {tekst: "Glavni izvori prihoda su ribarstvo, poljoprivreda i turizam", tacan: true}
-    - {tekst: "Broj stanovnika je kroz decenije rastao i prešao milion", tacan: true}
     - {tekst: "Prvi stanovnici ostrva bili su Vikinzi", tacan: false}
+    - {tekst: "Broj stanovnika je kroz decenije opadao i pao ispod 100.000", tacan: false}
+    - {tekst: "Zvanični jezik arhipelaga je isključivo portugalski", tacan: false}

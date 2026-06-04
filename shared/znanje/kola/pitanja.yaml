@@ -18,12 +18,12 @@ pitanja:
       - {tekst: "Egejsko more na istoku", tacan: false}
 
   - tezina: tesko
-    pitanje: "Šta je tačno za Koljsko poluostrvo?"
+    pitanje: "Šta je tačno za položaj Koljskog poluostrva?"
     odgovori:
-      - {tekst: "Površina je oko 100.000 km²", tacan: true}
-      - {tekst: "Glavna luka regiona je Murmansk", tacan: true}
       - {tekst: "Geološki zauzima severoistočni rub Baltičkog štita", tacan: true}
       - {tekst: "Nalazi se daleko južno od arktičkog kruga, u suptropskom pojasu", tacan: false}
+      - {tekst: "Površina mu je tek oko 1.000 km²", tacan: false}
+      - {tekst: "Leži na krajnjem jugozapadu Rusije, uz Kaspijsko more", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"

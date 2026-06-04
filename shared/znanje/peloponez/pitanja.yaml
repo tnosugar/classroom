@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za Peloponez?"
     odgovori:
       - {tekst: "Nalazi se južno od Korintskog zaliva", tacan: true}
-      - {tekst: "Od 1893. ga od kopna deli Korintski kanal", tacan: true}
       - {tekst: "Najviša planina je Kilini (2.376 m)", tacan: true}
       - {tekst: "To je najsevernije poluostrvo Grčke", tacan: false}
+      - {tekst: "Od 1893. ga od kopna deli Sueski kanal", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o istoriji Peloponeza?"
@@ -28,7 +28,7 @@ pitanja:
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
-    - {tekst: "Sa kopnom ga, pored prevlake, spaja i most Rio-Antirio iz 2004.", tacan: true}
     - {tekst: "Grčki rat za nezavisnost počeo je zauzimanjem Kalamate 23. marta 1821.", tacan: true}
-    - {tekst: "Vizantinci su jugom poluostrva vladali iz utvrđenog grada Mistre kod Sparte", tacan: true}
     - {tekst: "Najveći moderni grad Peloponeza je Sparta", tacan: false}
+    - {tekst: "Sa kopnom ga, pored prevlake, spaja most Rio-Antirio izgrađen još 1893.", tacan: false}
+    - {tekst: "Najviša planina poluostrva, Kilini, dostiže preko 4.000 m", tacan: false}

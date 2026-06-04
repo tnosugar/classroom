@@ -21,14 +21,14 @@ pitanja:
     pitanje: "Šta je tačno o vodama i položaju jezera?"
     odgovori:
       - {tekst: "Površina mu je oko 28 m ispod nivoa svetskog okeana", tacan: true}
-      - {tekst: "Volga obezbeđuje oko 80% priliva vode", tacan: true}
-      - {tekst: "Ima negativan vodni bilans — isparavanje premašuje priliv", tacan: true}
+      - {tekst: "Volga obezbeđuje oko 80% priliva vode, ali nema prirodnog otoka", tacan: true}
       - {tekst: "Ima prirodan otok kojim se prazni u Crno more", tacan: false}
+      - {tekst: "Površina mu je znatno iznad nivoa svetskog okeana", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Oko 90% svetske populacije jesetri živi u Kaspijskom jezeru", tacan: true}
-    - {tekst: "Kaspijska foka je endemska i nigde se drugde ne nalazi", tacan: true}
     - {tekst: "Jezero je ostatak drevnog Paratetiskog mora", tacan: true}
     - {tekst: "U jezeru ne postoji nijedna vrsta ribe", tacan: false}
+    - {tekst: "Kaspijsko jezero je manje od Ohridskog jezera", tacan: false}

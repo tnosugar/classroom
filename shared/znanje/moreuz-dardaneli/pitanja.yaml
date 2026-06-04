@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za položaj Dardanela?"
     odgovori:
       - {tekst: "Razdvajaju Evropu od Azije", tacan: true}
-      - {tekst: "Sa severne strane omeđuje ih poluostrvo Galipolje", tacan: true}
-      - {tekst: "Na južnoj obali leži grad Čanakale", tacan: true}
       - {tekst: "Nalaze se na severu Skandinavije", tacan: false}
+      - {tekst: "Na južnoj obali leži grad Solun", tacan: false}
+      - {tekst: "Sa severne strane omeđuje ih poluostrvo Krim", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o imenu i istoriji Dardanela?"
@@ -28,7 +28,7 @@ pitanja:
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
-    - {tekst: "Kroz moreuz teku dve struje, površinska i dublja slanija", tacan: true}
     - {tekst: "Drevni grad Troja bio je blizu zapadnog ulaza u moreuz", tacan: true}
-    - {tekst: "Aleksandar Veliki prešao je moreuz 334. p. n. e.", tacan: true}
     - {tekst: "Moreuz je najširi morski prolaz na svetu", tacan: false}
+    - {tekst: "Sa južne strane omeđuje ih poluostrvo Galipolje u Evropi", tacan: false}
+    - {tekst: "Aleksandar Veliki nikada nije prešao moreuz", tacan: false}

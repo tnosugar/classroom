@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za Pirineje?"
     odgovori:
       - {tekst: "Najviši vrh je Aneto (3.404 m)", tacan: true}
-      - {tekst: "Odvajaju Pirinejsko poluostrvo od ostatka Evrope", tacan: true}
       - {tekst: "Između Francuske i Španije leži kneževina Andora", tacan: true}
       - {tekst: "Mlađi su od Alpa", tacan: false}
+      - {tekst: "Razdvajaju Apeninsko poluostrvo od Francuske", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o pejzažu i geologiji Pirineja?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Pružaju se od Baskijskog (Biskajskog) zaliva do Sredozemnog mora", tacan: true}
-    - {tekst: "Domaći mrki medved je 1996. ponovo naseljen medvedima iz Slovenije", tacan: true}
     - {tekst: "Kroz Pirineje prolaze etape Tur de Fransa i Vuelte", tacan: true}
     - {tekst: "Najviši vrh je Mon Blan", tacan: false}
+    - {tekst: "Pirineji se u celini nalaze na teritoriji Andore", tacan: false}

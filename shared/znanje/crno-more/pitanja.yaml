@@ -14,8 +14,8 @@ pitanja:
     odgovori:
       - {tekst: "Dunav", tacan: true}
       - {tekst: "Dnjepar", tacan: true}
-      - {tekst: "Don", tacan: true}
       - {tekst: "Nil", tacan: false}
+      - {tekst: "Volga", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o vodama Crnog mora?"

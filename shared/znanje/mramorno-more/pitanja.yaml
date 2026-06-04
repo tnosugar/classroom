@@ -2,20 +2,20 @@
 # Odgovorljivo iz index.md + izvori/wikipedia.md.
 pitanja:
   - tezina: lako
-    pitanje: "Koja dva mora povezuje Mramorno more?"
+    pitanje: "Koje od navedenih tvrdnji o Mramornom moru je tačno?"
     odgovori:
-      - {tekst: "Crno more", tacan: true}
-      - {tekst: "Egejsko more", tacan: true}
-      - {tekst: "Jadransko more", tacan: false}
-      - {tekst: "Baltičko more", tacan: false}
+      - {tekst: "Povezuje Crno i Egejsko more", tacan: true}
+      - {tekst: "Povezuje Jadransko i Baltičko more", tacan: false}
+      - {tekst: "Povezuje Crno more i Atlantski okean", tacan: false}
+      - {tekst: "Povezuje Sredozemno i Severno more", tacan: false}
 
   - tezina: srednje
     pitanje: "Šta je tačno za moreuze koji okružuju Mramorno more?"
     odgovori:
       - {tekst: "Bosfor ga spaja sa Crnim morem", tacan: true}
       - {tekst: "Dardaneli ga spajaju sa Egejskim morem", tacan: true}
-      - {tekst: "Istanbul leži na njegovoj severnoj obali", tacan: true}
       - {tekst: "Gibraltarski moreuz ga spaja sa Atlantikom", tacan: false}
+      - {tekst: "Kerčki moreuz ga spaja sa Azovskim morem", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o imenu i osobinama Mramornog mora?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Prinčevska ostrva nalaze se blizu Istanbula", tacan: true}
-    - {tekst: "Površina mora iznosi oko 11.350 km²", tacan: true}
     - {tekst: "Smatra se da je nastalo pre oko 2,5 miliona godina", tacan: true}
     - {tekst: "Najveće ostrvo u moru zove se Kipar", tacan: false}
+    - {tekst: "Površina mora iznosi oko 100.000 km²", tacan: false}

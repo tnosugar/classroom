@@ -13,17 +13,17 @@ pitanja:
     pitanje: "Šta je tačno o veličini i nastanku Alpa?"
     odgovori:
       - {tekst: "Sadrže oko sto vrhova viših od 4.000 m", tacan: true}
-      - {tekst: "Prostiru se na oko 200.000 km²", tacan: true}
       - {tekst: "Nastali su sudarom Afričke i Evroazijske ploče", tacan: true}
       - {tekst: "Mon Blan je niži od 1.000 m", tacan: false}
+      - {tekst: "Prostiru se na svega oko 2.000 km²", tacan: false}
 
   - tezina: tesko
-    pitanje: "Šta je tačno o prevojima i glečerima Alpa?"
+    pitanje: "Šta je tačno o glečerima i prevojima Alpa?"
     odgovori:
       - {tekst: "Najveći glečer Alpa je Aleč u Švajcarskoj", tacan: true}
-      - {tekst: "Ispod masiva Gotard izgrađen je najduži tunel na svetu", tacan: true}
-      - {tekst: "Veliki Sent Bernardov prevoj koristio je Napoleon I", tacan: true}
       - {tekst: "Alpi nemaju nijedan planinski prevoj", tacan: false}
+      - {tekst: "Najviši vrh Alpa je Triglav u Sloveniji", tacan: false}
+      - {tekst: "Na Alpima nema nijednog glečera", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"

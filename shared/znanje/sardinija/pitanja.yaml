@@ -5,9 +5,9 @@ pitanja:
     pitanje: "Šta je tačno za Sardiniju?"
     odgovori:
       - {tekst: "Drugo je najveće ostrvo u Sredozemnom moru", tacan: true}
-      - {tekst: "Pripada Italiji", tacan: true}
-      - {tekst: "Veće je od Sicilije", tacan: false}
       - {tekst: "Glavni grad joj je Kaljari", tacan: true}
+      - {tekst: "Veće je od Sicilije", tacan: false}
+      - {tekst: "Pripada Francuskoj", tacan: false}
 
   - tezina: srednje
     pitanje: "Koje kopno je najbliže Sardiniji?"
@@ -30,5 +30,5 @@ bonus:
   odgovori:
     - {tekst: "Praistorijske kamene građevine na ostrvu zovu se nuragi", tacan: true}
     - {tekst: "Rimljani su preuzeli ostrvo 238. p. n. e.", tacan: true}
-    - {tekst: "Najveće veštačko jezero na ostrvu je Omodeo", tacan: true}
+    - {tekst: "Najviši vrh ostrva je viši od 3.000 m", tacan: false}
     - {tekst: "Sardinija je najgušće naseljena pokrajina Italije", tacan: false}

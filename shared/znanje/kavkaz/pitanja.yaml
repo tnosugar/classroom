@@ -22,13 +22,13 @@ pitanja:
     odgovori:
       - {tekst: "Nastao je sudarom Arabijske i Evroazijske ploče", tacan: true}
       - {tekst: "Mali Kavkaz je uglavnom vulkanskog porekla", tacan: true}
-      - {tekst: "Elbrus i Kazbek su vulkanskog porekla", tacan: true}
       - {tekst: "Region je potpuno seizmički miran i bez zemljotresa", tacan: false}
+      - {tekst: "Nastao je sudarom Severnoameričke i Pacifičke ploče", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Veliki Kavkaz pruža se od okoline Sočija do Bakua", tacan: true}
-    - {tekst: "Postoje neslaganja oko toga da li je Elbrus u Evropi ili Aziji", tacan: true}
-    - {tekst: "Zemljotres u Spitaku 1988. uništio je region Gjumri-Vanadzor", tacan: true}
     - {tekst: "Mali Kavkaz leži oko 1.000 km severno od Velikog Kavkaza", tacan: false}
+    - {tekst: "Najviši vrh Kavkaza, Elbrus, niži je od Triglava", tacan: false}
+    - {tekst: "Kavkaz razdvaja Baltičko more od Severnog mora", tacan: false}

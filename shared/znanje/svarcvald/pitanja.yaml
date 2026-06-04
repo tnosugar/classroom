@@ -12,23 +12,23 @@ pitanja:
   - tezina: srednje
     pitanje: "Šta je tačno za Švarcvald?"
     odgovori:
-      - {tekst: "Najviši vrh je Feldberg (1.493 m)", tacan: true}
       - {tekst: "Ime „Crna šuma“ potiče od tamnih četinarskih šuma", tacan: true}
       - {tekst: "Sa zapada i juga okružen je dolinom Rajne", tacan: true}
-      - {tekst: "Najviši vrh prelazi 3.000 m", tacan: false}
+      - {tekst: "Najviši vrh je Feldberg, koji prelazi 3.000 m", tacan: false}
+      - {tekst: "Nalazi se u saveznoj državi Bavarska", tacan: false}
 
   - tezina: tesko
-    pitanje: "Šta je tačno o vodama i veličini Švarcvalda?"
+    pitanje: "Šta je tačno o vodama Švarcvalda?"
     odgovori:
       - {tekst: "U njemu nastaje reka Dunav (od reka Brigah i Breg)", tacan: true}
-      - {tekst: "Dug je oko 170 km, a širok oko 60 km", tacan: true}
-      - {tekst: "Površina mu je oko 7.500 km²", tacan: true}
       - {tekst: "U njemu izvire reka Rajna", tacan: false}
+      - {tekst: "Vododelnica je između Atlantskog okeana i Sredozemnog mora", tacan: false}
+      - {tekst: "U njemu izvire reka Visla", tacan: false}
 
 bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Poznat je po satovima sa kukavicom i torti sa trešnjama", tacan: true}
     - {tekst: "Najsunčaniji je planinski venac u jugozapadnoj Nemačkoj", tacan: true}
-    - {tekst: "Dunav nastaje spajanjem izvornih reka Brigah i Breg", tacan: true}
-    - {tekst: "Nalazi se u saveznoj državi Bavarska", tacan: false}
+    - {tekst: "Dug je oko 170 km, a širok oko 60 km", tacan: true}
+    - {tekst: "Najviši vrh Feldberg nalazi se u Austriji", tacan: false}

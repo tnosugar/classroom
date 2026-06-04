@@ -13,9 +13,9 @@ pitanja:
     pitanje: "Šta je tačno za Šumavu?"
     odgovori:
       - {tekst: "Vododelnica je sliva Dunava i reke Vltave", tacan: true}
-      - {tekst: "Najviši vrh na nemačkoj strani je Veliki Javor (1.456 m)", tacan: true}
-      - {tekst: "Duga je oko 200 km", tacan: true}
       - {tekst: "Najviši vrh prelazi 3.000 m", tacan: false}
+      - {tekst: "Najviši vrh na nemačkoj strani je Feldberg (1.493 m)", tacan: false}
+      - {tekst: "Duga je oko 800 km", tacan: false}
 
   - tezina: tesko
     pitanje: "Šta je tačno o imenu i zaštiti Šumave?"
@@ -29,6 +29,6 @@ bonus:
   pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na češko-austrijskoj granici je vrh Plehi (1.378 m)", tacan: true}
-    - {tekst: "Od 1994. postoji evroregion oko Šumave (~16.000 km²)", tacan: true}
     - {tekst: "Srodan toponim u Srbiji je Šumadija („zemlja gustih šuma“)", tacan: true}
     - {tekst: "Šumava je vododelnica Rajne i Labe", tacan: false}
+    - {tekst: "Najviši vrh celog venca je Snežka (1.603 m)", tacan: false}
