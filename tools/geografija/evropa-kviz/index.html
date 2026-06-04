@@ -46,6 +46,16 @@
  .panelbody .placeholder{color:#9b9387;font-style:italic}
  .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
  .panelfoot a{color:#6b6456}
+ /* Title + description live in a dismissible modal; "Opis" button reopens it */
+ .desc-btn{font-size:13px;padding:5px 12px}
+ .desc-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+ .desc-modal[hidden]{display:none}
+ .desc-modal-box{background:#fff;max-width:640px;width:100%;border-radius:12px;padding:24px 26px 20px;box-shadow:0 10px 40px rgba(0,0,0,.32);position:relative}
+ .desc-modal-box h1{margin:0 0 12px;font-size:21px;color:#3a3528}
+ .desc-modal-box .sub{font-size:14px;color:#4a4434;line-height:1.6;margin:0;max-width:none}
+ .desc-modal-x{position:absolute;top:10px;right:12px;border:none;background:transparent;font-size:26px;line-height:1;color:#6b6456;cursor:pointer;padding:0 4px}
+ .desc-modal-x:hover{background:transparent;color:#b1271f}
+ .desc-ok{margin-top:18px}
  .cell:has(.ans.correct){cursor:pointer}
  /* Demo term (Srbija): gray legend item + small-caps badge; click runs the demo */
  ol.terms li.demo-item{color:#777;font-style:italic}
@@ -183,11 +193,8 @@
 </head>
 <body>
 <header>
- <h1>Evropa — geografski kviz</h1>
- <p class="sub sub-number">U svaki kvadrat na karti upiši <b>broj</b> pojma sa spiska koji se nalazi na toj lokaciji, pa pritisni <b>Enter</b> (ili klikni izvan polja). Ako pogrešiš, polje će tražiti da pokušaš ponovo. Broje se greške za svako polje.
-</p>
- <p class="sub sub-drag"><b>Prevuci</b> svaki pojam sa spiska na njegovo mesto na karti. Ako ga spustiš dovoljno blizu, zaključa se zelenim i nacrta se na karti; inače pocrveni — prevuci ga ponovo dok ne pogodiš. Gore biraš <b>mod</b>: u <b>Učenju</b> svaka greška otkriva po jedan hint, a kad pogodiš izlazi pun opis pojma (bez bodovanja — tu se uči). U <b>Testu</b> nema hintova ni opisa: kad pojam tačno postaviš, dobijaš tri pitanja (lako, srednje, teško) sa po četiri odgovora od kojih je jedan ili više tačnih, a posle njih i bonus pitanje. U testu se broje greške — i za pogrešno mesto i za pogrešan odgovor.</p>
  <div class="bar">
+  <button id="descBtn" class="desc-btn">Opis</button>
   <span class="mode-switch">Mod:
    <button type="button" id="modeLearn" class="ms-btn active">Učenje</button><button type="button" id="modeTest" class="ms-btn">Test</button>
   </span>
@@ -208,6 +215,14 @@
  </div>
  <div id="resumeBanner" class="resume-banner">Nastavak prethodne sesije — tvoj progres je sačuvan.</div>
 </header>
+<div id="descModal" class="desc-modal" hidden>
+ <div class="desc-modal-box">
+  <button class="desc-modal-x" id="descClose" aria-label="Zatvori">&times;</button>
+  <h1>Evropa — geografski kviz</h1>
+  <p class="sub"><b>Prevuci</b> svaki pojam sa spiska na njegovo mesto na karti. Ako ga spustiš dovoljno blizu, zaključa se zelenim i nacrta se na karti; inače pocrveni — prevuci ga ponovo dok ne pogodiš. Gore biraš <b>mod</b>: u <b>Učenju</b> svaka greška otkriva po jedan hint, a kad pogodiš izlazi pun opis pojma (bez bodovanja — tu se uči). U <b>Testu</b> nema hintova ni opisa: kad pojam tačno postaviš, dobijaš tri pitanja (lako, srednje, teško) sa po četiri odgovora od kojih je jedan ili više tačnih, a posle njih i bonus pitanje. U testu se broje greške — i za pogrešno mesto i za pogrešan odgovor.</p>
+  <button id="descOk" class="desc-ok">Razumem</button>
+ </div>
+</div>
 <div class="layout">
  <aside class="qcol">
   <h2>Spisak pojmova</h2>
@@ -1381,6 +1396,20 @@ function endDemo() {
   saveState();
 }
 
+// --- title/description modal ---
+const descModal = document.getElementById('descModal');
+const descBtn = document.getElementById('descBtn');
+const DESC_KEY = 'classroom-desc:' + window.location.pathname;
+function showDescModal() { descModal.hidden = false; }
+function hideDescModal() {
+  descModal.hidden = true;
+  try { localStorage.setItem(DESC_KEY, '1'); } catch (e) {}
+}
+descBtn.addEventListener('click', showDescModal);
+document.getElementById('descClose').addEventListener('click', hideDescModal);
+document.getElementById('descOk').addEventListener('click', hideDescModal);
+descModal.addEventListener('click', e => { if (e.target === descModal) hideDescModal(); });
+
 // --- init ---
 function setHeaderTop() {
   const h = document.querySelector('header').offsetHeight;
@@ -1411,6 +1440,7 @@ if (saved) {
 recountBonus();
 if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
+try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
 setHeaderTop();

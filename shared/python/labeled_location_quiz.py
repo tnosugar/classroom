@@ -124,6 +124,8 @@ def _ui_default():
         "mode_switch_label": "Mod",
         "mode_learn": "Učenje",
         "mode_test": "Test",
+        "btn_desc": "Opis",
+        "btn_desc_ok": "Razumem",
         "stat_bonus": "Bonus",
         "btn_proveri": "Proveri",
         "q_correct": "Tačno!",
@@ -193,6 +195,16 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .panelbody .placeholder{color:#9b9387;font-style:italic}
  .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
  .panelfoot a{color:#6b6456}
+ /* Title + description live in a dismissible modal; "Opis" button reopens it */
+ .desc-btn{font-size:13px;padding:5px 12px}
+ .desc-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+ .desc-modal[hidden]{display:none}
+ .desc-modal-box{background:#fff;max-width:640px;width:100%;border-radius:12px;padding:24px 26px 20px;box-shadow:0 10px 40px rgba(0,0,0,.32);position:relative}
+ .desc-modal-box h1{margin:0 0 12px;font-size:21px;color:#3a3528}
+ .desc-modal-box .sub{font-size:14px;color:#4a4434;line-height:1.6;margin:0;max-width:none}
+ .desc-modal-x{position:absolute;top:10px;right:12px;border:none;background:transparent;font-size:26px;line-height:1;color:#6b6456;cursor:pointer;padding:0 4px}
+ .desc-modal-x:hover{background:transparent;color:#b1271f}
+ .desc-ok{margin-top:18px}
  .cell:has(.ans.correct){cursor:pointer}
  /* Demo term (Srbija): gray legend item + small-caps badge; click runs the demo */
  ol.terms li.demo-item{color:#777;font-style:italic}
@@ -330,10 +342,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
 </head>
 <body>
 <header>
- <h1>__HDR_TITLE__</h1>
- <p class="sub sub-number">__HDR_SUB__</p>
- <p class="sub sub-drag">__HDR_SUB_DRAG__</p>
  <div class="bar">
+  <button id="descBtn" class="desc-btn">__BTN_DESC__</button>
   <span class="mode-switch">__MODE_SWITCH_LABEL__:
    <button type="button" id="modeLearn" class="ms-btn active">__MODE_LEARN__</button><button type="button" id="modeTest" class="ms-btn">__MODE_TEST__</button>
   </span>
@@ -354,6 +364,14 @@ _HTML_TPL = r"""<!DOCTYPE html>
  </div>
  <div id="resumeBanner" class="resume-banner">__RESUME_MSG__</div>
 </header>
+<div id="descModal" class="desc-modal" hidden>
+ <div class="desc-modal-box">
+  <button class="desc-modal-x" id="descClose" aria-label="__PANEL_CLOSE__">&times;</button>
+  <h1>__HDR_TITLE__</h1>
+  <p class="sub">__HDR_SUB_DRAG__</p>
+  <button id="descOk" class="desc-ok">__BTN_DESC_OK__</button>
+ </div>
+</div>
 <div class="layout">
  <aside class="qcol">
   <h2>__LIST_HEADING__</h2>
@@ -1527,6 +1545,20 @@ function endDemo() {
   saveState();
 }
 
+// --- title/description modal ---
+const descModal = document.getElementById('descModal');
+const descBtn = document.getElementById('descBtn');
+const DESC_KEY = 'classroom-desc:' + window.location.pathname;
+function showDescModal() { descModal.hidden = false; }
+function hideDescModal() {
+  descModal.hidden = true;
+  try { localStorage.setItem(DESC_KEY, '1'); } catch (e) {}
+}
+descBtn.addEventListener('click', showDescModal);
+document.getElementById('descClose').addEventListener('click', hideDescModal);
+document.getElementById('descOk').addEventListener('click', hideDescModal);
+descModal.addEventListener('click', e => { if (e.target === descModal) hideDescModal(); });
+
 // --- init ---
 function setHeaderTop() {
   const h = document.querySelector('header').offsetHeight;
@@ -1557,6 +1589,7 @@ if (saved) {
 recountBonus();
 if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
+try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
 setHeaderTop();
@@ -1883,6 +1916,8 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__MSG_WIN__": _json.dumps(ui["msg_win"]),
         "__MODE_ALL_TPL__": _json.dumps(ui["mode_all"]),
         "__MODE_RANDOM_TPL__": _json.dumps(ui["mode_random"]),
+        "__BTN_DESC__": _html.escape(ui["btn_desc"]),
+        "__BTN_DESC_OK__": _html.escape(ui["btn_desc_ok"]),
         "__PANEL_CLOSE__": _html.escape(ui["panel_close"], quote=True),
         "__PANEL_PLACEHOLDER__": _json.dumps(ui["panel_placeholder"]),
         "__PANEL_IDLE__": _json.dumps(ui["panel_idle"]),
