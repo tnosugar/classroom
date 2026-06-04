@@ -113,6 +113,9 @@ def _ui_default():
         "pdf_title_answer": "Answer key",
         "pdf_legend_heading": "Terms:",
         "pdf_legend_symbols": "▲ mountains    — rivers    ○ location",
+        "panel_close": "Zatvori",
+        "panel_placeholder": "Opis uskoro.",
+        "panel_source_label": "Izvor:",
     }
 
 
@@ -160,6 +163,21 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .qcol{flex:0 0 360px;width:360px;padding:12px 14px;border-right:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
  .qcol h2{font-size:14px;color:#3a3528;margin:0 0 8px}
  .mapcol{flex:1 1 auto;min-width:0;padding:0}
+ /* Info side panel (third column) — opens when a term is solved or its marker clicked */
+ .panelcol{flex:0 0 340px;width:340px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
+ .layout:not(.panel-open) .panelcol{display:none}
+ .panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:8px}
+ .panelhead h2{margin:0;font-size:16px;color:#3a3528}
+ .panelhead .vrsta{display:inline-block;margin-top:4px;font-size:11.5px;color:#6b6456;background:#f3ecd8;border:1px solid #e1d8c2;border-radius:10px;padding:1px 8px;text-transform:capitalize}
+ .panel-x{border:none;background:transparent;color:#6b6456;font-size:22px;line-height:1;padding:0 4px;cursor:pointer}
+ .panel-x:hover{background:transparent;color:#b1271f}
+ .panelbody{font-size:13px;line-height:1.55;color:#2b2b2b}
+ .panelbody h4{font-size:12.5px;color:#3a3528;margin:12px 0 4px}
+ .panelbody p{margin:0 0 8px} .panelbody ul{margin:0 0 8px;padding-left:18px} .panelbody li{margin:2px 0}
+ .panelbody .placeholder{color:#9b9387;font-style:italic}
+ .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
+ .panelfoot a{color:#6b6456}
+ .cell:has(.ans.correct){cursor:pointer}
  #stageWrap{width:100%;overflow:hidden;position:relative;touch-action:none;cursor:grab}
  #stageWrap.grabbing{cursor:grabbing}
  .zoombar{position:absolute;right:12px;top:12px;z-index:30;display:flex;flex-direction:column;gap:6px}
@@ -236,11 +254,12 @@ _HTML_TPL = r"""<!DOCTYPE html>
    .layout{flex-direction:column}
    .qcol{flex:none;width:auto;position:static;max-height:none;border-right:none;border-bottom:1px solid #e6e0d2}
    .qcol ol.terms{columns:2;column-gap:22px}
+   .panelcol{flex:none;width:auto;position:static;max-height:none;border-left:none;border-top:1px solid #e6e0d2}
    h1{font-size:17px}
    .ans{width:32px;height:32px;font-size:14px}
  }
  @media print {
-   header .bar, .zoombar, .zhint, #msg, .resume-banner, button { display: none !important; }
+   header .bar, .zoombar, .zhint, #msg, .resume-banner, button, .panelcol { display: none !important; }
    header { position: static; border-bottom: 1px solid #ccc }
    .qcol { position: static; max-height: none; overflow: visible; flex: 0 0 280px; width: 280px }
    #stageWrap { overflow: visible; cursor: auto; height: auto !important; }
@@ -306,6 +325,14 @@ _HTML_TPL = r"""<!DOCTYPE html>
    <div id="overlay">__BOXES__</div>
   </div>
  </main>
+ <aside class="panelcol" id="panelcol" aria-hidden="true">
+  <div class="panelhead">
+   <div><h2 id="panelTitle"></h2><span class="vrsta" id="panelVrsta" style="display:none"></span></div>
+   <button class="panel-x" id="panelClose" title="__PANEL_CLOSE__" aria-label="__PANEL_CLOSE__">&times;</button>
+  </div>
+  <div class="panelbody" id="panelBody"></div>
+  <div class="panelfoot" id="panelFoot" style="display:none"></div>
+ </aside>
 </div>
 <div id="msg"></div>
 <script>
@@ -331,6 +358,12 @@ const resetBtn = document.getElementById('reset');
 const exportBtn = document.getElementById('exportCsv');
 const modeSelect = document.getElementById('mode');
 const resumeBanner = document.getElementById('resumeBanner');
+const layoutEl = document.querySelector('.layout');
+const panelTitle = document.getElementById('panelTitle');
+const panelVrsta = document.getElementById('panelVrsta');
+const panelBody = document.getElementById('panelBody');
+const panelFoot = document.getElementById('panelFoot');
+const panelClose = document.getElementById('panelClose');
 
 let currentMode = 'all';
 let visibleIds = ALL_TERMS.map(t => t.id);
@@ -439,6 +472,55 @@ function showWin(correct, miss) {
   exportBtn.style.display = 'inline-block';
 }
 
+// --- info side panel ---
+const PANEL_PLACEHOLDER = __PANEL_PLACEHOLDER__;
+const PANEL_SOURCE_LBL = __PANEL_SOURCE_LBL__;
+
+function openPanel(canonId) {
+  const term = ALL_TERMS.find(t => t.id === canonId);
+  if (!term) return;
+  panelTitle.textContent = term.name;
+  const d = term.desc;
+  if (d && d.vrsta) {
+    panelVrsta.textContent = d.vrsta.replace(/_/g, ' ');
+    panelVrsta.style.display = 'inline-block';
+  } else {
+    panelVrsta.style.display = 'none';
+  }
+  if (d && d.html) {
+    panelBody.innerHTML = d.html;
+  } else {
+    panelBody.innerHTML = '<p class="placeholder">' + PANEL_PLACEHOLDER + '</p>';
+  }
+  if (d && d.sources && d.sources.length) {
+    panelFoot.innerHTML = PANEL_SOURCE_LBL + ' ' + d.sources.map(s =>
+      s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + s.naziv + '</a>' : s.naziv
+    ).join(', ');
+    panelFoot.style.display = 'block';
+  } else {
+    panelFoot.style.display = 'none';
+  }
+  layoutEl.classList.add('panel-open');
+  document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
+}
+
+function closePanel() {
+  layoutEl.classList.remove('panel-open');
+  document.getElementById('panelcol').setAttribute('aria-hidden', 'true');
+}
+
+panelClose.addEventListener('click', closePanel);
+
+// Click a solved marker on the map to (re)open its panel.
+document.getElementById('overlay').addEventListener('click', e => {
+  const cell = e.target.closest('.cell');
+  if (!cell) return;
+  const inp = cell.querySelector('.ans');
+  if (inp && inp.classList.contains('correct')) {
+    openPanel(parseInt(inp.dataset.id, 10));
+  }
+});
+
 function check(inp) {
   if (inp.parentElement.classList.contains('hidden')) return;
   if (inp.classList.contains('correct')) return;
@@ -449,6 +531,7 @@ function check(inp) {
     inp.classList.add('correct');
     inp.readOnly = true;
     showMsg(MSG_CORRECT, true);
+    openPanel(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
   } else {
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -775,6 +858,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     const li = legendItems.get(canonicalId);
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
+    openPanel(canonicalId);
   } else {
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -988,6 +1072,128 @@ fit();
 
 
 # ---------------------------------------------------------------------------
+# Knowledge base (shared/znanje) — side-panel descriptions
+# ---------------------------------------------------------------------------
+
+import html as _html
+import re as _re
+
+
+def _find_znanje_dir(spec):
+    """Walk up from the spec dir to find shared/znanje/. Returns Path or None."""
+    start = pathlib.Path(spec.get("_spec_dir", ".")).resolve()
+    for base in [start, *start.parents]:
+        cand = base / "shared" / "znanje"
+        if cand.is_dir():
+            return cand
+    return None
+
+
+def _md_inline(text):
+    """Minimal inline Markdown → HTML: escape, then **bold**, *italic*, strip [[wikilinks]]."""
+    text = _re.sub(r"\[\[([^\]]+)\]\]", r"\1", text)          # [[slug]] → slug
+    text = _html.escape(text)
+    text = _re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    text = _re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", text)
+    return text
+
+
+def _md_blocks_to_html(body):
+    """Convert a small Markdown fragment (paragraphs + '- ' bullet lists) to HTML."""
+    out, buf_list = [], []
+
+    def flush_list():
+        if buf_list:
+            out.append("<ul>" + "".join(f"<li>{_md_inline(x)}</li>" for x in buf_list) + "</ul>")
+            buf_list.clear()
+
+    para = []
+
+    def flush_para():
+        if para:
+            out.append("<p>" + _md_inline(" ".join(para)) + "</p>")
+            para.clear()
+
+    for raw in body.splitlines():
+        line = raw.rstrip()
+        if line.startswith("- "):
+            flush_para()
+            buf_list.append(line[2:].strip())
+        elif not line.strip():
+            flush_para(); flush_list()
+        else:
+            flush_list()
+            para.append(line.strip())
+    flush_para(); flush_list()
+    return "".join(out)
+
+
+def _extract_section(md_body, heading):
+    """Return the text under a '## {heading}' up to the next '## ' (or end)."""
+    m = _re.search(
+        r"^##\s+" + _re.escape(heading) + r"\s*$(.*?)(?=^##\s|\Z)",
+        md_body, _re.MULTILINE | _re.DOTALL,
+    )
+    return m.group(1).strip() if m else ""
+
+
+def _parse_frontmatter(text):
+    """Split a Markdown file into (frontmatter_dict, body)."""
+    if text.startswith("---"):
+        parts = text.split("---", 2)
+        if len(parts) >= 3:
+            try:
+                fm = yaml.safe_load(parts[1]) or {}
+            except yaml.YAMLError:
+                fm = {}
+            return fm, parts[2]
+    return {}, text
+
+
+def _term_descriptions(spec):
+    """For each term with a `slug`, load shared/znanje/{slug}/index.md and build a
+    panel HTML snippet (Sažetak + Ključne činjenice) + vrsta + source attributions.
+    Returns {term_id: {"vrsta": str|None, "html": str, "sources": [{naziv,url}]}}.
+    Terms without a knowledge folder are omitted (client shows a placeholder)."""
+    znanje = _find_znanje_dir(spec)
+    result = {}
+    if not znanje:
+        return result
+    for t in spec["terms"]:
+        slug = t.get("slug")
+        if not slug:
+            continue
+        idx = znanje / slug / "index.md"
+        if not idx.is_file():
+            continue
+        fm, body = _parse_frontmatter(idx.read_text(encoding="utf-8"))
+        sazetak = _extract_section(body, "Sažetak")
+        cinjenice = _extract_section(body, "Ključne činjenice")
+        html_parts = []
+        if sazetak:
+            html_parts.append(_md_blocks_to_html(sazetak))
+        if cinjenice:
+            html_parts.append('<h4>Ključne činjenice</h4>')
+            html_parts.append(_md_blocks_to_html(cinjenice))
+        if not html_parts:
+            continue
+        # Source attributions from referenced izvori/*.md frontmatter
+        sources = []
+        for rel in (fm.get("izvori") or []):
+            src = (znanje / slug / rel)
+            if src.is_file():
+                sfm, _ = _parse_frontmatter(src.read_text(encoding="utf-8"))
+                if sfm.get("izvor"):
+                    sources.append({"naziv": sfm["izvor"], "url": sfm.get("url", "")})
+        result[t["id"]] = {
+            "vrsta": fm.get("vrsta"),
+            "html": "".join(html_parts),
+            "sources": sources,
+        }
+    return result
+
+
+# ---------------------------------------------------------------------------
 # HTML rendering
 # ---------------------------------------------------------------------------
 
@@ -1063,6 +1269,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
     #   label_at           — canonical center, fallback for drop check
     #   geometry.polyline  — used by accept.buffer_deg
     #   accept             — per-term drop acceptance criteria (any matching = correct)
+    descriptions = _term_descriptions(spec)
     terms_json = _json.dumps(
         [
             {
@@ -1071,6 +1278,8 @@ def render_html(spec, output_path, map_width_px=1160.0):
                 "label_at": t.get("label_at"),
                 "geometry": t.get("geometry"),
                 "accept": t.get("accept"),
+                # Side-panel content (None when no knowledge file → client placeholder)
+                "desc": descriptions.get(t["id"]),
             }
             for t in spec["terms"]
         ],
@@ -1123,6 +1332,9 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__MSG_WIN__": _json.dumps(ui["msg_win"]),
         "__MODE_ALL_TPL__": _json.dumps(ui["mode_all"]),
         "__MODE_RANDOM_TPL__": _json.dumps(ui["mode_random"]),
+        "__PANEL_CLOSE__": _html.escape(ui["panel_close"], quote=True),
+        "__PANEL_PLACEHOLDER__": _json.dumps(ui["panel_placeholder"]),
+        "__PANEL_SOURCE_LBL__": _json.dumps(ui["panel_source_label"]),
     }
     html = _HTML_TPL
     for k, v in repl.items():
