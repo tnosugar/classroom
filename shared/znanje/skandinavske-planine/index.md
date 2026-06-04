@@ -28,6 +28,12 @@ ujedno najviši vrh Severne Evrope.
 - Proteže se kroz: Norvešku, Švedsku, Finsku (Finsku tek dodiruje).
 - Stene stare ~400 mil. godina; reljef oblikovan izdizanjem zapadne strane i glacijacijom.
 
+## Hintovi
+
+- Ovaj izduženi oblik prati zapadnu ivicu jednog velikog severnog poluostrva.
+- Razdvaja dve države koje to poluostrvo dele i čini njihovu prirodnu granicu.
+- Zapadne strane mu se strmo spuštaju u more i grade fjordove — traži ga uz norvešku obalu, ka severu.
+
 ## Pomirenje izvora
 
 Zasad samo jedan izvor ([Wikipedija sr](izvori/wikipedia.md)). Kada dodamo drugi izvor,

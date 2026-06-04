@@ -47,8 +47,24 @@ azurirano: 2026-06-04
 ### Telo `index.md`
 - `## Sažetak` — pomiren opis u 2–4 rečenice, sopstvenim rečima.
 - `## Ključne činjenice` — datumi, brojevi, imena (faktografija koja se ne parafrazira).
+- `## Hintovi` — opciono; progresivni hintovi za kviz (vidi dole).
 - `## Pomirenje izvora` — gde se izvori slažu; kako su spojeni.
 - `## Otvorena pitanja i kontradikcije` — gde se izvori (ili literatura) razilaze. **Ne brisati neslaganja — istaći ih.**
+
+### `## Hintovi` — progresivni hintovi za kviz
+
+Uređena lista (bullet `- `) hintova koji pomažu učeniku da **sam zaključi** gde je pojam,
+**redom od najsuptilnijeg ka najkonkretnijem**. Kviz ih otkriva jedan po jedan: sa svakom
+greškom izlazi sledeći hint u side-panelu. Pravila pisanja:
+
+- Prvi hint **ne sme** da bude očigledan ni da imenuje odgovor — navodi na razmišljanje
+  (oblik, tip, odnos prema susedima), ne na lokaciju direktno.
+- Svaki sledeći je konkretniji; poslednji sme da bude jasno lociran, ali i dalje ne imenuje
+  sam pojam.
+- Posle poslednjeg hinta, sledeća greška u kvizu otkriva **ceo opis** (faktički odgovor).
+- 2–4 hinta je obično dovoljno. Pojam bez `## Hintovi` sekcije = kviz ćuti na grešku
+  (nema generičkih hintova).
+- `vrsta`, izvori i pun opis se **ne** prikazuju dok je nerešeno — samo hintovi.
 
 ## Veze: slug-ovi, ne nazivi
 

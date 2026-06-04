@@ -116,6 +116,10 @@ def _ui_default():
         "panel_close": "Zatvori",
         "panel_placeholder": "Opis uskoro.",
         "panel_source_label": "Izvor:",
+        "panel_hint_heading": "Hint",
+        "panel_hint_prompt": "Hint se otkriva sa svakom greškom — pokušaj da postaviš pojam.",
+        "panel_hints_done": "Svi hintovi iskorišćeni — evo opisa:",
+        "panel_no_hint": "Nema hinta za ovaj pojam (još).",
     }
 
 
@@ -174,6 +178,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .panelbody{font-size:13px;line-height:1.55;color:#2b2b2b}
  .panelbody h4{font-size:12.5px;color:#3a3528;margin:12px 0 4px}
  .panelbody p{margin:0 0 8px} .panelbody ul{margin:0 0 8px;padding-left:18px} .panelbody li{margin:2px 0}
+ .panelbody ol.hints{margin:4px 0 8px;padding-left:20px} .panelbody ol.hints li{margin:6px 0;line-height:1.5}
  .panelbody .placeholder{color:#9b9387;font-style:italic}
  .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
  .panelfoot a{color:#6b6456}
@@ -472,26 +477,23 @@ function showWin(correct, miss) {
   exportBtn.style.display = 'inline-block';
 }
 
-// --- info side panel ---
+// --- info side panel (full description when solved; progressive hints while wrong) ---
 const PANEL_PLACEHOLDER = __PANEL_PLACEHOLDER__;
 const PANEL_SOURCE_LBL = __PANEL_SOURCE_LBL__;
+const PANEL_HINT_HEADING = __PANEL_HINT_HEADING__;
+const PANEL_HINT_PROMPT = __PANEL_HINT_PROMPT__;
+const PANEL_HINTS_DONE = __PANEL_HINTS_DONE__;
+const PANEL_NO_HINT = __PANEL_NO_HINT__;
 
-function openPanel(canonId) {
-  const term = ALL_TERMS.find(t => t.id === canonId);
-  if (!term) return;
-  panelTitle.textContent = term.name;
-  const d = term.desc;
+function panelSetVrsta(d) {
   if (d && d.vrsta) {
     panelVrsta.textContent = d.vrsta.replace(/_/g, ' ');
     panelVrsta.style.display = 'inline-block';
   } else {
     panelVrsta.style.display = 'none';
   }
-  if (d && d.html) {
-    panelBody.innerHTML = d.html;
-  } else {
-    panelBody.innerHTML = '<p class="placeholder">' + PANEL_PLACEHOLDER + '</p>';
-  }
+}
+function panelSetFoot(d) {
   if (d && d.sources && d.sources.length) {
     panelFoot.innerHTML = PANEL_SOURCE_LBL + ' ' + d.sources.map(s =>
       s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + s.naziv + '</a>' : s.naziv
@@ -500,8 +502,64 @@ function openPanel(canonId) {
   } else {
     panelFoot.style.display = 'none';
   }
+}
+function panelOpenEl() {
   layoutEl.classList.add('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
+}
+
+// Render the panel according to the term's current state:
+//   solved            → full description (Sažetak + činjenice + vrsta + izvor)
+//   unsolved + hints  → first `miss` hints (subtle → concrete); once hints run
+//                       out, the next miss reveals the full description
+//   unsolved + none   → quiet "no hint" placeholder
+function showPanelFor(canonId) {
+  const term = ALL_TERMS.find(t => t.id === canonId);
+  if (!term) return;
+  const d = term.desc;
+  const inp = inputsById.get(canonId);
+  const solved = inp && inp.classList.contains('correct');
+  const miss = inp ? (parseInt(inp.dataset.miss, 10) || 0) : 0;
+  const hints = (d && d.hints) ? d.hints : [];
+  panelTitle.textContent = term.name;
+
+  if (solved) {
+    panelSetVrsta(d);
+    panelBody.innerHTML = (d && d.html) ? d.html : '<p class="placeholder">' + PANEL_PLACEHOLDER + '</p>';
+    panelSetFoot(d);
+    panelOpenEl();
+    return;
+  }
+  if (hints.length) {
+    if (miss === 0) {
+      panelVrsta.style.display = 'none';
+      panelBody.innerHTML = '<p class="placeholder">' + PANEL_HINT_PROMPT + '</p>';
+      panelFoot.style.display = 'none';
+    } else if (miss > hints.length) {
+      panelSetVrsta(d);
+      panelBody.innerHTML = '<p class="placeholder">' + PANEL_HINTS_DONE + '</p>' + ((d && d.html) ? d.html : '');
+      panelSetFoot(d);
+    } else {
+      panelVrsta.style.display = 'none';
+      const shown = hints.slice(0, miss);
+      panelBody.innerHTML = '<h4>' + PANEL_HINT_HEADING + '</h4><ol class="hints">' +
+        shown.map(h => '<li>' + h + '</li>').join('') + '</ol>';
+      panelFoot.style.display = 'none';
+    }
+    panelOpenEl();
+    return;
+  }
+  panelVrsta.style.display = 'none';
+  panelBody.innerHTML = '<p class="placeholder">' + PANEL_NO_HINT + '</p>';
+  panelFoot.style.display = 'none';
+  panelOpenEl();
+}
+
+// Auto-open the panel on a wrong attempt only when the term actually has hints
+// (terms without hints stay quiet — only shake + miss badge).
+function maybeHintPanel(canonId) {
+  const t = ALL_TERMS.find(t => t.id === canonId);
+  if (t && t.desc && t.desc.hints && t.desc.hints.length) showPanelFor(canonId);
 }
 
 function closePanel() {
@@ -511,14 +569,12 @@ function closePanel() {
 
 panelClose.addEventListener('click', closePanel);
 
-// Click a solved marker on the map to (re)open its panel.
+// Click any marker on the map to open its panel (full text if solved, else hints).
 document.getElementById('overlay').addEventListener('click', e => {
   const cell = e.target.closest('.cell');
   if (!cell) return;
   const inp = cell.querySelector('.ans');
-  if (inp && inp.classList.contains('correct')) {
-    openPanel(parseInt(inp.dataset.id, 10));
-  }
+  if (inp) showPanelFor(parseInt(inp.dataset.id, 10));
 });
 
 function check(inp) {
@@ -531,7 +587,7 @@ function check(inp) {
     inp.classList.add('correct');
     inp.readOnly = true;
     showMsg(MSG_CORRECT, true);
-    openPanel(parseInt(inp.dataset.id, 10));
+    showPanelFor(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
   } else {
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -541,6 +597,7 @@ function check(inp) {
     badge.style.display = 'block';
     inp.classList.add('wrong');
     showMsg(MSG_WRONG, false);
+    maybeHintPanel(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
     setTimeout(() => {
       inp.classList.remove('wrong');
@@ -858,7 +915,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     const li = legendItems.get(canonicalId);
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
-    openPanel(canonicalId);
+    showPanelFor(canonicalId);
   } else {
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -867,6 +924,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     badge.textContent = m;
     badge.style.display = 'block';
     showMsg(MSG_WRONG, false);
+    maybeHintPanel(canonicalId);
   }
   apply();
   recountCorrectMiss();
@@ -1169,6 +1227,12 @@ def _term_descriptions(spec):
         fm, body = _parse_frontmatter(idx.read_text(encoding="utf-8"))
         sazetak = _extract_section(body, "Sažetak")
         cinjenice = _extract_section(body, "Ključne činjenice")
+        # Progressive hints (ordered, subtle → concrete); revealed one per wrong attempt.
+        hints = [
+            _md_inline(ln.strip()[2:].strip())
+            for ln in _extract_section(body, "Hintovi").splitlines()
+            if ln.strip().startswith("- ")
+        ]
         html_parts = []
         if sazetak:
             html_parts.append(_md_blocks_to_html(sazetak))
@@ -1189,6 +1253,7 @@ def _term_descriptions(spec):
             "vrsta": fm.get("vrsta"),
             "html": "".join(html_parts),
             "sources": sources,
+            "hints": hints,
         }
     return result
 
@@ -1335,6 +1400,10 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__PANEL_CLOSE__": _html.escape(ui["panel_close"], quote=True),
         "__PANEL_PLACEHOLDER__": _json.dumps(ui["panel_placeholder"]),
         "__PANEL_SOURCE_LBL__": _json.dumps(ui["panel_source_label"]),
+        "__PANEL_HINT_HEADING__": _json.dumps(ui["panel_hint_heading"]),
+        "__PANEL_HINT_PROMPT__": _json.dumps(ui["panel_hint_prompt"]),
+        "__PANEL_HINTS_DONE__": _json.dumps(ui["panel_hints_done"]),
+        "__PANEL_NO_HINT__": _json.dumps(ui["panel_no_hint"]),
     }
     html = _HTML_TPL
     for k, v in repl.items():

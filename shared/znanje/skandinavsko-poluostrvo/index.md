@@ -29,6 +29,12 @@ fjordovima nastalim glacijacijom.
 - ~1/4 leži severno od arktičkog kruga.
 - Najveći gradovi: Stokholm, Oslo, Geteborg, Malme, Bergen.
 
+## Hintovi
+
+- Najveće je svoje vrste u Evropi — veće od Balkanskog ili Apeninskog.
+- Smešteno je na krajnjem severu kontinenta; jedna četvrtina leži iznad arktičkog kruga.
+- Na njemu su Norveška i Švedska, a okružuju ga Baltičko, Severno i Norveško more.
+
 ## Pomirenje izvora
 
 Zasad samo jedan izvor ([Wikipedija sr](izvori/wikipedia.md)).

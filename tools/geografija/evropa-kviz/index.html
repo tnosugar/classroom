@@ -43,6 +43,7 @@
  .panelbody{font-size:13px;line-height:1.55;color:#2b2b2b}
  .panelbody h4{font-size:12.5px;color:#3a3528;margin:12px 0 4px}
  .panelbody p{margin:0 0 8px} .panelbody ul{margin:0 0 8px;padding-left:18px} .panelbody li{margin:2px 0}
+ .panelbody ol.hints{margin:4px 0 8px;padding-left:20px} .panelbody ol.hints li{margin:6px 0;line-height:1.5}
  .panelbody .placeholder{color:#9b9387;font-style:italic}
  .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
  .panelfoot a{color:#6b6456}
@@ -207,7 +208,7 @@
 </div>
 <div id="msg"></div>
 <script>
-const ALL_TERMS = [{"id": 1, "name": "Gibraltarski moreuz", "label_at": [-5.6, 35.95], "geometry": null, "accept": {"radius_deg": 0.6}, "desc": null}, {"id": 2, "name": "Sredozemno more", "label_at": [7.5, 38.6], "geometry": null, "accept": {"bbox": [-5, 30, 36, 46]}, "desc": null}, {"id": 3, "name": "Planina Ural", "label_at": [58.5, 57.5], "geometry": {"type": "mountain", "polyline": [[60, 68], [59.2, 64], [59, 60], [58, 56], [57, 52.5]]}, "accept": {"buffer_deg": 1.2}, "desc": null}, {"id": 4, "name": "Reka Ural", "label_at": [53.0, 49.3], "geometry": {"type": "river", "polyline": [[58.5, 54], [56, 52.8], [53.5, 51.2], [52, 49.5], [51.5, 47.2]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 5, "name": "Kaspijsko jezero", "label_at": [50.5, 42.0], "geometry": null, "accept": {"bbox": [46, 36, 55, 47]}, "desc": null}, {"id": 6, "name": "Kavkaz", "label_at": [44.2, 42.9], "geometry": {"type": "mountain", "polyline": [[40, 43.6], [43, 43.2], [45.5, 42.5], [48, 41.6]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 7, "name": "Crno more", "label_at": [34.5, 43.2], "geometry": null, "accept": {"bbox": [27, 41, 42, 47.5]}, "desc": null}, {"id": 8, "name": "Moreuz Bosfor", "label_at": [29.2, 41.2], "geometry": null, "accept": {"radius_deg": 0.5}, "desc": null}, {"id": 9, "name": "Mramorno more", "label_at": [28.2, 40.6], "geometry": null, "accept": {"bbox": [26, 40, 30, 41.5]}, "desc": null}, {"id": 10, "name": "Moreuz Dardaneli", "label_at": [26.3, 40.2], "geometry": null, "accept": {"radius_deg": 0.5}, "desc": null}, {"id": 11, "name": "Egejsko more", "label_at": [25.0, 38.4], "geometry": null, "accept": {"bbox": [22, 35, 28, 41]}, "desc": null}, {"id": 12, "name": "Velika Britanija", "label_at": [-1.6, 52.7], "geometry": null, "accept": {"bbox": [-8.5, 49.5, 2, 59]}, "desc": null}, {"id": 13, "name": "Reka Volga", "label_at": [46.8, 51.5], "geometry": {"type": "river", "polyline": [[34, 57], [37, 56.2], [43, 56.3], [47, 55], [48, 52.5], [46, 50.2], [47.5, 48], [48, 46.3]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 14, "name": "Apeninsko poluostrvo", "label_at": [13.6, 42.2], "geometry": null, "accept": {"bbox": [9.5, 38, 19, 47]}, "desc": null}, {"id": 15, "name": "Pirinejsko poluostrvo", "label_at": [-4.2, 40.0], "geometry": null, "accept": {"bbox": [-10, 36, 4, 44]}, "desc": null}, {"id": 16, "name": "Balkansko poluostrvo", "label_at": [22.5, 42.2], "geometry": null, "accept": {"bbox": [16, 38, 30, 47]}, "desc": null}, {"id": 17, "name": "Skandinavsko poluostrvo", "label_at": [15.5, 62.5], "geometry": null, "accept": {"bbox": [5, 56, 25, 71.5]}, "desc": {"vrsta": "poluostrvo", "html": "<p>Najveće poluostrvo u Evropi (~750.000 km²), na severu kontinenta. Obuhvata Norvešku, Švedsku i severozapadni deo Finske. Ime potiče od regije <strong>Skanija</strong> na jugu, preko kulturnog pojma &quot;Skandinavija&quot;. Geološki počiva na <strong>Baltičkom štitu</strong>; obala je razuđena fjordovima nastalim glacijacijom.</p><h4>Ključne činjenice</h4><ul><li>Površina ~750.000 km²; dužina ~1.850 km, širina ~370–805 km.</li><li>Najviši vrh: <strong>Galdhepigen 2.469 m</strong> (Norveška).</li><li>Granične vode: Baltičko, Severno, Norveško i Barencovo more.</li><li>~1/4 leži severno od arktičkog kruga.</li><li>Najveći gradovi: Stokholm, Oslo, Geteborg, Malme, Bergen.</li></ul>", "sources": [{"naziv": "Wikipedija (srpski)", "url": "https://sr.wikipedia.org/wiki/Скандинавско_полуострво"}]}}, {"id": 18, "name": "Krim", "label_at": [34.3, 45.4], "geometry": null, "accept": {"bbox": [32, 44, 37, 46.5]}, "desc": null}, {"id": 19, "name": "Peloponez", "label_at": [22.2, 37.2], "geometry": null, "accept": {"bbox": [21, 36, 24, 39]}, "desc": null}, {"id": 20, "name": "Jiland", "label_at": [9.2, 56.2], "geometry": null, "accept": {"bbox": [8, 54, 11, 58]}, "desc": null}, {"id": 21, "name": "Kola", "label_at": [37.5, 67.6], "geometry": null, "accept": {"bbox": [29, 65, 41.5, 70]}, "desc": null}, {"id": 22, "name": "Kanin", "label_at": [44.5, 68.0], "geometry": null, "accept": {"radius_deg": 1.3}, "desc": null}, {"id": 23, "name": "Irska", "label_at": [-8.2, 53.3], "geometry": null, "accept": {"bbox": [-11, 51, -5, 56]}, "desc": null}, {"id": 24, "name": "Island", "label_at": [-18.8, 64.8], "geometry": null, "accept": {"bbox": [-25, 63, -13, 67]}, "desc": null}, {"id": 25, "name": "Sicilija", "label_at": [14.1, 37.5], "geometry": null, "accept": {"bbox": [12, 36, 16, 39]}, "desc": null}, {"id": 26, "name": "Sardinija", "label_at": [9.1, 40.1], "geometry": null, "accept": {"bbox": [8, 38.5, 10.5, 41.5]}, "desc": null}, {"id": 27, "name": "Malta", "label_at": [14.45, 35.9], "geometry": null, "accept": {"radius_deg": 0.4}, "desc": null}, {"id": 28, "name": "Krit", "label_at": [24.9, 35.2], "geometry": null, "accept": {"bbox": [23, 34.5, 27, 36]}, "desc": null}, {"id": 29, "name": "Balearska ostrva", "label_at": [2.8, 39.5], "geometry": null, "accept": {"bbox": [1, 38.5, 4.5, 40.5]}, "desc": null}, {"id": 30, "name": "Pirineji", "label_at": [0.6, 42.75], "geometry": {"type": "mountain", "polyline": [[-1.6, 43.3], [0.5, 42.8], [2.6, 42.4]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 31, "name": "Alpi", "label_at": [10.2, 46.4], "geometry": {"type": "mountain", "polyline": [[6, 45.0], [8, 46.2], [11, 47.1], [14.5, 47.0]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 32, "name": "Apenini", "label_at": [15.6, 41.0], "geometry": {"type": "mountain", "polyline": [[10.2, 44.4], [13, 43.0], [15.2, 41.4], [16.3, 40.2]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 33, "name": "Dinarske planine", "label_at": [18.0, 43.3], "geometry": {"type": "mountain", "polyline": [[14.8, 45.6], [17, 44.0], [18.8, 43.0], [20, 42.2]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 34, "name": "Balkanske planine", "label_at": [25.0, 43.0], "geometry": {"type": "mountain", "polyline": [[22.6, 43.1], [25, 43.1], [27, 42.9]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 35, "name": "Karpati", "label_at": [23.5, 47.6], "geometry": {"type": "mountain", "polyline": [[18.8, 49.3], [21.5, 49.2], [24, 48.0], [25.5, 46.2], [24, 45.5]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 36, "name": "Centralni masiv", "label_at": [3.0, 45.0], "geometry": {"type": "mountain", "polyline": [[2.2, 45.9], [3.0, 45.0], [3.6, 44.2]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 37, "name": "Vogezi", "label_at": [6.6, 48.2], "geometry": {"type": "mountain", "polyline": [[7.0, 48.5], [7.2, 47.9]]}, "accept": {"buffer_deg": 0.5}, "desc": null}, {"id": 38, "name": "Švarcvald", "label_at": [8.6, 48.1], "geometry": {"type": "mountain", "polyline": [[8.1, 48.5], [8.3, 47.7]]}, "accept": {"buffer_deg": 0.5}, "desc": null}, {"id": 39, "name": "Sudeti", "label_at": [16.0, 50.55], "geometry": {"type": "mountain", "polyline": [[14.8, 50.8], [16.4, 50.6], [17.2, 50.2]]}, "accept": {"buffer_deg": 0.7}, "desc": null}, {"id": 40, "name": "Peninske planine", "label_at": [-2.4, 54.3], "geometry": {"type": "mountain", "polyline": [[-2.2, 55.0], [-2.0, 54.0], [-1.8, 53.2]]}, "accept": {"buffer_deg": 0.6}, "desc": null}, {"id": 41, "name": "Skandinavske planine", "label_at": [13.2, 65.0], "geometry": {"type": "mountain", "polyline": [[12, 68.5], [14, 66], [15, 64], [13, 61.5], [9.5, 61]]}, "accept": {"buffer_deg": 1.3}, "desc": {"vrsta": "planinski_venac", "html": "<p>Planinski venac koji se proteže duž zapadnog ruba Skandinavskog poluostrva, kroz Norvešku, Švedsku i krajnji severozapad Finske. Zapadne padine se strmo spuštaju u more i grade fjordove; istočne se blago spuštaju ka Finskoj. Najviši vrh je Galdhepigen (2.469 m), ujedno najviši vrh Severne Evrope.</p><h4>Ključne činjenice</h4><ul><li>Najviši vrh: <strong>Galdhepigen 2.469 m</strong> (Norveška) · švedska strana: <strong>Kebnekajse 2.104 m</strong> · Finska: <strong>Halti 1.324 m</strong>.</li><li>Dužina ~1.700 km, širina ~320 km.</li><li>Proteže se kroz: Norvešku, Švedsku, Finsku (Finsku tek dodiruje).</li><li>Stene stare ~400 mil. godina; reljef oblikovan izdizanjem zapadne strane i glacijacijom.</li></ul>", "sources": [{"naziv": "Wikipedija (srpski)", "url": "https://sr.wikipedia.org/wiki/Скандинавске_планине"}]}}, {"id": 42, "name": "Šumava", "label_at": [13.2, 49.2], "geometry": {"type": "mountain", "polyline": [[12.6, 49.6], [13.6, 49.0], [14.2, 48.6]]}, "accept": {"buffer_deg": 0.6}, "desc": null}];
+const ALL_TERMS = [{"id": 1, "name": "Gibraltarski moreuz", "label_at": [-5.6, 35.95], "geometry": null, "accept": {"radius_deg": 0.6}, "desc": null}, {"id": 2, "name": "Sredozemno more", "label_at": [7.5, 38.6], "geometry": null, "accept": {"bbox": [-5, 30, 36, 46]}, "desc": null}, {"id": 3, "name": "Planina Ural", "label_at": [58.5, 57.5], "geometry": {"type": "mountain", "polyline": [[60, 68], [59.2, 64], [59, 60], [58, 56], [57, 52.5]]}, "accept": {"buffer_deg": 1.2}, "desc": null}, {"id": 4, "name": "Reka Ural", "label_at": [53.0, 49.3], "geometry": {"type": "river", "polyline": [[58.5, 54], [56, 52.8], [53.5, 51.2], [52, 49.5], [51.5, 47.2]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 5, "name": "Kaspijsko jezero", "label_at": [50.5, 42.0], "geometry": null, "accept": {"bbox": [46, 36, 55, 47]}, "desc": null}, {"id": 6, "name": "Kavkaz", "label_at": [44.2, 42.9], "geometry": {"type": "mountain", "polyline": [[40, 43.6], [43, 43.2], [45.5, 42.5], [48, 41.6]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 7, "name": "Crno more", "label_at": [34.5, 43.2], "geometry": null, "accept": {"bbox": [27, 41, 42, 47.5]}, "desc": null}, {"id": 8, "name": "Moreuz Bosfor", "label_at": [29.2, 41.2], "geometry": null, "accept": {"radius_deg": 0.5}, "desc": null}, {"id": 9, "name": "Mramorno more", "label_at": [28.2, 40.6], "geometry": null, "accept": {"bbox": [26, 40, 30, 41.5]}, "desc": null}, {"id": 10, "name": "Moreuz Dardaneli", "label_at": [26.3, 40.2], "geometry": null, "accept": {"radius_deg": 0.5}, "desc": null}, {"id": 11, "name": "Egejsko more", "label_at": [25.0, 38.4], "geometry": null, "accept": {"bbox": [22, 35, 28, 41]}, "desc": null}, {"id": 12, "name": "Velika Britanija", "label_at": [-1.6, 52.7], "geometry": null, "accept": {"bbox": [-8.5, 49.5, 2, 59]}, "desc": null}, {"id": 13, "name": "Reka Volga", "label_at": [46.8, 51.5], "geometry": {"type": "river", "polyline": [[34, 57], [37, 56.2], [43, 56.3], [47, 55], [48, 52.5], [46, 50.2], [47.5, 48], [48, 46.3]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 14, "name": "Apeninsko poluostrvo", "label_at": [13.6, 42.2], "geometry": null, "accept": {"bbox": [9.5, 38, 19, 47]}, "desc": null}, {"id": 15, "name": "Pirinejsko poluostrvo", "label_at": [-4.2, 40.0], "geometry": null, "accept": {"bbox": [-10, 36, 4, 44]}, "desc": null}, {"id": 16, "name": "Balkansko poluostrvo", "label_at": [22.5, 42.2], "geometry": null, "accept": {"bbox": [16, 38, 30, 47]}, "desc": null}, {"id": 17, "name": "Skandinavsko poluostrvo", "label_at": [15.5, 62.5], "geometry": null, "accept": {"bbox": [5, 56, 25, 71.5]}, "desc": {"vrsta": "poluostrvo", "html": "<p>Najveće poluostrvo u Evropi (~750.000 km²), na severu kontinenta. Obuhvata Norvešku, Švedsku i severozapadni deo Finske. Ime potiče od regije <strong>Skanija</strong> na jugu, preko kulturnog pojma &quot;Skandinavija&quot;. Geološki počiva na <strong>Baltičkom štitu</strong>; obala je razuđena fjordovima nastalim glacijacijom.</p><h4>Ključne činjenice</h4><ul><li>Površina ~750.000 km²; dužina ~1.850 km, širina ~370–805 km.</li><li>Najviši vrh: <strong>Galdhepigen 2.469 m</strong> (Norveška).</li><li>Granične vode: Baltičko, Severno, Norveško i Barencovo more.</li><li>~1/4 leži severno od arktičkog kruga.</li><li>Najveći gradovi: Stokholm, Oslo, Geteborg, Malme, Bergen.</li></ul>", "sources": [{"naziv": "Wikipedija (srpski)", "url": "https://sr.wikipedia.org/wiki/Скандинавско_полуострво"}], "hints": ["Najveće je svoje vrste u Evropi — veće od Balkanskog ili Apeninskog.", "Smešteno je na krajnjem severu kontinenta; jedna četvrtina leži iznad arktičkog kruga.", "Na njemu su Norveška i Švedska, a okružuju ga Baltičko, Severno i Norveško more."]}}, {"id": 18, "name": "Krim", "label_at": [34.3, 45.4], "geometry": null, "accept": {"bbox": [32, 44, 37, 46.5]}, "desc": null}, {"id": 19, "name": "Peloponez", "label_at": [22.2, 37.2], "geometry": null, "accept": {"bbox": [21, 36, 24, 39]}, "desc": null}, {"id": 20, "name": "Jiland", "label_at": [9.2, 56.2], "geometry": null, "accept": {"bbox": [8, 54, 11, 58]}, "desc": null}, {"id": 21, "name": "Kola", "label_at": [37.5, 67.6], "geometry": null, "accept": {"bbox": [29, 65, 41.5, 70]}, "desc": null}, {"id": 22, "name": "Kanin", "label_at": [44.5, 68.0], "geometry": null, "accept": {"radius_deg": 1.3}, "desc": null}, {"id": 23, "name": "Irska", "label_at": [-8.2, 53.3], "geometry": null, "accept": {"bbox": [-11, 51, -5, 56]}, "desc": null}, {"id": 24, "name": "Island", "label_at": [-18.8, 64.8], "geometry": null, "accept": {"bbox": [-25, 63, -13, 67]}, "desc": null}, {"id": 25, "name": "Sicilija", "label_at": [14.1, 37.5], "geometry": null, "accept": {"bbox": [12, 36, 16, 39]}, "desc": null}, {"id": 26, "name": "Sardinija", "label_at": [9.1, 40.1], "geometry": null, "accept": {"bbox": [8, 38.5, 10.5, 41.5]}, "desc": null}, {"id": 27, "name": "Malta", "label_at": [14.45, 35.9], "geometry": null, "accept": {"radius_deg": 0.4}, "desc": null}, {"id": 28, "name": "Krit", "label_at": [24.9, 35.2], "geometry": null, "accept": {"bbox": [23, 34.5, 27, 36]}, "desc": null}, {"id": 29, "name": "Balearska ostrva", "label_at": [2.8, 39.5], "geometry": null, "accept": {"bbox": [1, 38.5, 4.5, 40.5]}, "desc": null}, {"id": 30, "name": "Pirineji", "label_at": [0.6, 42.75], "geometry": {"type": "mountain", "polyline": [[-1.6, 43.3], [0.5, 42.8], [2.6, 42.4]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 31, "name": "Alpi", "label_at": [10.2, 46.4], "geometry": {"type": "mountain", "polyline": [[6, 45.0], [8, 46.2], [11, 47.1], [14.5, 47.0]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 32, "name": "Apenini", "label_at": [15.6, 41.0], "geometry": {"type": "mountain", "polyline": [[10.2, 44.4], [13, 43.0], [15.2, 41.4], [16.3, 40.2]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 33, "name": "Dinarske planine", "label_at": [18.0, 43.3], "geometry": {"type": "mountain", "polyline": [[14.8, 45.6], [17, 44.0], [18.8, 43.0], [20, 42.2]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 34, "name": "Balkanske planine", "label_at": [25.0, 43.0], "geometry": {"type": "mountain", "polyline": [[22.6, 43.1], [25, 43.1], [27, 42.9]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 35, "name": "Karpati", "label_at": [23.5, 47.6], "geometry": {"type": "mountain", "polyline": [[18.8, 49.3], [21.5, 49.2], [24, 48.0], [25.5, 46.2], [24, 45.5]]}, "accept": {"buffer_deg": 1.0}, "desc": null}, {"id": 36, "name": "Centralni masiv", "label_at": [3.0, 45.0], "geometry": {"type": "mountain", "polyline": [[2.2, 45.9], [3.0, 45.0], [3.6, 44.2]]}, "accept": {"buffer_deg": 0.8}, "desc": null}, {"id": 37, "name": "Vogezi", "label_at": [6.6, 48.2], "geometry": {"type": "mountain", "polyline": [[7.0, 48.5], [7.2, 47.9]]}, "accept": {"buffer_deg": 0.5}, "desc": null}, {"id": 38, "name": "Švarcvald", "label_at": [8.6, 48.1], "geometry": {"type": "mountain", "polyline": [[8.1, 48.5], [8.3, 47.7]]}, "accept": {"buffer_deg": 0.5}, "desc": null}, {"id": 39, "name": "Sudeti", "label_at": [16.0, 50.55], "geometry": {"type": "mountain", "polyline": [[14.8, 50.8], [16.4, 50.6], [17.2, 50.2]]}, "accept": {"buffer_deg": 0.7}, "desc": null}, {"id": 40, "name": "Peninske planine", "label_at": [-2.4, 54.3], "geometry": {"type": "mountain", "polyline": [[-2.2, 55.0], [-2.0, 54.0], [-1.8, 53.2]]}, "accept": {"buffer_deg": 0.6}, "desc": null}, {"id": 41, "name": "Skandinavske planine", "label_at": [13.2, 65.0], "geometry": {"type": "mountain", "polyline": [[12, 68.5], [14, 66], [15, 64], [13, 61.5], [9.5, 61]]}, "accept": {"buffer_deg": 1.3}, "desc": {"vrsta": "planinski_venac", "html": "<p>Planinski venac koji se proteže duž zapadnog ruba Skandinavskog poluostrva, kroz Norvešku, Švedsku i krajnji severozapad Finske. Zapadne padine se strmo spuštaju u more i grade fjordove; istočne se blago spuštaju ka Finskoj. Najviši vrh je Galdhepigen (2.469 m), ujedno najviši vrh Severne Evrope.</p><h4>Ključne činjenice</h4><ul><li>Najviši vrh: <strong>Galdhepigen 2.469 m</strong> (Norveška) · švedska strana: <strong>Kebnekajse 2.104 m</strong> · Finska: <strong>Halti 1.324 m</strong>.</li><li>Dužina ~1.700 km, širina ~320 km.</li><li>Proteže se kroz: Norvešku, Švedsku, Finsku (Finsku tek dodiruje).</li><li>Stene stare ~400 mil. godina; reljef oblikovan izdizanjem zapadne strane i glacijacijom.</li></ul>", "sources": [{"naziv": "Wikipedija (srpski)", "url": "https://sr.wikipedia.org/wiki/Скандинавске_планине"}], "hints": ["Ovaj izduženi oblik prati zapadnu ivicu jednog velikog severnog poluostrva.", "Razdvaja dve države koje to poluostrvo dele i čini njihovu prirodnu granicu.", "Zapadne strane mu se strmo spuštaju u more i grade fjordove — traži ga uz norvešku obalu, ka severu."]}}, {"id": 42, "name": "Šumava", "label_at": [13.2, 49.2], "geometry": {"type": "mountain", "polyline": [[12.6, 49.6], [13.6, 49.0], [14.2, 48.6]]}, "accept": {"buffer_deg": 0.6}, "desc": null}];
 const STATE_KEY = 'classroom:' + window.location.pathname;
 const STATE_VERSION = 2;
 const RANDOMIZE_NUMBERS = true;
@@ -343,26 +344,23 @@ function showWin(correct, miss) {
   exportBtn.style.display = 'inline-block';
 }
 
-// --- info side panel ---
+// --- info side panel (full description when solved; progressive hints while wrong) ---
 const PANEL_PLACEHOLDER = "Opis uskoro.";
 const PANEL_SOURCE_LBL = "Izvor:";
+const PANEL_HINT_HEADING = "Hint";
+const PANEL_HINT_PROMPT = "Hint se otkriva sa svakom gre\u0161kom \u2014 poku\u0161aj da postavi\u0161 pojam.";
+const PANEL_HINTS_DONE = "Svi hintovi iskori\u0161\u0107eni \u2014 evo opisa:";
+const PANEL_NO_HINT = "Nema hinta za ovaj pojam (jo\u0161).";
 
-function openPanel(canonId) {
-  const term = ALL_TERMS.find(t => t.id === canonId);
-  if (!term) return;
-  panelTitle.textContent = term.name;
-  const d = term.desc;
+function panelSetVrsta(d) {
   if (d && d.vrsta) {
     panelVrsta.textContent = d.vrsta.replace(/_/g, ' ');
     panelVrsta.style.display = 'inline-block';
   } else {
     panelVrsta.style.display = 'none';
   }
-  if (d && d.html) {
-    panelBody.innerHTML = d.html;
-  } else {
-    panelBody.innerHTML = '<p class="placeholder">' + PANEL_PLACEHOLDER + '</p>';
-  }
+}
+function panelSetFoot(d) {
   if (d && d.sources && d.sources.length) {
     panelFoot.innerHTML = PANEL_SOURCE_LBL + ' ' + d.sources.map(s =>
       s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + s.naziv + '</a>' : s.naziv
@@ -371,8 +369,64 @@ function openPanel(canonId) {
   } else {
     panelFoot.style.display = 'none';
   }
+}
+function panelOpenEl() {
   layoutEl.classList.add('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
+}
+
+// Render the panel according to the term's current state:
+//   solved            → full description (Sažetak + činjenice + vrsta + izvor)
+//   unsolved + hints  → first `miss` hints (subtle → concrete); once hints run
+//                       out, the next miss reveals the full description
+//   unsolved + none   → quiet "no hint" placeholder
+function showPanelFor(canonId) {
+  const term = ALL_TERMS.find(t => t.id === canonId);
+  if (!term) return;
+  const d = term.desc;
+  const inp = inputsById.get(canonId);
+  const solved = inp && inp.classList.contains('correct');
+  const miss = inp ? (parseInt(inp.dataset.miss, 10) || 0) : 0;
+  const hints = (d && d.hints) ? d.hints : [];
+  panelTitle.textContent = term.name;
+
+  if (solved) {
+    panelSetVrsta(d);
+    panelBody.innerHTML = (d && d.html) ? d.html : '<p class="placeholder">' + PANEL_PLACEHOLDER + '</p>';
+    panelSetFoot(d);
+    panelOpenEl();
+    return;
+  }
+  if (hints.length) {
+    if (miss === 0) {
+      panelVrsta.style.display = 'none';
+      panelBody.innerHTML = '<p class="placeholder">' + PANEL_HINT_PROMPT + '</p>';
+      panelFoot.style.display = 'none';
+    } else if (miss > hints.length) {
+      panelSetVrsta(d);
+      panelBody.innerHTML = '<p class="placeholder">' + PANEL_HINTS_DONE + '</p>' + ((d && d.html) ? d.html : '');
+      panelSetFoot(d);
+    } else {
+      panelVrsta.style.display = 'none';
+      const shown = hints.slice(0, miss);
+      panelBody.innerHTML = '<h4>' + PANEL_HINT_HEADING + '</h4><ol class="hints">' +
+        shown.map(h => '<li>' + h + '</li>').join('') + '</ol>';
+      panelFoot.style.display = 'none';
+    }
+    panelOpenEl();
+    return;
+  }
+  panelVrsta.style.display = 'none';
+  panelBody.innerHTML = '<p class="placeholder">' + PANEL_NO_HINT + '</p>';
+  panelFoot.style.display = 'none';
+  panelOpenEl();
+}
+
+// Auto-open the panel on a wrong attempt only when the term actually has hints
+// (terms without hints stay quiet — only shake + miss badge).
+function maybeHintPanel(canonId) {
+  const t = ALL_TERMS.find(t => t.id === canonId);
+  if (t && t.desc && t.desc.hints && t.desc.hints.length) showPanelFor(canonId);
 }
 
 function closePanel() {
@@ -382,14 +436,12 @@ function closePanel() {
 
 panelClose.addEventListener('click', closePanel);
 
-// Click a solved marker on the map to (re)open its panel.
+// Click any marker on the map to open its panel (full text if solved, else hints).
 document.getElementById('overlay').addEventListener('click', e => {
   const cell = e.target.closest('.cell');
   if (!cell) return;
   const inp = cell.querySelector('.ans');
-  if (inp && inp.classList.contains('correct')) {
-    openPanel(parseInt(inp.dataset.id, 10));
-  }
+  if (inp) showPanelFor(parseInt(inp.dataset.id, 10));
 });
 
 function check(inp) {
@@ -402,7 +454,7 @@ function check(inp) {
     inp.classList.add('correct');
     inp.readOnly = true;
     showMsg(MSG_CORRECT, true);
-    openPanel(parseInt(inp.dataset.id, 10));
+    showPanelFor(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
   } else {
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -412,6 +464,7 @@ function check(inp) {
     badge.style.display = 'block';
     inp.classList.add('wrong');
     showMsg(MSG_WRONG, false);
+    maybeHintPanel(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
     setTimeout(() => {
       inp.classList.remove('wrong');
@@ -729,7 +782,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     const li = legendItems.get(canonicalId);
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
-    openPanel(canonicalId);
+    showPanelFor(canonicalId);
   } else {
     inp.classList.add('wrong-placed');
     const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -738,6 +791,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     badge.textContent = m;
     badge.style.display = 'block';
     showMsg(MSG_WRONG, false);
+    maybeHintPanel(canonicalId);
   }
   apply();
   recountCorrectMiss();
