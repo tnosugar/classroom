@@ -168,9 +168,6 @@ _HTML_TPL = r"""<!DOCTYPE html>
  button.secondary:hover{background:#1f7a3a;color:#fff}
  .mode-selector{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:#3a3528}
  .mode-selector select{font:inherit;padding:4px 8px;border:1px solid #6b6456;border-radius:6px;background:#fff;color:#3a3528;cursor:pointer}
- .view-toggles{display:inline-flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:#3a3528;padding:4px 10px;background:#f3ecd8;border:1px solid #e1d8c2;border-radius:8px}
- .view-toggles label{display:inline-flex;gap:5px;align-items:center;cursor:pointer;user-select:none}
- .view-toggles input{margin:0;cursor:pointer}
  .resume-banner{display:none;margin-top:8px;background:#fffbe6;border:1px solid #f0d878;border-radius:8px;padding:6px 12px;font-size:13px;color:#7a5a00}
  .resume-banner.show{display:block}
  .layout{display:flex;align-items:flex-start;gap:0;width:100%}
@@ -242,14 +239,11 @@ _HTML_TPL = r"""<!DOCTYPE html>
  #msg.show{opacity:1}
  .win{background:#d8f0dd;border-color:#1f7a3a;color:#13602c;font-weight:700}
 
- /* View toggles: features (mountains+rivers) / borders / color mode */
- body.no-features svg .feat-mtn,
- body.no-features svg .feat-mtn-mark,
- body.no-features svg .feat-riv,
- body.no-features .keyline .m,
- body.no-features .keyline .r,
- body.no-features .keyline br:first-of-type { display: none }
- body.no-borders svg .border-path { display: none }
+ /* Geometry (mountains/rivers) hidden by default; each term's geometry is
+    revealed (drawn) only when that term is correctly placed. Borders never show. */
+ svg .feat-mtn, svg .feat-mtn-mark, svg .feat-riv { display: none }
+ svg .feat-mtn.revealed, svg .feat-mtn-mark.revealed, svg .feat-riv.revealed { display: inline }
+ svg .border-path { display: none }
 
  /* Drag mode: pre-placed cells are hidden until dropped. Legend items
     become draggable; placed-but-wrong cells become re-draggable. */
@@ -331,12 +325,6 @@ _HTML_TPL = r"""<!DOCTYPE html>
     <option value="5">__MODE_5__</option>
    </select>
   </label>
-  <span class="view-toggles">
-   <label><input type="checkbox" id="tFeatures"> __TGL_FEATURES__</label>
-   <label><input type="checkbox" id="tBorders"> __TGL_BORDERS__</label>
-   <label><input type="checkbox" id="tBW"> __TGL_BW__</label>
-   <label><input type="checkbox" id="tDrag" checked> __TGL_DRAG__</label>
-  </span>
   <span class="stat win" id="win" style="display:none"></span>
  </div>
  <div id="resumeBanner" class="resume-banner">__RESUME_MSG__</div>
@@ -380,7 +368,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <script>
 const ALL_TERMS = __TERMS_JSON__;
 const STATE_KEY = 'classroom:' + window.location.pathname;
-const STATE_VERSION = 3;
+const STATE_VERSION = 4;
 const RANDOMIZE_NUMBERS = __RANDOMIZE_NUMBERS__;
 // Projection constants for screen-pixel ↔ lon/lat conversion (drag mode only)
 const PROJ_LON0 = __PROJ_LON0__, PROJ_LAT1 = __PROJ_LAT1__;
@@ -822,6 +810,7 @@ function check(inp) {
     inp.classList.add('correct');
     inp.readOnly = true;
     showMsg(MSG_CORRECT, true);
+    revealGeometry(parseInt(inp.dataset.id, 10));
     showPanelFor(parseInt(inp.dataset.id, 10));
     recountCorrectMiss();
   } else {
@@ -872,12 +861,6 @@ function saveState() {
     testMode: isTestMode(),
     visible: visibleIds,
     mapping: currentMapping ? currentMapping.c2d : null,
-    toggles: {
-      features: tFeatures.checked,
-      borders: tBorders.checked,
-      bw: tBW.checked,
-      drag: tDrag.checked
-    },
     answers
   };
   try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -901,6 +884,7 @@ function clearState() {
 
 function applyAnswers(answers) {
   quizProgress.clear();
+  hideAllGeometry();
   for (const inp of allInputs) {
     const a = answers[inp.dataset.id];  // keyed by canonical id
     const cell = inp.parentElement;
@@ -920,6 +904,7 @@ function applyAnswers(answers) {
     if (a.c) {
       inp.classList.add('correct');
       inp.readOnly = true;
+      revealGeometry(parseInt(inp.dataset.id, 10));
     }
     if (a.m && a.m > 0) {
       inp.dataset.miss = String(a.m);
@@ -1008,41 +993,21 @@ function exportCSV() {
 }
 exportBtn.addEventListener('click', exportCSV);
 
-// --- view toggles: features / borders / b&w / drag ---
-const tFeatures = document.getElementById('tFeatures');
-const tBorders = document.getElementById('tBorders');
-const tBW = document.getElementById('tBW');
-const tDrag = document.getElementById('tDrag');
+// --- fixed view: no features/borders, color, always drag mode ---
+// Mountains/rivers are hidden until a term is correctly placed, then its own
+// geometry is drawn on the map.
+document.body.classList.add('drag-mode');
 
-function applyToggles() {
-  document.body.classList.toggle('no-features', !tFeatures.checked);
-  document.body.classList.toggle('no-borders', !tBorders.checked);
-  document.body.classList.toggle('bw', tBW.checked);
-  document.body.classList.toggle('drag-mode', tDrag.checked);
-}
-
-[tFeatures, tBorders, tBW].forEach(t => {
-  t.addEventListener('change', () => { applyToggles(); saveState(); });
-});
-
-// Drag toggle has a different effect: switching modes resets all answers
-// and clears any drag placements (cleaner mental model).
-tDrag.addEventListener('change', () => {
-  applyToggles();
-  // Clear drag-placed positions back to canonical, remove drag-placed class
-  for (const inp of allInputs) {
-    const cell = inp.parentElement;
-    cell.dataset.sx = cell.dataset.canonSx;
-    cell.dataset.sy = cell.dataset.canonSy;
-    cell.classList.remove('drag-placed', 'dragging');
-    inp.classList.remove('wrong-placed');
+function revealGeometry(canonId) {
+  for (const el of document.querySelectorAll('svg [data-term="' + canonId + '"]')) {
+    el.classList.add('revealed');
   }
-  for (const [, li] of legendItems) li.classList.remove('placed', 'dragging');
-  applyAnswers({});
-  recountCorrectMiss();
-  apply();   // re-render cell positions
-  saveState();
-});
+}
+function hideAllGeometry() {
+  for (const el of document.querySelectorAll('svg .revealed')) {
+    el.classList.remove('revealed');
+  }
+}
 
 // --- drag system (active only when body.drag-mode) ---
 // Default fallback (used only if a term has no `accept` field): ~3° around label_at,
@@ -1164,6 +1129,7 @@ function tryDragDrop(canonicalId, clientX, clientY) {
     const li = legendItems.get(canonicalId);
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
+    revealGeometry(canonicalId);
     showPanelFor(canonicalId);
   } else {
     inp.classList.add('wrong-placed');
@@ -1357,19 +1323,11 @@ if (saved) {
   setMode(saved.mode || 'all', { restoreIds: saved.visible, restoreMapping });
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
-  // Restore toggle state. Default (when no saved state, or saved state predates
-  // the toggles object): features off, borders off, color mode, drag mode on.
-  const tg = saved.toggles || { features: false, borders: false, bw: false, drag: true };
-  tFeatures.checked = tg.features === true;
-  tBorders.checked = tg.borders === true;
-  tBW.checked = tg.bw === true;
-  tDrag.checked = tg.drag !== false;
   if (saved.testMode) setTestMode(true, { restore: true });
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});
 }
-applyToggles();
 recountBonus();
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
@@ -1579,25 +1537,25 @@ def render_html(spec, output_path, map_width_px=1160.0):
     # B&W toggle can swap them at runtime. Each element gets a class so the
     # "hide features" toggle can target them via CSS.
     mtn_svg = "".join(
-        f'<polyline class="feat-mtn" points="{polyline_str(p)}" fill="none" '
+        f'<polyline class="feat-mtn" data-term="{tid}" points="{polyline_str(p)}" fill="none" '
         f'stroke="var(--mtn-col)" stroke-width="3" stroke-linejoin="round" '
         f'stroke-linecap="round"/>'
-        for _, p in spec["_mountains"]
+        for tid, p in spec["_mountains"]
     )
     mtn_marks = ""
-    for _, pts in spec["_mountains"]:
+    for tid, pts in spec["_mountains"]:
         for lo, la in pts:
             x, y = px(lo, la)
             mtn_marks += (
-                f'<path class="feat-mtn-mark" d="M{x-3:.1f},{y+3:.1f} '
+                f'<path class="feat-mtn-mark" data-term="{tid}" d="M{x-3:.1f},{y+3:.1f} '
                 f'L{x:.1f},{y-3:.1f} L{x+3:.1f},{y+3:.1f} Z" '
                 f'fill="var(--mtn-col)"/>'
             )
     riv_svg = "".join(
-        f'<polyline class="feat-riv" points="{polyline_str(p)}" fill="none" '
+        f'<polyline class="feat-riv" data-term="{tid}" points="{polyline_str(p)}" fill="none" '
         f'stroke="var(--riv-col)" stroke-width="2.2" stroke-linejoin="round" '
         f'stroke-linecap="round"/>'
-        for _, p in spec["_rivers"]
+        for tid, p in spec["_rivers"]
     )
 
     boxes = ""
