@@ -129,6 +129,7 @@ def _ui_default():
         "q_wrong": "Pogrešno — pokušaj ponovo",
         "bonus_label": "Bonus",
         "bonus_locked": "Reši sva 3 pitanja da otključaš bonus.",
+        "bonus_note": "Da bi odgovorio na bonus pitanje, potrebno je da istražuješ o geografskom pojmu u ponuđenim izvorima.",
         "test_no_questions": "Nema test-pitanja za ovaj pojam.",
     }
 
@@ -175,7 +176,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .qcol h2{font-size:14px;color:#3a3528;margin:0 0 8px}
  .mapcol{flex:1 1 auto;min-width:0;padding:0}
  /* Info side panel (third column) — opens when a term is solved or its marker clicked */
- .panelcol{flex:0 0 340px;width:340px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
+ .panelcol{flex:0 0 440px;width:440px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
  .layout:not(.panel-open) .panelcol{display:none}
  .panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:8px}
  .panelhead h2{margin:0;font-size:16px;color:#3a3528}
@@ -232,6 +233,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .quiz .bonus.locked .opt input,.quiz .bonus.locked .q-proveri{pointer-events:none;opacity:.5}
  .quiz .bonus .q-tezina{background:#fce9b8;border-color:#f0d878;color:#7a5a00}
  .quiz .bonus-lock-msg{font-size:11.5px;color:#7a5a00;margin-top:6px}
+ .quiz .bonus-note{font-size:11.5px;color:#7a5a00;font-style:italic;margin:0 0 8px}
  #stageWrap{width:100%;overflow:hidden;position:relative;touch-action:none;cursor:grab}
  #stageWrap.grabbing{cursor:grabbing}
  .zoombar{position:absolute;right:12px;top:12px;z-index:30;display:flex;flex-direction:column;gap:6px}
@@ -648,6 +650,7 @@ document.getElementById('overlay').addEventListener('click', e => {
 const BTN_PROVERI = __BTN_PROVERI__;
 const Q_CORRECT = __Q_CORRECT__, Q_WRONG = __Q_WRONG__;
 const BONUS_LABEL = __BONUS_LABEL__, BONUS_LOCKED = __BONUS_LOCKED__;
+const BONUS_NOTE = __BONUS_NOTE__;
 const TEST_NO_Q = __TEST_NO_Q__;
 const modeLearn = document.getElementById('modeLearn');
 const modeTest = document.getElementById('modeTest');
@@ -702,6 +705,7 @@ function bonusHTML(bonus, unlocked, solved) {
   let h = '<div class="bonus' + (unlocked ? '' : ' locked') + '" data-bonus>' +
     '<div class="q-head"><span class="q-tezina">' + BONUS_LABEL + '</span> ' +
     '<span class="q-txt">' + esc(bonus.pitanje) + '</span></div>' +
+    '<div class="bonus-note">' + BONUS_NOTE + '</div>' +
     optsHTML(bonus.options, solved) +
     '<div><button type="button" class="q-proveri" data-bonus-btn' + (solved ? ' style="display:none"' : '') + '>' +
     BTN_PROVERI + '</button>' +
@@ -1895,6 +1899,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__Q_WRONG__": _json.dumps(ui["q_wrong"]),
         "__BONUS_LABEL__": _json.dumps(ui["bonus_label"]),
         "__BONUS_LOCKED__": _json.dumps(ui["bonus_locked"]),
+        "__BONUS_NOTE__": _json.dumps(ui["bonus_note"]),
         "__TEST_NO_Q__": _json.dumps(ui["test_no_questions"]),
     }
     html = _HTML_TPL

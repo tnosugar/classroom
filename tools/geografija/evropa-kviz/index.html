@@ -30,7 +30,7 @@
  .qcol h2{font-size:14px;color:#3a3528;margin:0 0 8px}
  .mapcol{flex:1 1 auto;min-width:0;padding:0}
  /* Info side panel (third column) — opens when a term is solved or its marker clicked */
- .panelcol{flex:0 0 340px;width:340px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
+ .panelcol{flex:0 0 440px;width:440px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
  .layout:not(.panel-open) .panelcol{display:none}
  .panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:8px}
  .panelhead h2{margin:0;font-size:16px;color:#3a3528}
@@ -87,6 +87,7 @@
  .quiz .bonus.locked .opt input,.quiz .bonus.locked .q-proveri{pointer-events:none;opacity:.5}
  .quiz .bonus .q-tezina{background:#fce9b8;border-color:#f0d878;color:#7a5a00}
  .quiz .bonus-lock-msg{font-size:11.5px;color:#7a5a00;margin-top:6px}
+ .quiz .bonus-note{font-size:11.5px;color:#7a5a00;font-style:italic;margin:0 0 8px}
  #stageWrap{width:100%;overflow:hidden;position:relative;touch-action:none;cursor:grab}
  #stageWrap.grabbing{cursor:grabbing}
  .zoombar{position:absolute;right:12px;top:12px;z-index:30;display:flex;flex-direction:column;gap:6px}
@@ -504,6 +505,7 @@ document.getElementById('overlay').addEventListener('click', e => {
 const BTN_PROVERI = "Proveri";
 const Q_CORRECT = "Ta\u010dno!", Q_WRONG = "Pogre\u0161no \u2014 poku\u0161aj ponovo";
 const BONUS_LABEL = "Bonus", BONUS_LOCKED = "Re\u0161i sva 3 pitanja da otklju\u010da\u0161 bonus.";
+const BONUS_NOTE = "Da bi odgovorio na bonus pitanje, potrebno je da istra\u017euje\u0161 o geografskom pojmu u ponu\u0111enim izvorima.";
 const TEST_NO_Q = "Nema test-pitanja za ovaj pojam.";
 const modeLearn = document.getElementById('modeLearn');
 const modeTest = document.getElementById('modeTest');
@@ -558,6 +560,7 @@ function bonusHTML(bonus, unlocked, solved) {
   let h = '<div class="bonus' + (unlocked ? '' : ' locked') + '" data-bonus>' +
     '<div class="q-head"><span class="q-tezina">' + BONUS_LABEL + '</span> ' +
     '<span class="q-txt">' + esc(bonus.pitanje) + '</span></div>' +
+    '<div class="bonus-note">' + BONUS_NOTE + '</div>' +
     optsHTML(bonus.options, solved) +
     '<div><button type="button" class="q-proveri" data-bonus-btn' + (solved ? ' style="display:none"' : '') + '>' +
     BTN_PROVERI + '</button>' +
