@@ -62,16 +62,19 @@ ui:
 terms:
 - id: 1
   name: Gibraltarski moreuz
+  slug: gibraltarski-moreuz
   label_at: [-5.6, 35.95]
   accept:
     radius_deg: 0.6
 - id: 2
   name: Sredozemno more
+  slug: sredozemno-more
   label_at: [7.5, 38.6]
   accept:
     bbox: [-5, 30, 36, 46]
 - id: 3
   name: Planina Ural
+  slug: planina-ural
   label_at: [58.5, 57.5]
   geometry:
     type: mountain
@@ -80,6 +83,7 @@ terms:
     buffer_deg: 1.2
 - id: 4
   name: Reka Ural
+  slug: reka-ural
   label_at: [53.0, 49.3]
   geometry:
     type: river
@@ -88,11 +92,13 @@ terms:
     buffer_deg: 0.8
 - id: 5
   name: Kaspijsko jezero
+  slug: kaspijsko-jezero
   label_at: [50.5, 42.0]
   accept:
     bbox: [46, 36, 55, 47]
 - id: 6
   name: Kavkaz
+  slug: kavkaz
   label_at: [44.2, 42.9]
   geometry:
     type: mountain
@@ -101,36 +107,43 @@ terms:
     buffer_deg: 1.0
 - id: 7
   name: Crno more
+  slug: crno-more
   label_at: [34.5, 43.2]
   accept:
     bbox: [27, 41, 42, 47.5]
 - id: 8
   name: Moreuz Bosfor
+  slug: moreuz-bosfor
   label_at: [29.2, 41.2]
   accept:
     radius_deg: 0.5
 - id: 9
   name: Mramorno more
+  slug: mramorno-more
   label_at: [28.2, 40.6]
   accept:
     bbox: [26, 40, 30, 41.5]
 - id: 10
   name: Moreuz Dardaneli
+  slug: moreuz-dardaneli
   label_at: [26.3, 40.2]
   accept:
     radius_deg: 0.5
 - id: 11
   name: Egejsko more
+  slug: egejsko-more
   label_at: [25.0, 38.4]
   accept:
     bbox: [22, 35, 28, 41]
 - id: 12
   name: Velika Britanija
+  slug: velika-britanija
   label_at: [-1.6, 52.7]
   accept:
     bbox: [-8.5, 49.5, 2, 59]
 - id: 13
   name: Reka Volga
+  slug: reka-volga
   label_at: [46.8, 51.5]
   geometry:
     type: river
@@ -139,86 +152,103 @@ terms:
     buffer_deg: 0.8
 - id: 14
   name: Apeninsko poluostrvo
+  slug: apeninsko-poluostrvo
   label_at: [13.6, 42.2]
   accept:
     bbox: [9.5, 38, 19, 47]
 - id: 15
   name: Pirinejsko poluostrvo
+  slug: pirinejsko-poluostrvo
   label_at: [-4.2, 40.0]
   accept:
     bbox: [-10, 36, 4, 44]
 - id: 16
   name: Balkansko poluostrvo
+  slug: balkansko-poluostrvo
   label_at: [22.5, 42.2]
   accept:
     bbox: [16, 38, 30, 47]
 - id: 17
   name: Skandinavsko poluostrvo
+  slug: skandinavsko-poluostrvo
   label_at: [15.5, 62.5]
   accept:
     bbox: [5, 56, 25, 71.5]
 - id: 18
   name: Krim
+  slug: krim
   label_at: [34.3, 45.4]
   accept:
     bbox: [32, 44, 37, 46.5]
 - id: 19
   name: Peloponez
+  slug: peloponez
   label_at: [22.2, 37.2]
   accept:
     bbox: [21, 36, 24, 39]
 - id: 20
   name: Jiland
+  slug: jiland
   label_at: [9.2, 56.2]
   accept:
     bbox: [8, 54, 11, 58]
 - id: 21
   name: Kola
+  slug: kola
   label_at: [37.5, 67.6]
   accept:
     bbox: [29, 65, 41.5, 70]
 - id: 22
   name: Kanin
+  slug: kanin
   label_at: [44.5, 68.0]
   accept:
     radius_deg: 1.3
 - id: 23
   name: Irska
+  slug: irska
   label_at: [-8.2, 53.3]
   accept:
     bbox: [-11, 51, -5, 56]
 - id: 24
   name: Island
+  slug: island
   label_at: [-18.8, 64.8]
   accept:
     bbox: [-25, 63, -13, 67]
 - id: 25
   name: Sicilija
+  slug: sicilija
   label_at: [14.1, 37.5]
   accept:
     bbox: [12, 36, 16, 39]
 - id: 26
   name: Sardinija
+  slug: sardinija
   label_at: [9.1, 40.1]
   accept:
     bbox: [8, 38.5, 10.5, 41.5]
 - id: 27
   name: Malta
+  slug: malta
   label_at: [14.45, 35.9]
   accept:
     radius_deg: 0.4
 - id: 28
   name: Krit
+  slug: krit
   label_at: [24.9, 35.2]
   accept:
     bbox: [23, 34.5, 27, 36]
 - id: 29
   name: Balearska ostrva
+  slug: balearska-ostrva
   label_at: [2.8, 39.5]
   accept:
     bbox: [1, 38.5, 4.5, 40.5]
 - id: 30
   name: Pirineji
+  slug: pirineji
   label_at: [0.6, 42.75]
   geometry:
     type: mountain
@@ -227,6 +257,7 @@ terms:
     buffer_deg: 0.8
 - id: 31
   name: Alpi
+  slug: alpi
   label_at: [10.2, 46.4]
   geometry:
     type: mountain
@@ -235,6 +266,7 @@ terms:
     buffer_deg: 1.0
 - id: 32
   name: Apenini
+  slug: apenini
   label_at: [15.6, 41.0]
   geometry:
     type: mountain
@@ -243,6 +275,7 @@ terms:
     buffer_deg: 1.0
 - id: 33
   name: Dinarske planine
+  slug: dinarske-planine
   label_at: [18.0, 43.3]
   geometry:
     type: mountain
@@ -251,6 +284,7 @@ terms:
     buffer_deg: 1.0
 - id: 34
   name: Balkanske planine
+  slug: balkanske-planine
   label_at: [25.0, 43.0]
   geometry:
     type: mountain
@@ -259,6 +293,7 @@ terms:
     buffer_deg: 1.0
 - id: 35
   name: Karpati
+  slug: karpati
   label_at: [23.5, 47.6]
   geometry:
     type: mountain
@@ -267,6 +302,7 @@ terms:
     buffer_deg: 1.0
 - id: 36
   name: Centralni masiv
+  slug: centralni-masiv
   label_at: [3.0, 45.0]
   geometry:
     type: mountain
@@ -275,6 +311,7 @@ terms:
     buffer_deg: 0.8
 - id: 37
   name: Vogezi
+  slug: vogezi
   label_at: [6.6, 48.2]
   geometry:
     type: mountain
@@ -283,6 +320,7 @@ terms:
     buffer_deg: 0.5
 - id: 38
   name: Švarcvald
+  slug: svarcvald
   label_at: [8.6, 48.1]
   geometry:
     type: mountain
@@ -291,6 +329,7 @@ terms:
     buffer_deg: 0.5
 - id: 39
   name: Sudeti
+  slug: sudeti
   label_at: [16.0, 50.55]
   geometry:
     type: mountain
@@ -299,6 +338,7 @@ terms:
     buffer_deg: 0.7
 - id: 40
   name: Peninske planine
+  slug: peninske-planine
   label_at: [-2.4, 54.3]
   geometry:
     type: mountain
@@ -307,6 +347,7 @@ terms:
     buffer_deg: 0.6
 - id: 41
   name: Skandinavske planine
+  slug: skandinavske-planine
   label_at: [13.2, 65.0]
   geometry:
     type: mountain
@@ -315,6 +356,7 @@ terms:
     buffer_deg: 1.3
 - id: 42
   name: Šumava
+  slug: sumava
   label_at: [13.2, 49.2]
   geometry:
     type: mountain

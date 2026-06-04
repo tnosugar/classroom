@@ -1,0 +1,49 @@
+# Registar tipova veza za shared/znanje.
+# OTVOREN skup — raste kako se uvode novi pojmovi (vidi README › "Proces uvođenja novog tipa veze").
+# Svaki predikat: opis, inverz (ako postoji), primer. Inverz se NE upisuje ručno u pojmove —
+# izvodi se programski iz ovog registra.
+#
+# verzija registra: 1   (uz svaku izmenu povećati i dopisati u CHANGELOG dnu)
+
+vrste:
+  # Kontrolisani rečnik za polje `vrsta:` u index.md (klasifikacija pojma).
+  # Takođe raste vremenom; dodaj novu vrstu istim procesom kao i predikat.
+  - poluostrvo
+  - planinski_venac
+  - planina
+  - more
+  - reka
+  - jezero
+  - ostrvo
+  - moreuz
+  - drzava
+  - region
+
+predikati:
+  nalazi_se_u:
+    opis: Pojam prostorno leži unutar/na većoj celini.
+    inverz: obuhvata
+    primer: "skandinavske-planine nalazi_se_u skandinavsko-poluostrvo"
+
+  obuhvata:
+    opis: Veća celina sadrži manji pojam. (Obično se NE upisuje ručno — inverz od nalazi_se_u.)
+    inverz: nalazi_se_u
+    primer: "skandinavsko-poluostrvo obuhvata skandinavske-planine"
+
+  prostire_se_kroz:
+    opis: Linijski/površinski pojam (venac, reka, more) proteže se kroz više država ili celina.
+    inverz: null
+    primer: "skandinavske-planine prostire_se_kroz [norveska, svedska, finska]"
+
+  granici_se_sa:
+    opis: Pojam je prostorno susedan drugom pojmu (mora, poluostrva, države).
+    inverz: granici_se_sa   # simetričan
+    primer: "skandinavsko-poluostrvo granici_se_sa [balticko-more, severno-more, norvesko-more]"
+
+  srodni:
+    opis: Netipizovan "vidi takođe". Fallback dok se ne ukaže potreba za pravim predikatom.
+    inverz: srodni          # simetričan
+    primer: "skandinavske-planine srodni [skandinavski-kaledoni, galdhepigen]"
+
+# CHANGELOG
+# v1 (2026-06-04): početni set — nalazi_se_u, obuhvata, prostire_se_kroz, granici_se_sa, srodni.
