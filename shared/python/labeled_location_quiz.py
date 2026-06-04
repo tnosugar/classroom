@@ -1356,10 +1356,11 @@ function demoCursorToEl(el) {
 }
 
 // --- demo actions (operate on the Srbija term, id 0) ---
-function demoDropWrong() {
-  const [cx, cy] = baseToClient(MW * 0.20, MH * 0.32);
+function demoDropWrongAt(bx, by) {
+  // The Srbija marker (number 0) lands at this wrong map spot.
+  const [cx, cy] = baseToClient(bx, by);
   demoCursorToClient(cx, cy);
-  applyDrop(DEMO_TERM.id, false, MW * 0.20, MH * 0.32);
+  applyDrop(DEMO_TERM.id, false, bx, by);
 }
 function demoDropCorrect() {
   const cell = inputsById.get(DEMO_TERM.id).parentElement;
@@ -1369,10 +1370,6 @@ function demoDropCorrect() {
   applyDrop(DEMO_TERM.id, true, bx, by);
 }
 function demoEnterTest() { setTestMode(true, {}); }
-function demoTestWrongTwice() {
-  demoDropWrong();
-  demoDropWrong();
-}
 function demoAnswerQuestion(qi, correct) {
   const quizEl = panelBody.querySelector('.quiz');
   if (!quizEl) return;
@@ -1400,12 +1397,13 @@ function demoBonus() {
 
 // --- demo step script ---
 const DEMO_STEPS = [
-  { l: 'Učenje', t: 'Prevlačim pojam <b>Srbija</b> na pogrešno mesto. Pogrešno lociranje se broji kao greška i otvara prvi <b>hint</b>.', a: demoDropWrong, at: 'map' },
-  { l: 'Hintovi', t: 'Još jedna greška — otkriva se sledeći, konkretniji hint. Svaka greška daje jači trag.', a: demoDropWrong, at: 'map' },
-  { l: 'Tačno', t: 'Sad ga spuštam na tačno mesto. Tada se prikaže <b>pun opis</b> pojma u panelu.', a: demoDropCorrect, at: 'map' },
+  { l: 'Učenje', t: 'Prevlačim pojam <b>Srbija</b> na pogrešno mesto — broj <b>0</b> pada tu (crveno). Greška se broji i otvara prvi <b>hint</b>.', a: () => demoDropWrongAt(MW * 0.20, MH * 0.28), at: 'map' },
+  { l: 'Hintovi', t: 'Spuštam <b>0</b> na drugo pogrešno mesto — otkriva se sledeći, konkretniji hint.', a: () => demoDropWrongAt(MW * 0.31, MH * 0.56), at: 'map' },
+  { l: 'Tačno', t: 'Sad <b>0</b> ide na tačno mesto. Tada se prikaže <b>pun opis</b> pojma u panelu.', a: demoDropCorrect, at: 'map' },
   { l: 'Test mod', t: 'Prelazim u <b>Test</b> mod. Ovde nema hintova ni opisa — posle tačnog lociranja dobijaš pitanja.', a: demoEnterTest, at: 'mode' },
-  { l: 'Test: greške', t: 'I u testu pogrešno lociranje broji grešku — dva puta promašim...', a: demoTestWrongTwice, at: 'map' },
-  { l: 'Test: tačno', t: '...pa pogodim. Sad se otvaraju tri pitanja.', a: demoDropCorrect, at: 'map' },
+  { l: 'Test: greška 1', t: 'I u testu pogrešno lociranje broji grešku — <b>0</b> na prvo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.22, MH * 0.30), at: 'map' },
+  { l: 'Test: greška 2', t: '...pa <b>0</b> na drugo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.33, MH * 0.58), at: 'map' },
+  { l: 'Test: tačno', t: 'Pa <b>0</b> na tačno mesto — otvaraju se tri pitanja.', a: demoDropCorrect, at: 'map' },
   { l: 'Pitanje 1', t: 'Prvo pitanje rešavam tačno iz prve.', a: () => demoAnswerQuestion(0, true), at: 'panel' },
   { l: 'Pitanje 2', t: 'Drugo pitanje prvo namerno pogrešim — broji se jedna greška.', a: () => demoAnswerQuestion(1, false), at: 'panel' },
   { l: 'Pitanje 2', t: '...pa ga ispravim na tačno.', a: () => demoAnswerQuestion(1, true), at: 'panel' },
@@ -1416,17 +1414,20 @@ const DEMO_STEPS = [
 ];
 
 function demoPositionBubble(at) {
-  let anchor = null;
-  if (at === 'mode') anchor = modeTest;
-  else if (at === 'panel') anchor = document.getElementById('panelcol');
-  else anchor = wrap;
-  const r = anchor.getBoundingClientRect();
-  let x = Math.min(r.left + 20, window.innerWidth - 300);
-  let y = Math.min(r.top + 40, window.innerHeight - 160);
-  demoBubbleEl.style.left = Math.max(10, x) + 'px';
-  demoBubbleEl.style.top = Math.max(10, y) + 'px';
-  if (at === 'mode') demoCursorToEl(modeTest);
-  else if (at === 'panel') { const q = panelBody.querySelector('.q-proveri'); if (q) demoCursorToEl(q); }
+  // Pin the bubble to the bottom-left, over the legend column — so it never
+  // covers the map markers or the side panel while the demo runs.
+  demoBubbleEl.style.left = '14px';
+  demoBubbleEl.style.right = 'auto';
+  demoBubbleEl.style.top = 'auto';
+  demoBubbleEl.style.bottom = '16px';
+  // Move the pointer to the relevant control (map drops move it themselves).
+  if (at === 'mode') {
+    demoCursorToEl(modeTest);
+  } else if (at === 'panel') {
+    const visible = [...panelBody.querySelectorAll('.q-proveri')]
+      .find(b => b.offsetParent !== null);
+    if (visible) demoCursorToEl(visible);
+  }
 }
 
 function renderDemoStep(i) {
