@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Glavna pritoka joj je Dunav", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Kod Volgograda (nekada Staljingrad) odigrala se velika bitka", tacan: true}
     - {tekst: "Astrahan u delti je centar kavijarske industrije", tacan: true}

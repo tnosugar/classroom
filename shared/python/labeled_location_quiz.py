@@ -126,6 +126,7 @@ def _ui_default():
         "mode_test": "Test",
         "btn_desc": "Opis",
         "btn_desc_ok": "Razumem",
+        "stat_answers": "Pitanja",
         "stat_bonus": "Bonus",
         "btn_proveri": "Proveri",
         "q_correct": "Tačno!",
@@ -230,8 +231,13 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .ms-btn:hover{background:#f3ecd8;color:#3a3528}
  .ms-btn.active{background:#3a3528;color:#fff;border-color:#3a3528}
  /* Učenje mod: bez statistike (tačno / greške / pobeda / izvoz) — ovde se uči, ne boduje */
- body:not(.test-mode) #statCorrect, body:not(.test-mode) #statMiss,
+ body:not(.test-mode) #statCorrect, body:not(.test-mode) #statMiss, body:not(.test-mode) #statAnswers,
  body:not(.test-mode) #win, body:not(.test-mode) #exportCsv { display: none !important; }
+ /* Per-term answer-state markers in the legend (test mode): 3 questions + bonus */
+ .qmarks{margin-left:6px;font-size:11px;letter-spacing:1px;white-space:nowrap}
+ .qm-todo{color:#b9b2a0} .qm-ok{color:#1f7a3a} .qm-bad{color:#b1271f}
+ .qm-bonus{margin-left:3px}
+ body:not(.test-mode) .qmarks{display:none}
  /* Test-mode quiz inside the panel */
  .quiz .q,.quiz .bonus{border:1px solid #e1d8c2;border-radius:8px;padding:9px 11px;margin:0 0 10px;background:#fcfaf4}
  .quiz .q-head{margin-bottom:7px}
@@ -348,6 +354,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
    <button type="button" id="modeLearn" class="ms-btn active">__MODE_LEARN__</button><button type="button" id="modeTest" class="ms-btn">__MODE_TEST__</button>
   </span>
   <span class="stat" id="statCorrect">__LBL_CORRECT__: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">__TOTAL__</b></span>
+  <span class="stat" id="statAnswers" style="display:none">__LBL_ANSWERS__: <b class="ok" id="cAnswers">0</b> / <b id="cAnswersTotal">0</b></span>
   <span class="stat" id="statMiss">__LBL_MISS__: <b class="bad" id="cMiss">0</b></span>
   <span class="stat bonus-stat" id="bonusStat" style="display:none">__LBL_BONUS__: <b class="ok" id="cBonus">0</b> / <b id="cBonusTotal">0</b></span>
   <button id="reset">__BTN_RESET__</button>
@@ -678,6 +685,9 @@ const modeTest = document.getElementById('modeTest');
 const bonusStat = document.getElementById('bonusStat');
 const cBonus = document.getElementById('cBonus');
 const cBonusTotal = document.getElementById('cBonusTotal');
+const statAnswers = document.getElementById('statAnswers');
+const cAnswers = document.getElementById('cAnswers');
+const cAnswersTotal = document.getElementById('cAnswersTotal');
 
 function isTestMode() { return document.body.classList.contains('test-mode'); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -689,7 +699,7 @@ function getQP(canonId) {
   if (!p) {
     const t = ALL_TERMS.find(x => x.id === canonId);
     const n = (t && t.quiz && t.quiz.questions) ? t.quiz.questions.length : 0;
-    p = { solved: new Array(n).fill(false), bonus: false };
+    p = { solved: new Array(n).fill(false), wrong: new Array(n).fill(false), bonus: false, bonusWrong: false };
     quizProgress.set(canonId, p);
   }
   return p;
@@ -805,6 +815,58 @@ function recountBonus() {
   bonusStat.style.display = total > 0 ? 'inline-block' : 'none';
 }
 
+// Count of correctly answered main questions across the counted terms.
+function recountAnswers() {
+  if (!isTestMode()) { statAnswers.style.display = 'none'; return; }
+  let solved = 0, total = 0;
+  for (const id of countedIds()) {
+    const t = ALL_TERMS.find(x => x.id === id);
+    if (t && t.quiz && t.quiz.questions) {
+      total += t.quiz.questions.length;
+      const p = quizProgress.get(id);
+      if (p) solved += p.solved.filter(Boolean).length;
+    }
+  }
+  cAnswers.textContent = solved;
+  cAnswersTotal.textContent = total;
+  statAnswers.style.display = total > 0 ? 'inline-block' : 'none';
+}
+
+// Legend markers for a term: ● tačno / ✕ pogrešno / ○ nedovršeno per question,
+// and ★/✕/☆ for the bonus. Shown next to a placed term in test mode.
+function legendMarksHTML(canonId) {
+  const t = ALL_TERMS.find(x => x.id === canonId);
+  if (!t || !t.quiz || !t.quiz.questions) return '';
+  const p = getQP(canonId);
+  let h = '';
+  t.quiz.questions.forEach((q, i) => {
+    if (p.solved[i]) h += '<span class="qm-ok">●</span>';
+    else if (p.wrong[i]) h += '<span class="qm-bad">✕</span>';
+    else h += '<span class="qm-todo">○</span>';
+  });
+  if (t.quiz.bonus) {
+    if (p.bonus) h += '<span class="qm-ok qm-bonus">★</span>';
+    else if (p.bonusWrong) h += '<span class="qm-bad qm-bonus">✕</span>';
+    else h += '<span class="qm-todo qm-bonus">☆</span>';
+  }
+  return h;
+}
+function updateLegendMarks(canonId) {
+  const li = legendItems.get(canonId);
+  if (!li) return;
+  let span = li.querySelector('.qmarks');
+  const inp = inputsById.get(canonId);
+  const placed = inp && inp.classList.contains('correct');
+  const t = ALL_TERMS.find(x => x.id === canonId);
+  const show = isTestMode() && placed && t && t.quiz && t.quiz.questions;
+  if (!show) { if (span) span.remove(); return; }
+  if (!span) { span = document.createElement('span'); span.className = 'qmarks'; li.appendChild(span); }
+  span.innerHTML = legendMarksHTML(canonId);
+}
+function refreshAllLegendMarks() {
+  for (const [id] of legendItems) updateLegendMarks(id);
+}
+
 // Per-question "Proveri" — exact-set match required; any deviation = +1 mistake.
 panelBody.addEventListener('click', e => {
   const btn = e.target.closest('.q-proveri');
@@ -823,16 +885,26 @@ panelBody.addEventListener('click', e => {
   const selected = new Set([...block.querySelectorAll('input[type=checkbox]')]
     .filter(c => c.checked).map(c => parseInt(c.dataset.oi, 10)));
   const status = block.querySelector('.q-status');
+  const p = getQP(canonId);
   if (optionsMatch(selected, options)) {
-    const p = getQP(canonId);
-    if (isBonus) { p.bonus = true; markBlockSolved(block, options); }
-    else { p.solved[parseInt(block.dataset.qi, 10)] = true; markBlockSolved(block, options); maybeUnlockBonus(canonId); }
+    if (isBonus) { p.bonus = true; p.bonusWrong = false; markBlockSolved(block, options); }
+    else {
+      const qi = parseInt(block.dataset.qi, 10);
+      p.solved[qi] = true; p.wrong[qi] = false;
+      markBlockSolved(block, options); maybeUnlockBonus(canonId);
+    }
+    recountAnswers();
     recountBonus();
+    updateLegendMarks(canonId);
     saveState();
   } else {
     status.className = 'q-status bad';
     status.textContent = Q_WRONG;
-    if (!isBonus) {
+    if (isBonus) {
+      p.bonusWrong = true;
+    } else {
+      const qi = parseInt(block.dataset.qi, 10);
+      p.wrong[qi] = true;
       // wrong answer counts as a mistake on the term (same counter as bad location)
       const inp = inputsById.get(canonId);
       const m = (parseInt(inp.dataset.miss, 10) || 0) + 1;
@@ -842,6 +914,7 @@ panelBody.addEventListener('click', e => {
       badge.style.display = 'block';
       recountCorrectMiss();
     }
+    updateLegendMarks(canonId);
     saveState();
   }
 });
@@ -860,6 +933,8 @@ function setTestMode(on, opts) {
     resumeBanner.classList.remove('show');
   }
   recountBonus();
+  recountAnswers();
+  refreshAllLegendMarks();
   saveState();
 }
 modeLearn.addEventListener('click', () => { if (isTestMode()) setTestMode(false, {}); });
@@ -914,9 +989,11 @@ function saveState() {
       a.py = parseFloat(cell.dataset.sy);
     }
     const qp = quizProgress.get(parseInt(inp.dataset.id, 10));
-    if (qp && (qp.bonus || qp.solved.some(Boolean))) {
+    if (qp && (qp.bonus || qp.bonusWrong || qp.solved.some(Boolean) || qp.wrong.some(Boolean))) {
       a.qz = qp.solved.slice();
+      a.qw = qp.wrong.slice();
       a.bn = qp.bonus;
+      a.bw = qp.bonusWrong;
     }
     answers[inp.dataset.id] = a;
   }
@@ -988,7 +1065,9 @@ function applyAnswers(answers) {
     if (a.qz) {
       const qp = getQP(parseInt(inp.dataset.id, 10));
       qp.solved = a.qz.slice();
+      qp.wrong = a.qw ? a.qw.slice() : new Array(qp.solved.length).fill(false);
       qp.bonus = !!a.bn;
+      qp.bonusWrong = !!a.bw;
     }
   }
   // Restore legend "placed" strikethrough for correctly drag-placed items
@@ -996,6 +1075,8 @@ function applyAnswers(answers) {
     const a = answers[id];
     li.classList.toggle('placed', !!(a && a.dp && a.c));
   }
+  refreshAllLegendMarks();
+  recountAnswers();
 }
 
 // --- mode (N-random) ---
@@ -1027,6 +1108,8 @@ function setMode(mode, opts) {
   }
   recountCorrectMiss();
   recountBonus();
+  recountAnswers();
+  refreshAllLegendMarks();
 }
 
 modeSelect.addEventListener('change', () => {
@@ -1202,6 +1285,7 @@ function applyDrop(canonicalId, accepted, baseX, baseY) {
     if (li) li.classList.add('placed');
     showMsg(MSG_CORRECT, true);
     revealGeometry(canonicalId);
+    updateLegendMarks(canonicalId);
     showPanelFor(canonicalId);
   } else {
     inp.classList.add('wrong-placed');
@@ -1587,6 +1671,8 @@ if (saved) {
   setMode('all', {});
 }
 recountBonus();
+recountAnswers();
+refreshAllLegendMarks();
 if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
@@ -1885,6 +1971,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__HDR_SUB__": ui["header_subtitle"],
         "__HDR_SUB_DRAG__": ui["header_subtitle_drag"],
         "__LBL_CORRECT__": ui["stat_correct"],
+        "__LBL_ANSWERS__": ui["stat_answers"],
         "__LBL_MISS__": ui["stat_miss"],
         "__BTN_RESET__": ui["btn_reset"],
         "__BTN_CSV__": ui["btn_export_csv"],

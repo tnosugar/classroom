@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Reke su uglavnom duge i mirne", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Najviši vrh je na planini Gran Saso", tacan: true}
     - {tekst: "Od 11. veka dokumentovano je više od 40.000 zemljotresa", tacan: true}

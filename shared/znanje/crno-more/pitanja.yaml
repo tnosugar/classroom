@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Dubinska voda mu je bogata kiseonikom do samog dna", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Nedostatak kiseonika omogućio je očuvanje starih brodskih olupina", tacan: true}
     - {tekst: "Pre ledenog doba Crno more je verovatno bilo slatkovodno jezero", tacan: true}

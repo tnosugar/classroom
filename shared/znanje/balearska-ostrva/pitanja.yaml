@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Sva ostrva pripadaju jednoj jedinstvenoj grupi", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Mavare je sa ostrva isterao aragonski kralj Đaume I 1229. godine", tacan: true}
     - {tekst: "Glavni izvori prihoda su ribarstvo, poljoprivreda i turizam", tacan: true}

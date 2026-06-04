@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nastale su pre svega vulkanskom aktivnošću u poslednjih milion godina", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Nezvanična prestonica regiona je Jekaterinburg", tacan: true}
     - {tekst: "Region je bogat malahitom, zlatom i aleksandritom", tacan: true}

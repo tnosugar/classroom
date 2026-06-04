@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nastale su vulkanskom aktivnošću u kvartaru", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na istočnim padinama su Jorkšir i grad Njukasl", tacan: true}
     - {tekst: "Na zapadnim padinama je Lankašir", tacan: true}

@@ -25,7 +25,7 @@ pitanja:
       - {tekst: "Najviši vrh uže Srbije je Mon Blan", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu SVIH izvora opisa — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Površina sa Kosovom i Metohijom je oko 88.500 km²", tacan: true}
     - {tekst: "Dunav kroz Srbiju teče oko 588 km", tacan: true}

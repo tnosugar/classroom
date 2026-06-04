@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Salinitet mu je niži od salinitita Baltičkog mora", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Tokom Mesinske krize saliniteta more se gotovo potpuno isušilo", tacan: true}
     - {tekst: "Ponovo je napunjeno Zanklijanskom poplavom kroz Gibraltarski moreuz", tacan: true}

@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Sva ostrva u moru pripadaju Turskoj", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Luka Pirej u Atini je glavna grčka luka", tacan: true}
     - {tekst: "Krit je jedan od egejskih arhipelaga", tacan: true}

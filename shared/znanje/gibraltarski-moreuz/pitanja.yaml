@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Najuži deo moreuza širok je preko 100 km", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Kamarinalski prag na zapadu ograničava mešanje atlantske i sredozemne vode", tacan: true}
     - {tekst: "Tokom Drugog svetskog rata nemačke podmornice koristile su struje za prolaz", tacan: true}

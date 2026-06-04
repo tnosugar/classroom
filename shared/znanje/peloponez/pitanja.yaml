@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Ime mu potiče iz egipatske mitologije", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Sa kopnom ga, pored prevlake, spaja i most Rio-Antirio iz 2004.", tacan: true}
     - {tekst: "Grčki rat za nezavisnost počeo je zauzimanjem Kalamate 23. marta 1821.", tacan: true}

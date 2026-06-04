@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Ime potiče iz keltskog jezika i znači „sneg“", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na češko-austrijskoj granici je vrh Plehi (1.378 m)", tacan: true}
     - {tekst: "Od 1994. postoji evroregion oko Šumave (~16.000 km²)", tacan: true}

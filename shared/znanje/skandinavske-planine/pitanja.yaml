@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nastao je vulkanskom aktivnošću pre ~50 miliona godina", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Galdhepigen se nalazi u masivu Jotunhejmen", tacan: true}
     - {tekst: "Jostedalsbren je najveći glečer kopnene Evrope", tacan: true}

@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Širok je preko 50 km u najužem delu", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na dnu Bosfora otkriven je podmorski kanal (podvodna reka)", tacan: true}
     - {tekst: "Tri mosta u Istanbulu spajaju evropsku i azijsku obalu", tacan: true}

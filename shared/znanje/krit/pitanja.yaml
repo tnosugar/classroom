@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Minojsku civilizaciju osnovali su Rimljani", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Glavni grad i upravno središte ostrva danas je Iraklion", tacan: true}
     - {tekst: "Minojska moć je naglo prekinuta oko 1400. p. n. e.", tacan: true}

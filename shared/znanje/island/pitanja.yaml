@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Najnaseljenija je država Evrope", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Rt Bjargtangar na Islandu je ujedno najzapadnija tačka Evrope", tacan: true}
     - {tekst: "Na Islandu je registrovano oko 30 aktivnih vulkanskih sistema", tacan: true}

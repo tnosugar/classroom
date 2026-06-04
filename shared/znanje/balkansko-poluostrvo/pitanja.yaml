@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Severne granice poluostrva su potpuno precizno utvrđene", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Na turskom 'balkan' znači venac šumovitih planina", tacan: true}
     - {tekst: "Đerdapska klisura je najveća klisura u Evropi", tacan: true}

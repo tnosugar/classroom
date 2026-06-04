@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nalazi se daleko južno od arktičkog kruga, u suptropskom pojasu", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Luka Murmansk ostaje bez leda i zimi zahvaljujući blizini Golfske struje", tacan: true}
     - {tekst: "Poluostrvo je dom naroda Sami (Laponija)", tacan: true}

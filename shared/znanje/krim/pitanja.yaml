@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Poluostrvo nikada nije bilo pod osmanskom vlašću", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Knez Vladimir I je 988. kršten u gradu Hersonesu na Krimu", tacan: true}
     - {tekst: "Najvažnija grčka kolonija bio je Hersones Taurijski (osnovan 422. p. n. e.)", tacan: true}

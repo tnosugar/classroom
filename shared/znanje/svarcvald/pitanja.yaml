@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "U njemu izvire reka Rajna", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Poznat je po satovima sa kukavicom i torti sa trešnjama", tacan: true}
     - {tekst: "Najsunčaniji je planinski venac u jugozapadnoj Nemačkoj", tacan: true}

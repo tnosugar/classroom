@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Region je potpuno seizmički miran i bez zemljotresa", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Veliki Kavkaz pruža se od okoline Sočija do Bakua", tacan: true}
     - {tekst: "Postoje neslaganja oko toga da li je Elbrus u Evropi ili Aziji", tacan: true}

@@ -27,7 +27,7 @@ pitanja:
       - {tekst: "Najviši vrh prelazi 3.000 m nadmorske visine", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Najviši vrh ostrva je Karantul (1.041 m)", tacan: true}
     - {tekst: "2013. su šume zauzimale oko 11% površine, ispod evropskog proseka", tacan: true}

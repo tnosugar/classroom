@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Alpi nemaju nijedan planinski prevoj", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Najviši vrh Slovenije, Triglav (2.864 m), pripada Julijskim Alpima", tacan: true}
     - {tekst: "Mumificirani 'Ledeni čovek' star ~5.000 godina nađen je 1991.", tacan: true}

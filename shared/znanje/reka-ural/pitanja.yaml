@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nikada se ne ledi jer protiče kroz tropski pojas", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Carica Katarina II preimenovala je reku iz Jaik u Ural 1775. godine", tacan: true}
     - {tekst: "Uralski kozaci lovili su jesetru tehnikom zvanom bagrenje", tacan: true}

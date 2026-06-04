@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Najmanje je poluostrvo u Evropi", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Rimljani su poluostrvo nazivali Hispanija", tacan: true}
     - {tekst: "Mavari su jug poluostrva nazivali Al-Andaluz", tacan: true}

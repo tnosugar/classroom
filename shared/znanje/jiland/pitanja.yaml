@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "To je ostrvo potpuno odvojeno od kopna Evrope", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Severnojutlandsko ostrvo je od kopna odvojeno Limfjordom posle poplave 1825.", tacan: true}
     - {tekst: "Angli, Sasi i Jiti su oko 450. g. migrirali u Britaniju", tacan: true}

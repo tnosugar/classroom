@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Najviša tačka prelazi 1.000 m", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Moreuz Gozo razdvaja Maltu od ostrva Goco", tacan: true}
     - {tekst: "Najveći grad ostrva je Birkirkara", tacan: true}

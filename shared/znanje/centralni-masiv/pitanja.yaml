@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Nastao je alpskom orogenezom pre ~50 miliona godina", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "U masivu se nalaze regioni Overnja i Limuzen", tacan: true}
     - {tekst: "Najveći gradovi su Klermon-Feran i Sent-Etjen", tacan: true}

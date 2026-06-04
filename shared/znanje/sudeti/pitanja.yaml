@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Snežka je najviša planina Slovačke", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "U Sudetima izviru Laba, Odra i Jizera", tacan: true}
     - {tekst: "Po Sudetima su nazvani Sudetski Nemci i Sudetska oblast", tacan: true}

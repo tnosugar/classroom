@@ -26,7 +26,7 @@ pitanja:
       - {tekst: "Najmanje je ostrvo u grupi Britanskih ostrva", tacan: false}
 
 bonus:
-  pitanje: "Na osnovu celog članka — šta je tačno?"
+  pitanje: "Na osnovu članaka u izvorima, šta je tačno?"
   odgovori:
     - {tekst: "Treće je najnaseljenije ostrvo na svetu, posle Jave i Honšua", tacan: true}
     - {tekst: "Naziv Albion verovatno potiče od belih litica Dovera", tacan: true}
