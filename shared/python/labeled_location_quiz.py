@@ -1383,7 +1383,12 @@ function demoDropCorrect() {
   applyDrop(DEMO_TERM.id, true, bx, by);
 }
 function demoEnterTest() { setTestMode(true, {}); }
+function demoEnsureQuiz() {
+  // Make sure the test-mode quiz panel for Srbija is open before answering.
+  if (!panelBody.querySelector('.quiz')) showPanelFor(DEMO_TERM.id);
+}
 function demoAnswerQuestion(qi, correct) {
+  demoEnsureQuiz();
   const quizEl = panelBody.querySelector('.quiz');
   if (!quizEl) return;
   const block = quizEl.querySelector('.q[data-qi="' + qi + '"]');
@@ -1399,6 +1404,7 @@ function demoAnswerQuestion(qi, correct) {
   if (pv) pv.click();
 }
 function demoBonus() {
+  demoEnsureQuiz();
   const block = panelBody.querySelector('.bonus');
   if (!block) return;
   const opts = DEMO_TERM.quiz.bonus.options;
@@ -1463,11 +1469,30 @@ function renderDemoStep(i) {
   };
 }
 
+function demoResetSrbija() {
+  const inp = inputsById.get(DEMO_TERM.id);
+  if (!inp) return;
+  const cell = inp.parentElement;
+  inp.classList.remove('correct', 'wrong', 'wrong-placed');
+  inp.readOnly = false; inp.dataset.miss = '0'; inp.value = '';
+  cell.classList.remove('drag-placed', 'dragging');
+  cell.dataset.sx = cell.dataset.canonSx;
+  cell.dataset.sy = cell.dataset.canonSy;
+  const badge = cell.querySelector('.miss');
+  if (badge) { badge.style.display = 'none'; badge.textContent = '0'; }
+  const li = legendItems.get(DEMO_TERM.id);
+  if (li) li.classList.remove('placed');
+  quizProgress.delete(DEMO_TERM.id);
+}
+
 function startDemo() {
   if (demoDone || document.body.classList.contains('demo-running')) return;
   document.body.classList.add('demo-running');
-  // make sure we start clean, in learn mode
+  // make sure we start clean, in learn mode, with Srbija unplaced
   if (isTestMode()) setTestMode(false, {});
+  demoResetSrbija();
+  apply();
+  recountCorrectMiss();
   demoCursorEl = document.createElement('div');
   demoCursorEl.id = 'demoCursor';
   demoCursorEl.textContent = '👆';
