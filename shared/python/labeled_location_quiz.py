@@ -115,6 +115,7 @@ def _ui_default():
         "pdf_legend_symbols": "▲ mountains    — rivers    ○ location",
         "panel_close": "Zatvori",
         "panel_placeholder": "Opis uskoro.",
+        "panel_idle": "Prevuci pojam na kartu — ovde se prikazuje opis (Učenje) ili pitanja (Test).",
         "panel_source_label": "Izvor:",
         "panel_hint_heading": "Hint",
         "panel_hint_prompt": "Hint se otkriva sa svakom greškom — pokušaj da postaviš pojam.",
@@ -172,12 +173,14 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .resume-banner{display:none;margin-top:8px;background:#fffbe6;border:1px solid #f0d878;border-radius:8px;padding:6px 12px;font-size:13px;color:#7a5a00}
  .resume-banner.show{display:block}
  .layout{display:flex;align-items:flex-start;gap:0;width:100%}
- .qcol{flex:0 0 360px;width:360px;padding:12px 14px;border-right:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
+ .qcol{flex:0 0 260px;width:260px;padding:12px 14px;border-right:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
  .qcol h2{font-size:14px;color:#3a3528;margin:0 0 8px}
  .mapcol{flex:1 1 auto;min-width:0;padding:0}
  /* Info side panel (third column) — opens when a term is solved or its marker clicked */
  .panelcol{flex:0 0 440px;width:440px;padding:14px 16px;border-left:1px solid #e6e0d2;background:#fff;position:sticky;top:var(--htop,0px);max-height:calc(100vh - var(--htop,0px));overflow:auto}
- .layout:not(.panel-open) .panelcol{display:none}
+ /* Panel column is ALWAYS present (reserves space right of the map). When idle,
+    only its header/footer hide; the body shows a placeholder. */
+ .layout:not(.panel-open) .panelhead, .layout:not(.panel-open) .panelfoot{display:none}
  .panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:8px}
  .panelhead h2{margin:0;font-size:16px;color:#3a3528}
  .panelhead .vrsta{display:inline-block;margin-top:4px;font-size:11.5px;color:#6b6456;background:#f3ecd8;border:1px solid #e1d8c2;border-radius:10px;padding:1px 8px;text-transform:capitalize}
@@ -202,7 +205,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body.demo-running ol.terms{pointer-events:none}
  /* Demo overlay: animated pointer + speech bubble */
  #demoCursor{position:fixed;z-index:300;pointer-events:none;font-size:26px;line-height:1;transition:left .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
- #demoBubble{position:fixed;z-index:301;left:14px;bottom:16px;width:300px;height:190px;display:flex;flex-direction:column;background:#2b2b2b;color:#fff;font-size:13px;line-height:1.45;padding:10px 13px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+ #demoBubble{position:fixed;z-index:301;left:14px;bottom:16px;width:236px;height:210px;display:flex;flex-direction:column;background:#2b2b2b;color:#fff;font-size:12.5px;line-height:1.4;padding:10px 12px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.35)}
  #demoBubble .demo-text{flex:1;overflow:auto;margin:2px 0}
  #demoBubble .demo-step{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#ffd27a;margin-bottom:3px}
  #demoBubble .demo-ctrls{margin-top:9px;display:flex;gap:8px;justify-content:flex-end}
@@ -252,7 +255,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .ans.wrong{animation:shake .3s;background:#fdd;border-color:#b1271f}
  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
  .miss{position:absolute;top:-9px;right:-9px;background:#b1271f;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;line-height:16px;text-align:center;border-radius:9px;padding:0 3px}
- ol.terms{list-style:none;padding:0;margin:0;columns:2;column-gap:16px;font-size:12px;line-height:1.45}
+ ol.terms{list-style:none;padding:0;margin:0;font-size:12px;line-height:1.55}
  ol.terms li{break-inside:avoid} ol.terms b{color:var(--edge)}
  ol.terms li.hidden{display:none}
  .keyline{font-size:11.5px;color:#6b6456;margin:10px 0 0;border-top:1px solid #eee;padding-top:8px;line-height:1.7}
@@ -544,6 +547,7 @@ function showWin(correct, miss) {
 // --- info side panel (full description when solved; progressive hints while wrong) ---
 const PANEL_PLACEHOLDER = __PANEL_PLACEHOLDER__;
 const PANEL_SOURCE_LBL = __PANEL_SOURCE_LBL__;
+const PANEL_IDLE = __PANEL_IDLE__;
 const PANEL_HINT_HEADING = __PANEL_HINT_HEADING__;
 const PANEL_HINT_PROMPT = __PANEL_HINT_PROMPT__;
 const PANEL_HINTS_DONE = __PANEL_HINTS_DONE__;
@@ -568,10 +572,8 @@ function panelSetFoot(d) {
   }
 }
 function panelOpenEl() {
-  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.add('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'false');
-  if (!was) fit();   // re-fit the map to the narrower column so it stays fully visible
 }
 
 // Render the panel according to the term's current state:
@@ -631,10 +633,10 @@ function maybeHintPanel(canonId) {
 }
 
 function closePanel() {
-  const was = layoutEl.classList.contains('panel-open');
   layoutEl.classList.remove('panel-open');
   document.getElementById('panelcol').setAttribute('aria-hidden', 'true');
-  if (was) fit();    // panel closed → restore the map to full width
+  panelFoot.style.display = 'none';
+  panelBody.innerHTML = '<p class="placeholder">' + PANEL_IDLE + '</p>';
 }
 
 panelClose.addEventListener('click', closePanel);
@@ -1554,6 +1556,7 @@ if (saved) {
 }
 recountBonus();
 if (demoDone) hideDemoTerm();
+closePanel();   // start with the idle placeholder in the always-present panel
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
 setHeaderTop();
@@ -1882,6 +1885,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__MODE_RANDOM_TPL__": _json.dumps(ui["mode_random"]),
         "__PANEL_CLOSE__": _html.escape(ui["panel_close"], quote=True),
         "__PANEL_PLACEHOLDER__": _json.dumps(ui["panel_placeholder"]),
+        "__PANEL_IDLE__": _json.dumps(ui["panel_idle"]),
         "__PANEL_SOURCE_LBL__": _json.dumps(ui["panel_source_label"]),
         "__PANEL_HINT_HEADING__": _json.dumps(ui["panel_hint_heading"]),
         "__PANEL_HINT_PROMPT__": _json.dumps(ui["panel_hint_prompt"]),
