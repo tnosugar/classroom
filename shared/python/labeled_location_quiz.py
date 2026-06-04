@@ -195,7 +195,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .cell:has(.ans.correct){cursor:pointer}
  /* Mode switch (Učenje / Test) */
  .mode-switch{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#3a3528}
- .ms-btn{font:inherit;padding:5px 12px;border:1px solid #6b6456;background:#fff;color:#3a3528;cursor:pointer}
+ .ms-btn{font:inherit;padding:5px 12px;border:1px solid #6b6456;background:#fff;color:#3a3528;cursor:pointer;min-width:6em;text-align:center}
  .ms-btn:first-of-type{border-radius:8px 0 0 8px} .ms-btn:last-of-type{border-radius:0 8px 8px 0;border-left:none}
  .ms-btn:hover{background:#f3ecd8;color:#3a3528}
  .ms-btn.active{background:#3a3528;color:#fff;border-color:#3a3528}
