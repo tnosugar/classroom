@@ -212,6 +212,9 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .ms-btn:first-of-type{border-radius:8px 0 0 8px} .ms-btn:last-of-type{border-radius:0 8px 8px 0;border-left:none}
  .ms-btn:hover{background:#f3ecd8;color:#3a3528}
  .ms-btn.active{background:#3a3528;color:#fff;border-color:#3a3528}
+ /* Učenje mod: bez statistike (tačno / greške / pobeda / izvoz) — ovde se uči, ne boduje */
+ body:not(.test-mode) #statCorrect, body:not(.test-mode) #statMiss,
+ body:not(.test-mode) #win, body:not(.test-mode) #exportCsv { display: none !important; }
  /* Test-mode quiz inside the panel */
  .quiz .q,.quiz .bonus{border:1px solid #e1d8c2;border-radius:8px;padding:9px 11px;margin:0 0 10px;background:#fcfaf4}
  .quiz .q-head{margin-bottom:7px}
@@ -328,8 +331,8 @@ _HTML_TPL = r"""<!DOCTYPE html>
   <span class="mode-switch">__MODE_SWITCH_LABEL__:
    <button type="button" id="modeLearn" class="ms-btn active">__MODE_LEARN__</button><button type="button" id="modeTest" class="ms-btn">__MODE_TEST__</button>
   </span>
-  <span class="stat">__LBL_CORRECT__: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">__TOTAL__</b></span>
-  <span class="stat">__LBL_MISS__: <b class="bad" id="cMiss">0</b></span>
+  <span class="stat" id="statCorrect">__LBL_CORRECT__: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">__TOTAL__</b></span>
+  <span class="stat" id="statMiss">__LBL_MISS__: <b class="bad" id="cMiss">0</b></span>
   <span class="stat bonus-stat" id="bonusStat" style="display:none">__LBL_BONUS__: <b class="ok" id="cBonus">0</b> / <b id="cBonusTotal">0</b></span>
   <button id="reset">__BTN_RESET__</button>
   <button id="exportCsv" class="secondary" style="display:none">__BTN_CSV__</button>
@@ -443,6 +446,7 @@ function applyMapping(mapping) {
   // Update each input's expected answer to its display number
   for (const inp of allInputs) {
     const canonId = parseInt(inp.dataset.id, 10);
+    if (DEMO_TERM && canonId === DEMO_TERM.id) continue;  // demo marker stays "0"
     const display = mapping.c2d[canonId];
     inp.dataset.correct = display ? String(display) : '';
   }
@@ -499,9 +503,18 @@ function applyVisibility(ids) {
   cTotal.textContent = ids.length;
 }
 
+// During the demo, the demo term (Srbija) is counted too, so the counters
+// visibly react to its placements/answers; otherwise it is excluded.
+function countedIds() {
+  if (DEMO_TERM && document.body.classList.contains('demo-running')) {
+    return visibleIds.concat([DEMO_TERM.id]);
+  }
+  return visibleIds;
+}
+
 function recountCorrectMiss() {
   let correct = 0, miss = 0;
-  for (const id of visibleIds) {
+  for (const id of countedIds()) {
     const inp = inputsById.get(id);
     if (!inp) continue;
     if (inp.classList.contains('correct')) correct++;
@@ -748,7 +761,7 @@ function maybeUnlockBonus(canonId) {
 function recountBonus() {
   if (!isTestMode()) { bonusStat.style.display = 'none'; return; }
   let solved = 0, total = 0;
-  for (const id of visibleIds) {
+  for (const id of countedIds()) {
     const t = ALL_TERMS.find(x => x.id === id);
     if (t && t.quiz && t.quiz.bonus) {
       total++;
@@ -1433,6 +1446,7 @@ function demoPositionBubble(at) {
 function renderDemoStep(i) {
   demoStepIndex = i;
   const step = DEMO_STEPS[i];
+  if (step.a) step.a();                 // perform this step's move, then pause on the bubble
   const last = i === DEMO_STEPS.length - 1;
   const nextLabel = last ? 'Završi' : 'Dalje';
   demoBubbleEl.innerHTML =
@@ -1444,10 +1458,8 @@ function renderDemoStep(i) {
   demoPositionBubble(step.at);
   document.getElementById('demoSkip').onclick = endDemo;
   document.getElementById('demoNext').onclick = () => {
-    const cur = DEMO_STEPS[demoStepIndex];
-    if (cur.a) cur.a();
     if (demoStepIndex >= DEMO_STEPS.length - 1) { endDemo(); return; }
-    setTimeout(() => renderDemoStep(demoStepIndex + 1), 350);
+    renderDemoStep(demoStepIndex + 1);
   };
 }
 
