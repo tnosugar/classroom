@@ -1,0 +1,34 @@
+# Test-pitanja za: Reka Volga. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U koje vodeno telo se uliva Volga?"
+    odgovori:
+      - {tekst: "Kaspijsko jezero (more)", tacan: true}
+      - {tekst: "Crno more", tacan: false}
+      - {tekst: "Baltičko more", tacan: false}
+      - {tekst: "Severno more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Volgu?"
+    odgovori:
+      - {tekst: "Najduža je reka Evrope", tacan: true}
+      - {tekst: "Protiče kroz Rusiju", tacan: true}
+      - {tekst: "Izvire u Valdajskom pobrđu", tacan: true}
+      - {tekst: "Uliva se u Atlantski okean", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o toku i pritokama Volge?"
+    odgovori:
+      - {tekst: "Najvažnije pritoke su Kama i Oka", tacan: true}
+      - {tekst: "Tok se deli na gornji, srednji i donji", tacan: true}
+      - {tekst: "Na celoj dužini ima vrlo mali pad", tacan: true}
+      - {tekst: "Glavna pritoka joj je Dunav", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Kod Volgograda (nekada Staljingrad) odigrala se velika bitka", tacan: true}
+    - {tekst: "Astrahan u delti je centar kavijarske industrije", tacan: true}
+    - {tekst: "Ušće Volge je najveći estuar u Evropi", tacan: true}
+    - {tekst: "Volga se nikada ne zamrzava", tacan: false}

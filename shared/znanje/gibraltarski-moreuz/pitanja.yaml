@@ -1,0 +1,34 @@
+# Test-pitanja za: Gibraltarski moreuz. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koja dva vodena tela povezuje Gibraltarski moreuz?"
+    odgovori:
+      - {tekst: "Atlantski okean", tacan: true}
+      - {tekst: "Sredozemno more", tacan: true}
+      - {tekst: "Crveno more", tacan: false}
+      - {tekst: "Crno more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koje države i teritorije leže uz Gibraltarski moreuz?"
+    odgovori:
+      - {tekst: "Španija i Gibraltar (severna strana)", tacan: true}
+      - {tekst: "Maroko i Seuta (južna strana)", tacan: true}
+      - {tekst: "Italija (severna strana)", tacan: false}
+      - {tekst: "Egipat (južna strana)", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o toku vode i obali moreuza?"
+    odgovori:
+      - {tekst: "Površinska, manje slana voda ulazi ka Sredozemnom moru", tacan: true}
+      - {tekst: "Gušća, slanija dubinska voda izlazi ka Atlantiku", tacan: true}
+      - {tekst: "Antičko ime grebena uz moreuz bilo je Herkulovi stubovi", tacan: true}
+      - {tekst: "Najuži deo moreuza širok je preko 100 km", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Kamarinalski prag na zapadu ograničava mešanje atlantske i sredozemne vode", tacan: true}
+    - {tekst: "Tokom Drugog svetskog rata nemačke podmornice koristile su struje za prolaz", tacan: true}
+    - {tekst: "Ime Gibraltar potiče od Tarikove stene (Džebel Tarik)", tacan: true}
+    - {tekst: "Kroz moreuz je već izgrađen podmorski železnički tunel", tacan: false}

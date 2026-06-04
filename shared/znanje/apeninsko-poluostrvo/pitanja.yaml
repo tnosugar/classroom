@@ -1,0 +1,34 @@
+# Test-pitanja za: Apeninsko poluostrvo. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Kojoj državi pripada skoro celo Apeninsko poluostrvo?"
+    odgovori:
+      - {tekst: "Italiji", tacan: true}
+      - {tekst: "Španiji", tacan: false}
+      - {tekst: "Grčkoj", tacan: false}
+      - {tekst: "Francuskoj", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Apeninsko poluostrvo?"
+    odgovori:
+      - {tekst: "Ima karakterističan oblik čizme", tacan: true}
+      - {tekst: "Unutar njega se pružaju Apenini", tacan: true}
+      - {tekst: "Na njemu su mini-države San Marino i Vatikan", tacan: true}
+      - {tekst: "Nalazi se u severnoj Evropi", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o morima i vulkanu na poluostrvu?"
+    odgovori:
+      - {tekst: "Sa istoka ga zapljuskuje Jadransko more", tacan: true}
+      - {tekst: "Sa zapada su Ligursko i Tirensko more", tacan: true}
+      - {tekst: "Vezuv je jedini aktivni vulkan u kopnenoj Evropi", tacan: true}
+      - {tekst: "Sa juga ga okružuje Severno more", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Jedno je od tri velika poluostrva južne Evrope", tacan: true}
+    - {tekst: "Oblik čizme čine Kalabrija, Salento i Gargano", tacan: true}
+    - {tekst: "Proteže se oko 1.000 km od doline reke Po do Sredozemnog mora", tacan: true}
+    - {tekst: "Padska nizija je najviši planinski deo poluostrva", tacan: false}

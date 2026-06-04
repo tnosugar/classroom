@@ -1,0 +1,34 @@
+# Test-pitanja za: Malta. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Gde se nalazi ostrvo Malta?"
+    odgovori:
+      - {tekst: "U centralnom delu Sredozemnog mora", tacan: true}
+      - {tekst: "Južno od obala Sicilije", tacan: true}
+      - {tekst: "Istočno od obala Tunisa", tacan: true}
+      - {tekst: "U Atlantskom okeanu, severno od Španije", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za vode i reljef Malte?"
+    odgovori:
+      - {tekst: "Na ostrvu nema površinskih vodenih tokova", tacan: true}
+      - {tekst: "Pitka voda se dobija desalinizacijom i uvozom iz Italije", tacan: true}
+      - {tekst: "Reljefom dominiraju niski krečnjački brežuljci", tacan: true}
+      - {tekst: "Ostrvo presecaju duge reke s glečerskim izvorom", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o površini, visini i gradovima Malte?"
+    odgovori:
+      - {tekst: "Površina ostrva je 246 km²", tacan: true}
+      - {tekst: "Najviša tačka je Ta'Dmejrek (253 m)", tacan: true}
+      - {tekst: "Glavni grad države Valeta nalazi se na severnoj obali", tacan: true}
+      - {tekst: "Najviša tačka prelazi 1.000 m", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Moreuz Gozo razdvaja Maltu od ostrva Goco", tacan: true}
+    - {tekst: "Najveći grad ostrva je Birkirkara", tacan: true}
+    - {tekst: "Severne obale izlaze na Malteški prolaz", tacan: true}
+    - {tekst: "U vegetaciji dominira tropska prašuma", tacan: false}

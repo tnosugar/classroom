@@ -1,0 +1,34 @@
+# Test-pitanja za: Dinarske planine. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Dinarske planine (Dinaride)?"
+    odgovori:
+      - {tekst: "Protežu se zapadnim delom Balkanskog poluostrva", tacan: true}
+      - {tekst: "Prolaze kroz Srbiju, Crnu Goru, BiH, Hrvatsku, Sloveniju i Albaniju", tacan: true}
+      - {tekst: "Ime su dobile po planini Dinari", tacan: true}
+      - {tekst: "Nalaze se u severnoj Skandinaviji", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o pravcu, dužini i vrhovima Dinarida?"
+    odgovori:
+      - {tekst: "Pružaju se pravcem severozapad–jugoistok", tacan: true}
+      - {tekst: "Najviša planina su Prokletije (Jezerski vrh, 2.694 m)", tacan: true}
+      - {tekst: "Dužina lanca je oko 645 km", tacan: true}
+      - {tekst: "Pružaju se pravcem istok–zapad", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu i spajanju Dinarida?"
+    odgovori:
+      - {tekst: "Tipičan su svetski primer kraškog reljefa", tacan: true}
+      - {tekst: "Na severozapadu se spajaju sa Julijskim Alpima", tacan: true}
+      - {tekst: "Termine kraško polje, uvala i škrapa proučavao je Jovan Cvijić", tacan: true}
+      - {tekst: "Reljef im je isključivo vulkanskog porekla", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Na jugoistoku se spajaju sa Šarsko-pindskim vencem", tacan: true}
+    - {tekst: "Smatra se da su 'Dinarci' među najvišim ljudima u Evropi", tacan: true}
+    - {tekst: "Glavne privredne grane kraja su šumarstvo i rudarstvo", tacan: true}
+    - {tekst: "Rimljani su Ilire pokorili za samo nekoliko godina", tacan: false}

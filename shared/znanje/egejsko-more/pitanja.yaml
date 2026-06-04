@@ -1,0 +1,34 @@
+# Test-pitanja za: Egejsko more. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Između kojih zemalja leži Egejsko more?"
+    odgovori:
+      - {tekst: "Grčke", tacan: true}
+      - {tekst: "Turske", tacan: true}
+      - {tekst: "Italije", tacan: false}
+      - {tekst: "Španije", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Egejsko more?"
+    odgovori:
+      - {tekst: "Deo je Sredozemnog mora", tacan: true}
+      - {tekst: "Preko Dardanela i Bosfora povezano je sa Crnim morem", tacan: true}
+      - {tekst: "Ime je dobilo po Egeju, mitskom kralju Atine", tacan: true}
+      - {tekst: "Potpuno je odvojeno od Sredozemnog mora", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o ostrvima i nazivima Egejskog mora?"
+    odgovori:
+      - {tekst: "Ostrva se dele na sedam arhipelaga", tacan: true}
+      - {tekst: "Kikladi i Dodekani su deo egejskih arhipelaga", tacan: true}
+      - {tekst: "Arhaični slovenski naziv je Belo more", tacan: true}
+      - {tekst: "Sva ostrva u moru pripadaju Turskoj", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Luka Pirej u Atini je glavna grčka luka", tacan: true}
+    - {tekst: "Krit je jedan od egejskih arhipelaga", tacan: true}
+    - {tekst: "Drevni grad Troja nalazi se na turskoj obali Egejskog mora", tacan: true}
+    - {tekst: "Maksimalna dubina mora je preko 5.000 m", tacan: false}

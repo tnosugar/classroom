@@ -1,0 +1,34 @@
+# Test-pitanja za: Crno more. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koji moreuz povezuje Crno more sa Mramornim morem?"
+    odgovori:
+      - {tekst: "Bosfor", tacan: true}
+      - {tekst: "Gibraltarski moreuz", tacan: false}
+      - {tekst: "Dardaneli", tacan: false}
+      - {tekst: "Kerčki prolaz", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koje reke se ulivaju u Crno more?"
+    odgovori:
+      - {tekst: "Dunav", tacan: true}
+      - {tekst: "Dnjepar", tacan: true}
+      - {tekst: "Don", tacan: true}
+      - {tekst: "Nil", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o vodama Crnog mora?"
+    odgovori:
+      - {tekst: "Najveći je anoksični morski sistem na svetu", tacan: true}
+      - {tekst: "Preko 90% dubinske vode je bez kiseonika", tacan: true}
+      - {tekst: "Ima pozitivan vodni bilans i odaje višak vode kroz Bosfor", tacan: true}
+      - {tekst: "Dubinska voda mu je bogata kiseonikom do samog dna", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Nedostatak kiseonika omogućio je očuvanje starih brodskih olupina", tacan: true}
+    - {tekst: "Pre ledenog doba Crno more je verovatno bilo slatkovodno jezero", tacan: true}
+    - {tekst: "Grčki naziv Euxeinos Pontos znači Gostoljubivo more", tacan: true}
+    - {tekst: "Crno more je potpuno odsečeno od svetskog okeana, bez ijednog prolaza", tacan: false}

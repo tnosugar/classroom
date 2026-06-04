@@ -1,0 +1,34 @@
+# Test-pitanja za: Karpati. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Kakav oblik ima venac Karpata i u kojoj državi mu je najveći deo?"
+    odgovori:
+      - {tekst: "Oblik velikog luka; najveći deo u Rumuniji", tacan: true}
+      - {tekst: "Pravolinijski pravac sever–jug; najveći deo u Poljskoj", tacan: false}
+      - {tekst: "Oblik prstena; najveći deo u Mađarskoj", tacan: false}
+      - {tekst: "Pravolinijski pravac zapad–istok; najveći deo u Srbiji", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Karpate?"
+    odgovori:
+      - {tekst: "Najviši vrh je Gerlahovski štit (2.655 m) u Slovačkoj", tacan: true}
+      - {tekst: "Na zapadu se graniče sa Alpima", tacan: true}
+      - {tekst: "Prostiru se i kroz istočnu Srbiju", tacan: true}
+      - {tekst: "Najviši vrh nalazi se u Rumuniji", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o podeli i prirodi Karpata?"
+    odgovori:
+      - {tekst: "Dele se na Zapadne, Istočne i Južne Karpate", tacan: true}
+      - {tekst: "Južni Karpati zovu se i Transilvanijski Alpi", tacan: true}
+      - {tekst: "Stanište su najveće evropske populacije mrkih medveda i vukova", tacan: true}
+      - {tekst: "Najviši vrh celog venca je Moldoveanu", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Naziv prvi beleži geograf Ptolemej u 2. veku", tacan: true}
+    - {tekst: "U Karpatima izviru reke Tisa, Visla, Odra, Dnjestar i Prut", tacan: true}
+    - {tekst: "Rumunija ima najveće rezerve gasa, južno od Transilvanijskih Alpa", tacan: true}
+    - {tekst: "Najviši vrh Gerlahovski štit nalazi se u Beskidima u Poljskoj", tacan: false}

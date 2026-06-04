@@ -1,0 +1,34 @@
+# Test-pitanja za: Kaspijsko jezero. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Kaspijsko jezero?"
+    odgovori:
+      - {tekst: "Najveće je jezero na svetu", tacan: true}
+      - {tekst: "Leži između Evrope i Azije", tacan: true}
+      - {tekst: "Najmanje je jezero na svetu", tacan: false}
+      - {tekst: "Nalazi se u Severnoj Americi", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koje države izlaze na Kaspijsko jezero?"
+    odgovori:
+      - {tekst: "Rusija i Kazahstan", tacan: true}
+      - {tekst: "Iran", tacan: true}
+      - {tekst: "Azerbejdžan i Turkmenistan", tacan: true}
+      - {tekst: "Španija i Italija", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o vodama i položaju jezera?"
+    odgovori:
+      - {tekst: "Površina mu je oko 28 m ispod nivoa svetskog okeana", tacan: true}
+      - {tekst: "Volga obezbeđuje oko 80% priliva vode", tacan: true}
+      - {tekst: "Ima negativan vodni bilans — isparavanje premašuje priliv", tacan: true}
+      - {tekst: "Ima prirodan otok kojim se prazni u Crno more", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Oko 90% svetske populacije jesetri živi u Kaspijskom jezeru", tacan: true}
+    - {tekst: "Kaspijska foka je endemska i nigde se drugde ne nalazi", tacan: true}
+    - {tekst: "Jezero je ostatak drevnog Paratetiskog mora", tacan: true}
+    - {tekst: "U jezeru ne postoji nijedna vrsta ribe", tacan: false}

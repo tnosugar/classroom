@@ -1,0 +1,34 @@
+# Test-pitanja za: Sardinija. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Sardiniju?"
+    odgovori:
+      - {tekst: "Drugo je najveće ostrvo u Sredozemnom moru", tacan: true}
+      - {tekst: "Pripada Italiji", tacan: true}
+      - {tekst: "Veće je od Sicilije", tacan: false}
+      - {tekst: "Glavni grad joj je Kaljari", tacan: true}
+
+  - tezina: srednje
+    pitanje: "Koje kopno je najbliže Sardiniji?"
+    odgovori:
+      - {tekst: "Korzika, oko 11 km severno (preko Moreuza Bonifacio)", tacan: true}
+      - {tekst: "Sicilija na istoku", tacan: false}
+      - {tekst: "Tunis na jugu", tacan: false}
+      - {tekst: "Apeninsko poluostrvo na zapadu", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu i najvišem vrhu Sardinije?"
+    odgovori:
+      - {tekst: "Najviši vrh je Punta del Marmora (1.834 m)", tacan: true}
+      - {tekst: "Najviši vrh pripada planinama Đenarđentu", tacan: true}
+      - {tekst: "Brdsko područje čini oko 68% površine ostrva", tacan: true}
+      - {tekst: "Ostrvo je pretežno ravničarsko", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Praistorijske kamene građevine na ostrvu zovu se nuragi", tacan: true}
+    - {tekst: "Rimljani su preuzeli ostrvo 238. p. n. e.", tacan: true}
+    - {tekst: "Najveće veštačko jezero na ostrvu je Omodeo", tacan: true}
+    - {tekst: "Sardinija je najgušće naseljena pokrajina Italije", tacan: false}

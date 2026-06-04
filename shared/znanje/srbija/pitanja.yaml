@@ -1,0 +1,33 @@
+# Test-pitanja za: Srbija (DEMO pojam). Vidi shared/znanje/README.md › pitanja.yaml.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Srbiju?"
+    odgovori:
+      - {tekst: "Nema izlaz na more", tacan: true}
+      - {tekst: "Glavni grad je Beograd", tacan: true}
+      - {tekst: "Nalazi se na Balkanskom poluostrvu", tacan: true}
+      - {tekst: "Najveće je ostrvo u Evropi", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koje reke protiču kroz Srbiju?"
+    odgovori:
+      - {tekst: "Dunav", tacan: true}
+      - {tekst: "Sava", tacan: true}
+      - {tekst: "Velika Morava", tacan: true}
+      - {tekst: "Volga", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu i granicama Srbije?"
+    odgovori:
+      - {tekst: "Na severu je Panonska nizija (Vojvodina)", tacan: true}
+      - {tekst: "Graniči se sa Mađarskom i Rumunijom", tacan: true}
+      - {tekst: "Beograd leži na ušću Save u Dunav", tacan: true}
+      - {tekst: "Najviši vrh uže Srbije je Mon Blan", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu SVIH izvora opisa — šta je tačno?"
+  odgovori:
+    - {tekst: "Površina sa Kosovom i Metohijom je oko 88.500 km²", tacan: true}
+    - {tekst: "Dunav kroz Srbiju teče oko 588 km", tacan: true}
+    - {tekst: "Najviši vrh uže Srbije je Midžor (2.169 m)", tacan: true}
+    - {tekst: "Srbija izlazi na Jadransko more", tacan: false}

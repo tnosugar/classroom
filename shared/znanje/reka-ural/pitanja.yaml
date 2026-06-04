@@ -1,0 +1,34 @@
+# Test-pitanja za: Reka Ural. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Gde se uliva reka Ural?"
+    odgovori:
+      - {tekst: "U Kaspijsko jezero", tacan: true}
+      - {tekst: "U Crno more", tacan: false}
+      - {tekst: "U Baltičko more", tacan: false}
+      - {tekst: "U Sredozemno more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o reci Ural?"
+    odgovori:
+      - {tekst: "Duga je oko 2.428 km", tacan: true}
+      - {tekst: "Čini prirodnu granicu Evrope i Azije", tacan: true}
+      - {tekst: "Teče kroz Rusiju i Kazahstan", tacan: true}
+      - {tekst: "Izvire u Alpima", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o toku i režimu reke Ural?"
+    odgovori:
+      - {tekst: "Napaja se uglavnom otapanjem snega (60–70%)", tacan: true}
+      - {tekst: "Kod ušća gradi razgranatu, prstastu deltu", tacan: true}
+      - {tekst: "U gornjem toku je tipična planinska reka", tacan: true}
+      - {tekst: "Nikada se ne ledi jer protiče kroz tropski pojas", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Carica Katarina II preimenovala je reku iz Jaik u Ural 1775. godine", tacan: true}
+    - {tekst: "Uralski kozaci lovili su jesetru tehnikom zvanom bagrenje", tacan: true}
+    - {tekst: "Most u Orenburgu označen je natpisima Evropa i Azija", tacan: true}
+    - {tekst: "Reka je oduvek nosila ime Ural i nikada nije menjala ime", tacan: false}

@@ -1,0 +1,34 @@
+# Test-pitanja za: Alpi. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za Alpe?"
+    odgovori:
+      - {tekst: "Najviši su planinski masiv u Evropi", tacan: true}
+      - {tekst: "Najviši vrh im je Mon Blan", tacan: true}
+      - {tekst: "Pružaju se od Austrije i Slovenije do Francuske", tacan: true}
+      - {tekst: "Nalaze se u Africi", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o veličini i nastanku Alpa?"
+    odgovori:
+      - {tekst: "Sadrže oko sto vrhova viših od 4.000 m", tacan: true}
+      - {tekst: "Prostiru se na oko 200.000 km²", tacan: true}
+      - {tekst: "Nastali su sudarom Afričke i Evroazijske ploče", tacan: true}
+      - {tekst: "Mon Blan je niži od 1.000 m", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o prevojima i glečerima Alpa?"
+    odgovori:
+      - {tekst: "Najveći glečer Alpa je Aleč u Švajcarskoj", tacan: true}
+      - {tekst: "Ispod masiva Gotard izgrađen je najduži tunel na svetu", tacan: true}
+      - {tekst: "Veliki Sent Bernardov prevoj koristio je Napoleon I", tacan: true}
+      - {tekst: "Alpi nemaju nijedan planinski prevoj", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Najviši vrh Slovenije, Triglav (2.864 m), pripada Julijskim Alpima", tacan: true}
+    - {tekst: "Mumificirani 'Ledeni čovek' star ~5.000 godina nađen je 1991.", tacan: true}
+    - {tekst: "Hanibal je poznat po prelasku Alpa sa slonovima", tacan: true}
+    - {tekst: "Najviši vrh Austrije je Mon Blan", tacan: false}

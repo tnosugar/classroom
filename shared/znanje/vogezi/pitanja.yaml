@@ -1,0 +1,34 @@
+# Test-pitanja za: Vogezi. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U kojoj državi se prostiru planine Vogezi?"
+    odgovori:
+      - {tekst: "Francuska, uz granicu sa Nemačkom", tacan: true}
+      - {tekst: "Nemačka, uz granicu sa Poljskom", tacan: false}
+      - {tekst: "Švajcarska, uz granicu sa Italijom", tacan: false}
+      - {tekst: "Belgija, uz granicu sa Francuskom", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Vogeze?"
+    odgovori:
+      - {tekst: "Najviši vrh je Grand Balon (1.424 m)", tacan: true}
+      - {tekst: "To su gromadne planine od starih stena", tacan: true}
+      - {tekst: "Prolaz Savern ih odvaja od Palatinske šume u Nemačkoj", tacan: true}
+      - {tekst: "Pripadaju visokim alpskim vrhovima preko 3.000 m", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o podeli i istoriji Vogeza?"
+    odgovori:
+      - {tekst: "Dele se na Visoke, Srednje (Peščarne) i Niske Vogeze", tacan: true}
+      - {tekst: "Sa Palatinskom šumom čine jedinstvenu geomorfološku jedinicu", tacan: true}
+      - {tekst: "Od 1871. do 1918. najvećim delom su činili granicu Nemačke i Francuske", tacan: true}
+      - {tekst: "Najviši vrh nalazi se u Nemačkoj", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Zaobljeni vrhovi Visokih Vogeza nose reč „Ballon“ (balon)", tacan: true}
+    - {tekst: "Francuski departman Vogezi dobio je ime po vencu", tacan: true}
+    - {tekst: "Stene su iz paleozoika i mezozoika (granit, gnajs, peščar)", tacan: true}
+    - {tekst: "Venac u celini leži u Nemačkoj", tacan: false}

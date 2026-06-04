@@ -1,0 +1,34 @@
+# Test-pitanja za: Sudeti. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Kroz koje države se prostiru Sudeti?"
+    odgovori:
+      - {tekst: "Češka", tacan: true}
+      - {tekst: "Poljska", tacan: true}
+      - {tekst: "Nemačka", tacan: true}
+      - {tekst: "Rumunija", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Sudete?"
+    odgovori:
+      - {tekst: "Najviši vrh je Snežka (1.603 m)", tacan: true}
+      - {tekst: "Najviši deo su Češkog masiva", tacan: true}
+      - {tekst: "Snežka je na granici Češke i Poljske, u lancu Krkonoše", tacan: true}
+      - {tekst: "Najviši su deo Alpskog sistema", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o položaju i susedima Sudeta?"
+    odgovori:
+      - {tekst: "Na istoku ih Moravska vrata dele od Karpata", tacan: true}
+      - {tekst: "Pružaju se od Drezdena na severozapadu ka istoku", tacan: true}
+      - {tekst: "Najviša planina Moravske je Praded (1.491 m)", tacan: true}
+      - {tekst: "Snežka je najviša planina Slovačke", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "U Sudetima izviru Laba, Odra i Jizera", tacan: true}
+    - {tekst: "Po Sudetima su nazvani Sudetski Nemci i Sudetska oblast", tacan: true}
+    - {tekst: "Reljefom su sličniji planinama severne Evrope nego Alpima", tacan: true}
+    - {tekst: "Snežka se nalazi u Karpatima", tacan: false}

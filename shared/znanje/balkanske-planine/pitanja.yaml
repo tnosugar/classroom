@@ -1,0 +1,34 @@
+# Test-pitanja za: Balkanske planine. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U kom pravcu se pružaju Balkanske planine?"
+    odgovori:
+      - {tekst: "Zapad–istok, do Crnog mora", tacan: true}
+      - {tekst: "Sever–jug, do Jadranskog mora", tacan: false}
+      - {tekst: "Sever–jug, do Egejskog mora", tacan: false}
+      - {tekst: "Zapad–istok, do Sredozemnog mora", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Balkanske planine?"
+    odgovori:
+      - {tekst: "Najviši vrh je Botev (2.376 m) u Bugarskoj", tacan: true}
+      - {tekst: "Osovinu venca čini Stara planina", tacan: true}
+      - {tekst: "Prostiru se kroz Srbiju, Bugarsku i Tursku", tacan: true}
+      - {tekst: "Najviši vrh je Midžor u Srbiji", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o pripadnosti i delovima venca?"
+    odgovori:
+      - {tekst: "Deo su Alpsko-himalajskog sistema", tacan: true}
+      - {tekst: "Severno podnožje nosi naziv Predbalkan", tacan: true}
+      - {tekst: "Južno podnožje naziva se Srednjegorje (Srednja gora)", tacan: true}
+      - {tekst: "Pripadaju Skandinavskim kaledonima", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Naziv „Balkan“ je persijskog porekla i znači „brdoviti kraj“", tacan: true}
+    - {tekst: "Rimsko ime masiva bilo je Haemus", tacan: true}
+    - {tekst: "U Srbiji je najviši vrh Midžor (2.169 m), na granici sa Bugarskom", tacan: true}
+    - {tekst: "Venac se na istoku završava kod Gibraltarskog moreuza", tacan: false}

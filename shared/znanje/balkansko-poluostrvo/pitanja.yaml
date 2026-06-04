@@ -1,0 +1,34 @@
+# Test-pitanja za: Balkansko poluostrvo. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Po čemu je Balkansko poluostrvo dobilo ime?"
+    odgovori:
+      - {tekst: "Po planini Balkan (Stara planina)", tacan: true}
+      - {tekst: "Po reci Dunav", tacan: false}
+      - {tekst: "Po gradu Beogradu", tacan: false}
+      - {tekst: "Po Jadranskom moru", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Balkansko poluostrvo?"
+    odgovori:
+      - {tekst: "Nalazi se u istočnoj i jugoistočnoj Evropi", tacan: true}
+      - {tekst: "Sa istoka ga zapljuskuje Crno more", tacan: true}
+      - {tekst: "Severnu granicu čine reke Dunav i Sava", tacan: true}
+      - {tekst: "Sa svih strana je okruženo kopnom", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu i nazivu poluostrva?"
+    odgovori:
+      - {tekst: "Najviši vrh je Musala (2.925 m) na planini Rila", tacan: true}
+      - {tekst: "Presecaju ga Dinarski, Karpatski i Rodopski sistemi", tacan: true}
+      - {tekst: "Sve češće se koristi naziv jugoistočna Evropa", tacan: true}
+      - {tekst: "Severne granice poluostrva su potpuno precizno utvrđene", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Na turskom 'balkan' znači venac šumovitih planina", tacan: true}
+    - {tekst: "Đerdapska klisura je najveća klisura u Evropi", tacan: true}
+    - {tekst: "Samo je evropski deo Turske deo Balkanskog poluostrva", tacan: true}
+    - {tekst: "Najviši vrh poluostrva nalazi se u Dinarskim planinama", tacan: false}

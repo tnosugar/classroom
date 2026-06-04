@@ -1,0 +1,34 @@
+# Test-pitanja za: Peloponez. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U kojoj državi se nalazi poluostrvo Peloponez?"
+    odgovori:
+      - {tekst: "Grčka", tacan: true}
+      - {tekst: "Italija", tacan: false}
+      - {tekst: "Turska", tacan: false}
+      - {tekst: "Španija", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Peloponez?"
+    odgovori:
+      - {tekst: "Nalazi se južno od Korintskog zaliva", tacan: true}
+      - {tekst: "Od 1893. ga od kopna deli Korintski kanal", tacan: true}
+      - {tekst: "Najviša planina je Kilini (2.376 m)", tacan: true}
+      - {tekst: "To je najsevernije poluostrvo Grčke", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o istoriji Peloponeza?"
+    odgovori:
+      - {tekst: "Na njemu su bili gradovi Sparta, Korint, Arg i Mikena", tacan: true}
+      - {tekst: "Bilo je poprište Peloponeskog rata (431–404. p. n. e.)", tacan: true}
+      - {tekst: "U srednjem veku bilo je poznato pod imenom Moreja", tacan: true}
+      - {tekst: "Ime mu potiče iz egipatske mitologije", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Sa kopnom ga, pored prevlake, spaja i most Rio-Antirio iz 2004.", tacan: true}
+    - {tekst: "Grčki rat za nezavisnost počeo je zauzimanjem Kalamate 23. marta 1821.", tacan: true}
+    - {tekst: "Vizantinci su jugom poluostrva vladali iz utvrđenog grada Mistre kod Sparte", tacan: true}
+    - {tekst: "Najveći moderni grad Peloponeza je Sparta", tacan: false}

@@ -1,0 +1,34 @@
+# Test-pitanja za: Sredozemno more. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Između kojih kontinenata leži Sredozemno more?"
+    odgovori:
+      - {tekst: "Evrope", tacan: true}
+      - {tekst: "Azije", tacan: true}
+      - {tekst: "Afrike", tacan: true}
+      - {tekst: "Australije", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Kako je Sredozemno more povezano sa drugim morima i okeanima?"
+    odgovori:
+      - {tekst: "Sa Atlantskim okeanom preko Gibraltarskog moreuza", tacan: true}
+      - {tekst: "Sa Crnim morem preko Bosfora", tacan: true}
+      - {tekst: "Sa Crvenim morem preko Sueckog kanala", tacan: true}
+      - {tekst: "Sa Baltičkim morem preko Kilskog kanala", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o vodnom bilansu i podeli mora?"
+    odgovori:
+      - {tekst: "Ima negativan bilans vode — leti ispari više nego što dobije", tacan: true}
+      - {tekst: "Bez dotoka iz Atlantika presušilo bi za oko 1.500 godina", tacan: true}
+      - {tekst: "Sicilijanski prag deli more na istočni i zapadni deo", tacan: true}
+      - {tekst: "Salinitet mu je niži od salinitita Baltičkog mora", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Tokom Mesinske krize saliniteta more se gotovo potpuno isušilo", tacan: true}
+    - {tekst: "Ponovo je napunjeno Zanklijanskom poplavom kroz Gibraltarski moreuz", tacan: true}
+    - {tekst: "Ime potiče od latinskog mediterraneus — usred kopna", tacan: true}
+    - {tekst: "Dno mora je u potpunosti od kontinentalne kore starije od pet milijardi godina", tacan: false}

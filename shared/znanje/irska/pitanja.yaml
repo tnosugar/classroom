@@ -1,0 +1,35 @@
+# Test-pitanja za: Irska (ostrvo). Vidi shared/znanje/README.md › pitanja.yaml.
+# NAPOMENA: pojam je OSTRVO, ne država.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U kom okeanu / blizu kog ostrva leži ostrvo Irska?"
+    odgovori:
+      - {tekst: "U severnom Atlantiku, zapadno od Velike Britanije", tacan: true}
+      - {tekst: "U Sredozemnom moru, južno od Italije", tacan: false}
+      - {tekst: "U Baltičkom moru, istočno od Švedske", tacan: false}
+      - {tekst: "U Crnom moru, severno od Turske", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za ostrvo Irsku?"
+    odgovori:
+      - {tekst: "Od Velike Britanije ga dele Irsko more i Prolaz Svetog Đorđa", tacan: true}
+      - {tekst: "Drugo je po veličini među Britanskim ostrvima", tacan: true}
+      - {tekst: "Površina je oko 84.421 km²", tacan: true}
+      - {tekst: "Najveće je ostrvo u Evropi", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu, klimi i podeli ostrva?"
+    odgovori:
+      - {tekst: "Reljef čine niske planine oko središnje ravnice", tacan: true}
+      - {tekst: "Klima je umerena okeanska, sa blagim zimama i obilnim padavinama", tacan: true}
+      - {tekst: "Politički je podeljeno na Republiku Irsku i Severnu Irsku", tacan: true}
+      - {tekst: "Najviši vrh prelazi 3.000 m nadmorske visine", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Najviši vrh ostrva je Karantul (1.041 m)", tacan: true}
+    - {tekst: "2013. su šume zauzimale oko 11% površine, ispod evropskog proseka", tacan: true}
+    - {tekst: "Kelti su ostrvom vladali od prvog veka n. e. do 17. stoleća", tacan: true}
+    - {tekst: "Ostrvo nema nijednu autohtonu vrstu sisara", tacan: false}

@@ -1,0 +1,34 @@
+# Test-pitanja za: Island. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je Island po tipu geografskog pojma?"
+    odgovori:
+      - {tekst: "Ostrvo (ostrvska država)", tacan: true}
+      - {tekst: "Poluostrvo", tacan: false}
+      - {tekst: "Planinski venac", tacan: false}
+      - {tekst: "Moreuz", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Island?"
+    odgovori:
+      - {tekst: "Leži na granici Atlantskog i Severnog ledenog okeana", tacan: true}
+      - {tekst: "Vulkanskog je porekla, na Srednjoatlantskom grebenu", tacan: true}
+      - {tekst: "Površina je oko 103.000 km²", tacan: true}
+      - {tekst: "Nalazi se u Sredozemnom moru", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o položaju i klimi Islanda?"
+    odgovori:
+      - {tekst: "Arktički polarni krug prolazi tik uz njegovu severnu obalu", tacan: true}
+      - {tekst: "Najbliže kopno na zapadu je Grenland (~290 km)", tacan: true}
+      - {tekst: "Klimu ublažava topla Severnoatlantska (Irmingerova) struja", tacan: true}
+      - {tekst: "Najnaseljenija je država Evrope", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Rt Bjargtangar na Islandu je ujedno najzapadnija tačka Evrope", tacan: true}
+    - {tekst: "Na Islandu je registrovano oko 30 aktivnih vulkanskih sistema", tacan: true}
+    - {tekst: "Oko dve trećine stanovništva živi u Rejkjaviku i okolini", tacan: true}
+    - {tekst: "Reke Islanda su duge, spore i plovne velikim brodovima", tacan: false}

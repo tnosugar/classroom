@@ -3,7 +3,7 @@
 # Svaki predikat: opis, inverz (ako postoji), primer. Inverz se NE upisuje ručno u pojmove —
 # izvodi se programski iz ovog registra.
 #
-# verzija registra: 1   (uz svaku izmenu povećati i dopisati u CHANGELOG dnu)
+# verzija registra: 2   (uz svaku izmenu povećati i dopisati u CHANGELOG dnu)
 
 vrste:
   # Kontrolisani rečnik za polje `vrsta:` u index.md (klasifikacija pojma).
@@ -15,6 +15,7 @@ vrste:
   - reka
   - jezero
   - ostrvo
+  - ostrvska_grupa
   - moreuz
   - drzava
   - region
@@ -40,6 +41,21 @@ predikati:
     inverz: granici_se_sa   # simetričan
     primer: "skandinavsko-poluostrvo granici_se_sa [balticko-more, severno-more, norvesko-more]"
 
+  spaja:
+    opis: Moreuz/prevlaka povezuje dve vodene površine (ili kopnene celine).
+    inverz: spaja           # simetričan
+    primer: "gibraltarski-moreuz spaja [sredozemno-more, atlantski-okean]"
+
+  uliva_se_u:
+    opis: Reka se uliva u more/jezero/drugu reku.
+    inverz: null
+    primer: "reka-volga uliva_se_u kaspijsko-jezero"
+
+  tece_kroz:
+    opis: Reka protiče kroz države ili regije.
+    inverz: null
+    primer: "reka-ural tece_kroz [rusija, kazahstan]"
+
   srodni:
     opis: Netipizovan "vidi takođe". Fallback dok se ne ukaže potreba za pravim predikatom.
     inverz: srodni          # simetričan
@@ -47,3 +63,4 @@ predikati:
 
 # CHANGELOG
 # v1 (2026-06-04): početni set — nalazi_se_u, obuhvata, prostire_se_kroz, granici_se_sa, srodni.
+# v2 (2026-06-04): + spaja, uliva_se_u, tece_kroz; + vrsta ostrvska_grupa (bulk 40 pojmova).

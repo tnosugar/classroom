@@ -1,0 +1,34 @@
+# Test-pitanja za: Moreuz Dardaneli. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koja dva mora povezuje moreuz Dardaneli?"
+    odgovori:
+      - {tekst: "Egejsko more", tacan: true}
+      - {tekst: "Mramorno more", tacan: true}
+      - {tekst: "Jadransko more", tacan: false}
+      - {tekst: "Crno more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za položaj Dardanela?"
+    odgovori:
+      - {tekst: "Razdvajaju Evropu od Azije", tacan: true}
+      - {tekst: "Sa severne strane omeđuje ih poluostrvo Galipolje", tacan: true}
+      - {tekst: "Na južnoj obali leži grad Čanakale", tacan: true}
+      - {tekst: "Nalaze se na severu Skandinavije", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o imenu i istoriji Dardanela?"
+    odgovori:
+      - {tekst: "U antici su se zvali Helespont", tacan: true}
+      - {tekst: "1915. tu se odigrala Galipoljska bitka", tacan: true}
+      - {tekst: "Dugi su oko 61 km, široki 1,2 do 6 km", tacan: true}
+      - {tekst: "Spajaju Sredozemno more sa Atlantskim okeanom", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Kroz moreuz teku dve struje, površinska i dublja slanija", tacan: true}
+    - {tekst: "Drevni grad Troja bio je blizu zapadnog ulaza u moreuz", tacan: true}
+    - {tekst: "Aleksandar Veliki prešao je moreuz 334. p. n. e.", tacan: true}
+    - {tekst: "Moreuz je najširi morski prolaz na svetu", tacan: false}

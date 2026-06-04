@@ -1,0 +1,34 @@
+# Test-pitanja za: Kavkaz. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koji je najviši vrh Kavkaza?"
+    odgovori:
+      - {tekst: "Elbrus (5.642 m)", tacan: true}
+      - {tekst: "Mon Blan", tacan: false}
+      - {tekst: "Narodnaja", tacan: false}
+      - {tekst: "Triglav", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o položaju i podeli Kavkaza?"
+    odgovori:
+      - {tekst: "Razdvaja Crno more od Kaspijskog jezera", tacan: true}
+      - {tekst: "Deli se na Veliki i Mali Kavkaz", tacan: true}
+      - {tekst: "Smatra se granicom Evrope i Azije", tacan: true}
+      - {tekst: "Razdvaja Sredozemno more od Atlantika", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o geologiji i vulkanizmu Kavkaza?"
+    odgovori:
+      - {tekst: "Nastao je sudarom Arabijske i Evroazijske ploče", tacan: true}
+      - {tekst: "Mali Kavkaz je uglavnom vulkanskog porekla", tacan: true}
+      - {tekst: "Elbrus i Kazbek su vulkanskog porekla", tacan: true}
+      - {tekst: "Region je potpuno seizmički miran i bez zemljotresa", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Veliki Kavkaz pruža se od okoline Sočija do Bakua", tacan: true}
+    - {tekst: "Postoje neslaganja oko toga da li je Elbrus u Evropi ili Aziji", tacan: true}
+    - {tekst: "Zemljotres u Spitaku 1988. uništio je region Gjumri-Vanadzor", tacan: true}
+    - {tekst: "Mali Kavkaz leži oko 1.000 km severno od Velikog Kavkaza", tacan: false}

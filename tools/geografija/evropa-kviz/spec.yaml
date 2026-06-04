@@ -60,6 +60,13 @@ ui:
   pdf_legend_heading: 'Upiši broj pojma u krug na karti:'
   pdf_legend_symbols: ▲ planine    — reke    ○ lokacija pojma
 terms:
+- id: 0
+  name: Srbija
+  slug: srbija
+  demo: true
+  label_at: [20.9, 44.0]
+  accept:
+    radius_deg: 1.8
 - id: 1
   name: Gibraltarski moreuz
   slug: gibraltarski-moreuz

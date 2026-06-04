@@ -190,6 +190,22 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .panelfoot{margin-top:12px;border-top:1px solid #eee;padding-top:8px;font-size:11px;color:#6b6456}
  .panelfoot a{color:#6b6456}
  .cell:has(.ans.correct){cursor:pointer}
+ /* Demo term (Srbija): gray legend item + small-caps badge; click runs the demo */
+ ol.terms li.demo-item{color:#777;font-style:italic}
+ ol.terms li.demo-item b{color:#9a9a9a}
+ .demo-badge{font-variant:small-caps;font-style:normal;font-size:10px;letter-spacing:.05em;color:#fff;background:#9a9a9a;border-radius:6px;padding:0 6px;margin-left:5px}
+ body.drag-mode ol.terms li.demo-item{cursor:pointer;background:#f0f0f0;border:1px dashed #c9c9c9}
+ body.drag-mode ol.terms li.demo-item:hover{background:#e8e8e8}
+ .cell[data-demo] .ans{border-color:#9a9a9a;color:#777}
+ .cell[data-demo] .ans.correct{background:#e4e4e4;border-color:#777;color:#555}
+ body.demo-running ol.terms{pointer-events:none}
+ /* Demo overlay: animated pointer + speech bubble */
+ #demoCursor{position:fixed;z-index:300;pointer-events:none;font-size:26px;line-height:1;transition:left .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+ #demoBubble{position:fixed;z-index:301;max-width:280px;background:#2b2b2b;color:#fff;font-size:13px;line-height:1.45;padding:10px 13px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:left .6s,top .6s}
+ #demoBubble .demo-step{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#ffd27a;margin-bottom:3px}
+ #demoBubble .demo-ctrls{margin-top:9px;display:flex;gap:8px;justify-content:flex-end}
+ #demoBubble button{font:inherit;font-size:12px;padding:4px 12px;border-radius:7px;cursor:pointer;border:1px solid #fff;background:#fff;color:#2b2b2b}
+ #demoBubble button.demo-skip{background:transparent;color:#ccc;border-color:#666}
  /* Mode switch (Učenje / Test) */
  .mode-switch{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#3a3528}
  .ms-btn{font:inherit;padding:5px 12px;border:1px solid #6b6456;background:#fff;color:#3a3528;cursor:pointer;min-width:6em;text-align:center}
@@ -395,8 +411,12 @@ const panelBody = document.getElementById('panelBody');
 const panelFoot = document.getElementById('panelFoot');
 const panelClose = document.getElementById('panelClose');
 
+// Demo terms (Srbija) are excluded from scoring, visibility and numbering.
+const QUIZ_TERMS = ALL_TERMS.filter(t => !t.demo);
+const DEMO_TERM = ALL_TERMS.find(t => t.demo) || null;
+
 let currentMode = 'all';
-let visibleIds = ALL_TERMS.map(t => t.id);
+let visibleIds = QUIZ_TERMS.map(t => t.id);
 let currentMapping = null;  // { c2d: {canonId: displayNum}, d2c: {displayNum: canonId} }
 let msgT = null;
 
@@ -429,8 +449,8 @@ function applyMapping(mapping) {
   // Reorder legend by display number and rewrite the <b>N.</b> prefix
   const items = [...legendList.children];
   items.sort((a, b) => {
-    const da = mapping.c2d[parseInt(a.dataset.id, 10)] || 9999;
-    const db = mapping.c2d[parseInt(b.dataset.id, 10)] || 9999;
+    const da = a.dataset.demo ? -1 : (mapping.c2d[parseInt(a.dataset.id, 10)] || 9999);
+    const db = b.dataset.demo ? -1 : (mapping.c2d[parseInt(b.dataset.id, 10)] || 9999);
     return da - db;
   });
   legendList.append(...items);
@@ -446,10 +466,10 @@ function applyMapping(mapping) {
 
 function setSelectOptions() {
   // Fill {n} placeholders for the mode selector options
-  modeSelect.options[0].textContent = MODE_ALL_TPL.replace('{n}', ALL_TERMS.length);
+  modeSelect.options[0].textContent = MODE_ALL_TPL.replace('{n}', QUIZ_TERMS.length);
   for (let i = 1; i < modeSelect.options.length; i++) {
     const n = parseInt(modeSelect.options[i].value, 10);
-    if (n >= ALL_TERMS.length) {
+    if (n >= QUIZ_TERMS.length) {
       modeSelect.options[i].style.display = 'none';
     } else {
       modeSelect.options[i].textContent = MODE_RANDOM_TPL.replace('{n}', n);
@@ -473,6 +493,7 @@ function applyVisibility(ids) {
     inp.parentElement.classList.toggle('hidden', !set.has(id));
   }
   for (const [id, li] of legendItems) {
+    if (li.dataset.demo) continue;       // demo item visibility handled separately
     li.classList.toggle('hidden', !set.has(id));
   }
   cTotal.textContent = ids.length;
@@ -859,6 +880,7 @@ function saveState() {
     v: STATE_VERSION,
     mode: currentMode,
     testMode: isTestMode(),
+    demoDone: demoDone,
     visible: visibleIds,
     mapping: currentMapping ? currentMapping.c2d : null,
     answers
@@ -934,7 +956,7 @@ function applyAnswers(answers) {
 
 // --- mode (N-random) ---
 function shuffleIds(n) {
-  const all = ALL_TERMS.map(t => t.id);
+  const all = QUIZ_TERMS.map(t => t.id);
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [all[i], all[j]] = [all[j], all[i]];
@@ -947,7 +969,7 @@ function setMode(mode, opts) {
   currentMode = mode;
   let ids;
   if (mode === 'all') {
-    ids = ALL_TERMS.map(t => t.id);
+    ids = QUIZ_TERMS.map(t => t.id);
   } else {
     const n = parseInt(mode, 10);
     ids = opts.restoreIds || shuffleIds(n);
@@ -1114,14 +1136,19 @@ function tryDragDrop(canonicalId, clientX, clientY) {
   const [lon, lat] = screenToLonLat(clientX, clientY);
   const term = ALL_TERMS.find(t => t.id === canonicalId);
   const accepted = isDropAcceptable(term, lon, lat);
+  applyDrop(canonicalId, accepted, baseX, baseY);
+}
 
-  // Place the cell at the drop location (whether correct or wrong) — the
-  // student's action is preserved visually rather than snap-to-canonical.
+// Apply a placement result (used by real drops and by the demo). baseX/baseY are
+// map-pixel coords where the marker should sit.
+function applyDrop(canonicalId, accepted, baseX, baseY) {
+  const cell = inputsById.get(canonicalId).parentElement;
+  const inp = cell.querySelector('.ans');
+  if (inp.classList.contains('correct')) return;
   cell.classList.add('drag-placed');
   cell.dataset.sx = String(baseX);
   cell.dataset.sy = String(baseY);
   inp.value = inp.dataset.correct;
-
   if (accepted) {
     inp.classList.remove('wrong-placed');
     inp.classList.add('correct');
@@ -1151,6 +1178,7 @@ legendList.addEventListener('pointerdown', e => {
   if (!document.body.classList.contains('drag-mode')) return;
   const li = e.target.closest('li');
   if (!li || li.classList.contains('placed')) return;
+  if (li.dataset.demo) { e.preventDefault(); startDemo(); return; }  // Srbija → run demo
   e.preventDefault();
   const canonId = parseInt(li.dataset.id, 10);
   dragSourceCanonId = canonId;
@@ -1302,6 +1330,155 @@ function endPtr(e) {
 wrap.addEventListener('pointerup', endPtr);
 wrap.addEventListener('pointercancel', endPtr);
 
+// --- guided demo (Srbija) ---
+let demoDone = false;
+let demoCursorEl = null, demoBubbleEl = null, demoStepIndex = 0;
+
+function hideDemoTerm() {
+  if (!DEMO_TERM) return;
+  const li = legendItems.get(DEMO_TERM.id);
+  if (li) li.classList.add('hidden');
+  const inp = inputsById.get(DEMO_TERM.id);
+  if (inp) inp.parentElement.classList.add('hidden');
+}
+
+function baseToClient(bx, by) {
+  const r = wrap.getBoundingClientRect();
+  const sc = baseFit * zoom;
+  return [r.left + panX + bx * sc, r.top + panY + by * sc];
+}
+function demoCursorToClient(cx, cy) {
+  if (demoCursorEl) { demoCursorEl.style.left = cx + 'px'; demoCursorEl.style.top = cy + 'px'; }
+}
+function demoCursorToEl(el) {
+  const r = el.getBoundingClientRect();
+  demoCursorToClient(r.left + r.width / 2, r.top + r.height / 2);
+}
+
+// --- demo actions (operate on the Srbija term, id 0) ---
+function demoDropWrong() {
+  const [cx, cy] = baseToClient(MW * 0.20, MH * 0.32);
+  demoCursorToClient(cx, cy);
+  applyDrop(DEMO_TERM.id, false, MW * 0.20, MH * 0.32);
+}
+function demoDropCorrect() {
+  const cell = inputsById.get(DEMO_TERM.id).parentElement;
+  const bx = parseFloat(cell.dataset.canonSx), by = parseFloat(cell.dataset.canonSy);
+  const [cx, cy] = baseToClient(bx, by);
+  demoCursorToClient(cx, cy);
+  applyDrop(DEMO_TERM.id, true, bx, by);
+}
+function demoEnterTest() { setTestMode(true, {}); }
+function demoTestWrongTwice() {
+  demoDropWrong();
+  demoDropWrong();
+}
+function demoAnswerQuestion(qi, correct) {
+  const quizEl = panelBody.querySelector('.quiz');
+  if (!quizEl) return;
+  const block = quizEl.querySelector('.q[data-qi="' + qi + '"]');
+  if (!block || block.classList.contains('solved')) {
+    // if already solved (the correct pass), nothing to do
+    if (correct) return;
+  }
+  if (!block) return;
+  const opts = DEMO_TERM.quiz.questions[qi].options;
+  const boxes = [...block.querySelectorAll('input[type=checkbox]')];
+  boxes.forEach((c, i) => { c.checked = correct ? !!opts[i].c : !opts[i].c; });
+  const pv = block.querySelector('.q-proveri');
+  if (pv) pv.click();
+}
+function demoBonus() {
+  const block = panelBody.querySelector('.bonus');
+  if (!block) return;
+  const opts = DEMO_TERM.quiz.bonus.options;
+  const boxes = [...block.querySelectorAll('input[type=checkbox]')];
+  boxes.forEach((c, i) => { c.checked = !!opts[i].c; });
+  const pv = block.querySelector('.q-proveri[data-bonus-btn]');
+  if (pv) pv.click();
+}
+
+// --- demo step script ---
+const DEMO_STEPS = [
+  { l: 'Učenje', t: 'Prevlačim pojam <b>Srbija</b> na pogrešno mesto. Pogrešno lociranje se broji kao greška i otvara prvi <b>hint</b>.', a: demoDropWrong, at: 'map' },
+  { l: 'Hintovi', t: 'Još jedna greška — otkriva se sledeći, konkretniji hint. Svaka greška daje jači trag.', a: demoDropWrong, at: 'map' },
+  { l: 'Tačno', t: 'Sad ga spuštam na tačno mesto. Tada se prikaže <b>pun opis</b> pojma u panelu.', a: demoDropCorrect, at: 'map' },
+  { l: 'Test mod', t: 'Prelazim u <b>Test</b> mod. Ovde nema hintova ni opisa — posle tačnog lociranja dobijaš pitanja.', a: demoEnterTest, at: 'mode' },
+  { l: 'Test: greške', t: 'I u testu pogrešno lociranje broji grešku — dva puta promašim...', a: demoTestWrongTwice, at: 'map' },
+  { l: 'Test: tačno', t: '...pa pogodim. Sad se otvaraju tri pitanja.', a: demoDropCorrect, at: 'map' },
+  { l: 'Pitanje 1', t: 'Prvo pitanje rešavam tačno iz prve.', a: () => demoAnswerQuestion(0, true), at: 'panel' },
+  { l: 'Pitanje 2', t: 'Drugo pitanje prvo namerno pogrešim — broji se jedna greška.', a: () => demoAnswerQuestion(1, false), at: 'panel' },
+  { l: 'Pitanje 2', t: '...pa ga ispravim na tačno.', a: () => demoAnswerQuestion(1, true), at: 'panel' },
+  { l: 'Pitanje 3', t: 'Treće pitanje opet prvo pogrešim...', a: () => demoAnswerQuestion(2, false), at: 'panel' },
+  { l: 'Pitanje 3', t: '...pa ispravim na tačno. Sva tri rešena — otključava se <b>bonus</b>.', a: () => demoAnswerQuestion(2, true), at: 'panel' },
+  { l: 'Bonus', t: 'Da bi tačno odgovorio na bonus, treba da klikneš na <b>sve izvore</b> iz kojih je nastao opis ovog pojma. Odgovaram tačno.', a: demoBonus, at: 'panel' },
+  { l: 'Kraj', t: 'To je ceo tok kviza — učenje, pa test, pa bonus. Srbija sada nestaje sa spiska. Srećno!', a: null, at: 'mode' },
+];
+
+function demoPositionBubble(at) {
+  let anchor = null;
+  if (at === 'mode') anchor = modeTest;
+  else if (at === 'panel') anchor = document.getElementById('panelcol');
+  else anchor = wrap;
+  const r = anchor.getBoundingClientRect();
+  let x = Math.min(r.left + 20, window.innerWidth - 300);
+  let y = Math.min(r.top + 40, window.innerHeight - 160);
+  demoBubbleEl.style.left = Math.max(10, x) + 'px';
+  demoBubbleEl.style.top = Math.max(10, y) + 'px';
+  if (at === 'mode') demoCursorToEl(modeTest);
+  else if (at === 'panel') { const q = panelBody.querySelector('.q-proveri'); if (q) demoCursorToEl(q); }
+}
+
+function renderDemoStep(i) {
+  demoStepIndex = i;
+  const step = DEMO_STEPS[i];
+  const last = i === DEMO_STEPS.length - 1;
+  const nextLabel = last ? 'Završi' : 'Dalje';
+  demoBubbleEl.innerHTML =
+    '<div class="demo-step">' + (i + 1) + '/' + DEMO_STEPS.length + ' · ' + step.l + '</div>' +
+    '<div>' + step.t + '</div>' +
+    '<div class="demo-ctrls">' +
+    '<button class="demo-skip" id="demoSkip">Preskoči</button>' +
+    '<button id="demoNext">' + nextLabel + '</button></div>';
+  demoPositionBubble(step.at);
+  document.getElementById('demoSkip').onclick = endDemo;
+  document.getElementById('demoNext').onclick = () => {
+    const cur = DEMO_STEPS[demoStepIndex];
+    if (cur.a) cur.a();
+    if (demoStepIndex >= DEMO_STEPS.length - 1) { endDemo(); return; }
+    setTimeout(() => renderDemoStep(demoStepIndex + 1), 350);
+  };
+}
+
+function startDemo() {
+  if (demoDone || document.body.classList.contains('demo-running')) return;
+  document.body.classList.add('demo-running');
+  // make sure we start clean, in learn mode
+  if (isTestMode()) setTestMode(false, {});
+  demoCursorEl = document.createElement('div');
+  demoCursorEl.id = 'demoCursor';
+  demoCursorEl.textContent = '👆';
+  demoBubbleEl = document.createElement('div');
+  demoBubbleEl.id = 'demoBubble';
+  document.body.appendChild(demoCursorEl);
+  document.body.appendChild(demoBubbleEl);
+  const li = legendItems.get(DEMO_TERM.id);
+  if (li) demoCursorToEl(li);
+  renderDemoStep(0);
+}
+
+function endDemo() {
+  if (demoCursorEl) { demoCursorEl.remove(); demoCursorEl = null; }
+  if (demoBubbleEl) { demoBubbleEl.remove(); demoBubbleEl = null; }
+  document.body.classList.remove('demo-running');
+  demoDone = true;
+  // reset board to a clean learn-mode quiz, then permanently hide Srbija
+  if (isTestMode()) setTestMode(false, {}); else { applyAnswers({}); recountCorrectMiss(); apply(); }
+  closePanel();
+  hideDemoTerm();
+  saveState();
+}
+
 // --- init ---
 function setHeaderTop() {
   const h = document.querySelector('header').offsetHeight;
@@ -1324,11 +1501,13 @@ if (saved) {
   applyAnswers(saved.answers || {});
   recountCorrectMiss();
   if (saved.testMode) setTestMode(true, { restore: true });
+  if (saved.demoDone) { demoDone = true; }
   resumeBanner.classList.add('show');
 } else {
   setMode('all', {});
 }
 recountBonus();
+if (demoDone) hideDemoTerm();
 
 window.addEventListener('resize', () => { setHeaderTop(); fit(); });
 setHeaderTop();
@@ -1562,20 +1741,24 @@ def render_html(spec, output_path, map_width_px=1160.0):
     for t in spec["terms"]:
         lon, lat = t["label_at"]
         x, y = px(lon, lat)
+        demo_attr = ' data-demo="1"' if t.get("demo") else ''
         # data-sx/sy is the CURRENT position (mutable when dragging in drag mode);
         # data-canon-sx/sy is the IMMUTABLE canonical position used for distance check.
         boxes += (
-            f'<div class="cell" data-sx="{x:.1f}" data-sy="{y:.1f}" '
+            f'<div class="cell"{demo_attr} data-sx="{x:.1f}" data-sy="{y:.1f}" '
             f'data-canon-sx="{x:.1f}" data-canon-sy="{y:.1f}">'
             f'<input class="ans" data-id="{t["id"]}" data-correct="{t["id"]}" data-miss="0" '
             f'maxlength="3" inputmode="numeric" autocomplete="off" aria-label="number">'
             f'<span class="miss" style="display:none">0</span></div>'
         )
 
-    leg_rows = "".join(
-        f'<li data-id="{t["id"]}"><b>{t["id"]}.</b> {t["name"]}</li>'
-        for t in spec["terms"]
-    )
+    def _leg_row(t):
+        if t.get("demo"):
+            return (f'<li class="demo-item" data-id="{t["id"]}" data-demo="1">'
+                    f'<b>{t["id"]}.</b> {t["name"]} <span class="demo-badge">demo</span></li>')
+        return f'<li data-id="{t["id"]}"><b>{t["id"]}.</b> {t["name"]}</li>'
+
+    leg_rows = "".join(_leg_row(t) for t in spec["terms"])
 
     # Terms JSON for client-side use. Includes:
     #   id, name           — for CSV export + display
@@ -1592,6 +1775,8 @@ def render_html(spec, output_path, map_width_px=1160.0):
                 "label_at": t.get("label_at"),
                 "geometry": t.get("geometry"),
                 "accept": t.get("accept"),
+                # Demo term (Srbija) — not counted; clicking its legend item runs the demo
+                "demo": bool(t.get("demo", False)),
                 # Learn-mode side-panel content (None → client placeholder)
                 "desc": descriptions.get(t["id"]),
                 # Test-mode questions (None → no test content for this term)
@@ -1602,6 +1787,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         ensure_ascii=False
     )
 
+    n_quiz = len([t for t in spec["terms"] if not t.get("demo")])
     repl = {
         "__LOCALE__": spec.get("locale", "en"),
         "__TITLE__": ui.get("header_title", spec.get("title", "Quiz")),
@@ -1621,7 +1807,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__BTN_RESET__": ui["btn_reset"],
         "__BTN_CSV__": ui["btn_export_csv"],
         "__MODE_LABEL__": ui["mode_label"],
-        "__MODE_ALL__": ui["mode_all"].replace("{n}", str(len(spec["terms"]))),
+        "__MODE_ALL__": ui["mode_all"].replace("{n}", str(n_quiz)),
         "__MODE_20__": ui["mode_random"].replace("{n}", "20"),
         "__MODE_10__": ui["mode_random"].replace("{n}", "10"),
         "__MODE_5__": ui["mode_random"].replace("{n}", "5"),
@@ -1635,7 +1821,7 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__LEG_CIRCLES__": ui["legend_circles"],
         "__ZHINT__": ui["zoom_hint"],
         "__RESUME_MSG__": ui["resume_indicator"],
-        "__TOTAL__": str(len(spec["terms"])),
+        "__TOTAL__": str(n_quiz),
         "__TERMS_JSON__": terms_json,
         "__RANDOMIZE_NUMBERS__": "true" if spec.get("randomize_numbers", True) else "false",
         # Projection constants — JS uses these to convert drop screen coords back to lon/lat
@@ -1727,8 +1913,10 @@ def render_pdf(spec, output_path, answer=False):
     for s in axm.spines.values():
         s.set_edgecolor("#6b6456"); s.set_linewidth(1.2)
 
+    # Demo terms (Srbija) are interactive-only; never drawn on the printable PDF.
+    pdf_terms = [t for t in spec["terms"] if not t.get("demo")]
     r = 0.95
-    for t in spec["terms"]:
+    for t in pdf_terms:
         lon, lat = t["label_at"]
         c = Circle((lon, lat), r, facecolor=colors["circle_fill"],
                    edgecolor=colors["circle_edge"], lw=1.4, zorder=5)
@@ -1743,10 +1931,10 @@ def render_pdf(spec, output_path, answer=False):
     axl.text(0.0, 0.99, ui["pdf_legend_heading"],
              fontsize=10.5, fontweight="bold", va="top", color="#3a3528",
              transform=axl.transAxes)
-    n = len(spec["terms"])
+    n = len(pdf_terms)
     col_split = (n + 1) // 2
     y0, dy = 0.955, 0.0445
-    for i, t in enumerate(spec["terms"]):
+    for i, t in enumerate(pdf_terms):
         col = 0 if i < col_split else 1
         row = i if i < col_split else i - col_split
         x = 0.0 if col == 0 else 0.52

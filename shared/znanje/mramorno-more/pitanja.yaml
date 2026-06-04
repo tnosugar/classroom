@@ -1,0 +1,34 @@
+# Test-pitanja za: Mramorno more. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koja dva mora povezuje Mramorno more?"
+    odgovori:
+      - {tekst: "Crno more", tacan: true}
+      - {tekst: "Egejsko more", tacan: true}
+      - {tekst: "Jadransko more", tacan: false}
+      - {tekst: "Baltičko more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za moreuze koji okružuju Mramorno more?"
+    odgovori:
+      - {tekst: "Bosfor ga spaja sa Crnim morem", tacan: true}
+      - {tekst: "Dardaneli ga spajaju sa Egejskim morem", tacan: true}
+      - {tekst: "Istanbul leži na njegovoj severnoj obali", tacan: true}
+      - {tekst: "Gibraltarski moreuz ga spaja sa Atlantikom", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o imenu i osobinama Mramornog mora?"
+    odgovori:
+      - {tekst: "Ime je dobilo po ostrvu bogatom mermerom", tacan: true}
+      - {tekst: "Stari grčki naziv bio je Propontida", tacan: true}
+      - {tekst: "Voda je slanija na dnu nego na površini", tacan: true}
+      - {tekst: "More se redovno ledi tokom cele zime", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Prinčevska ostrva nalaze se blizu Istanbula", tacan: true}
+    - {tekst: "Površina mora iznosi oko 11.350 km²", tacan: true}
+    - {tekst: "Smatra se da je nastalo pre oko 2,5 miliona godina", tacan: true}
+    - {tekst: "Najveće ostrvo u moru zove se Kipar", tacan: false}

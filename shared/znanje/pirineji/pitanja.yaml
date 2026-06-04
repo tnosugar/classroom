@@ -1,0 +1,34 @@
+# Test-pitanja za: Pirineji. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Granicu između kojih država čine Pirineji?"
+    odgovori:
+      - {tekst: "Francuske i Španije", tacan: true}
+      - {tekst: "Italije i Austrije", tacan: false}
+      - {tekst: "Nemačke i Poljske", tacan: false}
+      - {tekst: "Grčke i Turske", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Pirineje?"
+    odgovori:
+      - {tekst: "Najviši vrh je Aneto (3.404 m)", tacan: true}
+      - {tekst: "Odvajaju Pirinejsko poluostrvo od ostatka Evrope", tacan: true}
+      - {tekst: "Između Francuske i Španije leži kneževina Andora", tacan: true}
+      - {tekst: "Mlađi su od Alpa", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o pejzažu i geologiji Pirineja?"
+    odgovori:
+      - {tekst: "Za razliku od Alpa, nemaju velika jezera", tacan: true}
+      - {tekst: "Istočni Pirineji nemaju glečere jer pada premalo snega", tacan: true}
+      - {tekst: "Stariji su od Alpa", tacan: true}
+      - {tekst: "Najviši vrh nalazi se na francuskoj strani", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Pružaju se od Baskijskog (Biskajskog) zaliva do Sredozemnog mora", tacan: true}
+    - {tekst: "Domaći mrki medved je 1996. ponovo naseljen medvedima iz Slovenije", tacan: true}
+    - {tekst: "Kroz Pirineje prolaze etape Tur de Fransa i Vuelte", tacan: true}
+    - {tekst: "Najviši vrh je Mon Blan", tacan: false}

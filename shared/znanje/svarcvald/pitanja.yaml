@@ -1,0 +1,34 @@
+# Test-pitanja za: Švarcvald. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "U kojoj državi se nalazi Švarcvald?"
+    odgovori:
+      - {tekst: "Nemačka (Baden-Virtemberg)", tacan: true}
+      - {tekst: "Francuska (Lorena)", tacan: false}
+      - {tekst: "Austrija (Tirol)", tacan: false}
+      - {tekst: "Švajcarska", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Švarcvald?"
+    odgovori:
+      - {tekst: "Najviši vrh je Feldberg (1.493 m)", tacan: true}
+      - {tekst: "Ime „Crna šuma“ potiče od tamnih četinarskih šuma", tacan: true}
+      - {tekst: "Sa zapada i juga okružen je dolinom Rajne", tacan: true}
+      - {tekst: "Najviši vrh prelazi 3.000 m", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o vodama i veličini Švarcvalda?"
+    odgovori:
+      - {tekst: "U njemu nastaje reka Dunav (od reka Brigah i Breg)", tacan: true}
+      - {tekst: "Dug je oko 170 km, a širok oko 60 km", tacan: true}
+      - {tekst: "Površina mu je oko 7.500 km²", tacan: true}
+      - {tekst: "U njemu izvire reka Rajna", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Poznat je po satovima sa kukavicom i torti sa trešnjama", tacan: true}
+    - {tekst: "Najsunčaniji je planinski venac u jugozapadnoj Nemačkoj", tacan: true}
+    - {tekst: "Dunav nastaje spajanjem izvornih reka Brigah i Breg", tacan: true}
+    - {tekst: "Nalazi se u saveznoj državi Bavarska", tacan: false}

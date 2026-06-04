@@ -1,0 +1,34 @@
+# Test-pitanja za: Moreuz Bosfor. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koja dva mora povezuje Bosfor?"
+    odgovori:
+      - {tekst: "Crno more", tacan: true}
+      - {tekst: "Mramorno more", tacan: true}
+      - {tekst: "Jadransko more", tacan: false}
+      - {tekst: "Baltičko more", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o Bosforu?"
+    odgovori:
+      - {tekst: "Razdvaja Evropu od Azije", tacan: true}
+      - {tekst: "Zajedno sa Dardanelima spaja Crno more sa Sredozemnim", tacan: true}
+      - {tekst: "Na njegovom zalivu Zlatni rog leži Istanbul", tacan: true}
+      - {tekst: "Spaja Atlantski okean sa Sredozemnim morem", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o struji i obliku Bosfora?"
+    odgovori:
+      - {tekst: "Površinska struja iznosi manje slanu vodu iz Crnog mora", tacan: true}
+      - {tekst: "Dubinska struja suprotnog smera nosi vodu velikog saliniteta", tacan: true}
+      - {tekst: "U suštini je potopljena rečna dolina sa strmim obalama", tacan: true}
+      - {tekst: "Širok je preko 50 km u najužem delu", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Na dnu Bosfora otkriven je podmorski kanal (podvodna reka)", tacan: true}
+    - {tekst: "Tri mosta u Istanbulu spajaju evropsku i azijsku obalu", tacan: true}
+    - {tekst: "Hipoteza o potopu Crnog mora vezuje nastanak Bosfora za ~5600. p. n. e.", tacan: true}
+    - {tekst: "Preko Bosfora nikada nije izgrađen nijedan most", tacan: false}

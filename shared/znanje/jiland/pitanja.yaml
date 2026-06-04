@@ -1,0 +1,34 @@
+# Test-pitanja za: Jiland (Jutland). Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Kojoj državi pripada najveći deo poluostrva Jiland?"
+    odgovori:
+      - {tekst: "Danska", tacan: true}
+      - {tekst: "Norveška", tacan: false}
+      - {tekst: "Švedska", tacan: false}
+      - {tekst: "Holandija", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Koja mora i moreuzi okružuju Jiland?"
+    odgovori:
+      - {tekst: "Severno more na zapadu", tacan: true}
+      - {tekst: "Skagerak na severu", tacan: true}
+      - {tekst: "Baltičko more na istoku", tacan: true}
+      - {tekst: "Crno more na jugu", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno za Jiland?"
+    odgovori:
+      - {tekst: "Na jugu se graniči sa Nemačkom", tacan: true}
+      - {tekst: "Ime znači „zemlja Jita“", tacan: true}
+      - {tekst: "Danski deo čini više od 2/3 površine Danske", tacan: true}
+      - {tekst: "To je ostrvo potpuno odvojeno od kopna Evrope", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Severnojutlandsko ostrvo je od kopna odvojeno Limfjordom posle poplave 1825.", tacan: true}
+    - {tekst: "Angli, Sasi i Jiti su oko 450. g. migrirali u Britaniju", tacan: true}
+    - {tekst: "Najjužniji deo poluostrva (Šlezvig-Holštajn) pripada Nemačkoj", tacan: true}
+    - {tekst: "Poluostrvo nikada nije bilo povezano kopnom sa ostatkom Evrope", tacan: false}

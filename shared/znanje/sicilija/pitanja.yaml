@@ -1,0 +1,34 @@
+# Test-pitanja za: Sicilija. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koje je Sicilija ostrvo u Sredozemnom moru?"
+    odgovori:
+      - {tekst: "Najveće", tacan: true}
+      - {tekst: "Najmanje", tacan: false}
+      - {tekst: "Jedino vulkansko", tacan: false}
+      - {tekst: "Najsevernije", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Siciliju?"
+    odgovori:
+      - {tekst: "Od kopnene Italije deli je Mesinski moreuz", tacan: true}
+      - {tekst: "Na severu je zapljuskuje Tirensko more", tacan: true}
+      - {tekst: "Na njoj se nalazi vulkan Etna", tacan: true}
+      - {tekst: "Pripada Španiji", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o reljefu i geologiji Sicilije?"
+    odgovori:
+      - {tekst: "Etna (3.263 m) je najviši vrh ostrva", tacan: true}
+      - {tekst: "Najveći deo ostrva je brežuljkast", tacan: true}
+      - {tekst: "Severni i južni deo pripadaju različitim tektonskim pločama", tacan: true}
+      - {tekst: "Ostrvo je potpuno ravno, bez planina", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Ima trougaoni oblik (vrhovi Kapo Peloro, Kapo Boeo, Kapo Pasero)", tacan: true}
+    - {tekst: "Pred severnom obalom leže Eolska (Liparska) ostrva", tacan: true}
+    - {tekst: "Drugi po visini vrh je Pico Karbonara (1.977 m)", tacan: true}
+    - {tekst: "Sicilija je oko 160 km udaljena od Grenlanda", tacan: false}

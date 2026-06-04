@@ -1,0 +1,34 @@
+# Test-pitanja za: Apenini. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Kroz koju državu se prostiru Apenini?"
+    odgovori:
+      - {tekst: "Italiju", tacan: true}
+      - {tekst: "Španiju", tacan: false}
+      - {tekst: "Grčku", tacan: false}
+      - {tekst: "Francusku", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Apenine?"
+    odgovori:
+      - {tekst: "Pružaju se dužinom Apeninskog poluostrva i dali su mu ime", tacan: true}
+      - {tekst: "Najviši vrh je Korno Grande (2.912 m)", tacan: true}
+      - {tekst: "Na severozapadu se spajaju sa Alpima", tacan: true}
+      - {tekst: "Viši su od Alpa", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o vodama i geologiji Apenina?"
+    odgovori:
+      - {tekst: "Najvažnije reke su Tibar i Arno", tacan: true}
+      - {tekst: "Na Korno Grande nalazi se Kalderone, jedini glečer na Apeninima", tacan: true}
+      - {tekst: "Duž lanca su aktivni vulkani Vezuv i Etna", tacan: true}
+      - {tekst: "Reke su uglavnom duge i mirne", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Najviši vrh je na planini Gran Saso", tacan: true}
+    - {tekst: "Od 11. veka dokumentovano je više od 40.000 zemljotresa", tacan: true}
+    - {tekst: "Najveće jezero u njihovom području je Trazimensko", tacan: true}
+    - {tekst: "Apenini se na severozapadu spajaju sa Karpatima", tacan: false}

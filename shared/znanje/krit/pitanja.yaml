@@ -1,0 +1,34 @@
+# Test-pitanja za: Krit. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Šta je tačno za ostrvo Krit?"
+    odgovori:
+      - {tekst: "Najveće je ostrvo Grčke", tacan: true}
+      - {tekst: "Nalazi se na krajnjem jugu Grčke", tacan: true}
+      - {tekst: "Čuveno je po minojskoj civilizaciji", tacan: true}
+      - {tekst: "Pripada Italiji", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno o veličini i reljefu Krita?"
+    odgovori:
+      - {tekst: "Peto je po veličini ostrvo na Mediteranu", tacan: true}
+      - {tekst: "Najviši vrh je Ida (2.456 m)", tacan: true}
+      - {tekst: "Pretežno je planinsko, sa ravnicama na severu", tacan: true}
+      - {tekst: "Potpuno je ravničarsko, bez planina", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o istoriji i položaju Krita?"
+    odgovori:
+      - {tekst: "Glavni grad minojskog Krita bio je Knosos", tacan: true}
+      - {tekst: "Ostrvce Gavdos je najjužnija naseljena tačka Evrope", tacan: true}
+      - {tekst: "Krićani su u doba najveće moći imali jaku flotu i vladali Egejskim morem", tacan: true}
+      - {tekst: "Minojsku civilizaciju osnovali su Rimljani", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Glavni grad i upravno središte ostrva danas je Iraklion", tacan: true}
+    - {tekst: "Minojska moć je naglo prekinuta oko 1400. p. n. e.", tacan: true}
+    - {tekst: "Krit je upravno posebna grčka periferija sa 4 okruga", tacan: true}
+    - {tekst: "Dužina obale ostrva je svega oko 100 km", tacan: false}

@@ -1,0 +1,34 @@
+# Test-pitanja za: Pirinejsko poluostrvo. Vidi shared/znanje/README.md › pitanja.yaml.
+# Odgovorljivo iz index.md + izvori/wikipedia.md.
+pitanja:
+  - tezina: lako
+    pitanje: "Koje države zauzimaju najveći deo Pirinejskog poluostrva?"
+    odgovori:
+      - {tekst: "Španija", tacan: true}
+      - {tekst: "Portugalija", tacan: true}
+      - {tekst: "Italija", tacan: false}
+      - {tekst: "Grčka", tacan: false}
+
+  - tezina: srednje
+    pitanje: "Šta je tačno za Pirinejsko poluostrvo?"
+    odgovori:
+      - {tekst: "Od ostatka Evrope odvajaju ga Pirineji", tacan: true}
+      - {tekst: "Drugi naziv mu je Iberijsko poluostrvo", tacan: true}
+      - {tekst: "Na jugu ga Gibraltarski moreuz odvaja od Afrike", tacan: true}
+      - {tekst: "Nalazi se na krajnjem severoistoku Evrope", tacan: false}
+
+  - tezina: tesko
+    pitanje: "Šta je tačno o geografiji poluostrva?"
+    odgovori:
+      - {tekst: "Najzapadnije je od tri južnoevropska poluostrva", tacan: true}
+      - {tekst: "Najveći deo zauzima visoravan Centralna meseta", tacan: true}
+      - {tekst: "Sa severa i zapada okružuje ga Atlantski okean", tacan: true}
+      - {tekst: "Najmanje je poluostrvo u Evropi", tacan: false}
+
+bonus:
+  pitanje: "Na osnovu celog članka — šta je tačno?"
+  odgovori:
+    - {tekst: "Rimljani su poluostrvo nazivali Hispanija", tacan: true}
+    - {tekst: "Mavari su jug poluostrva nazivali Al-Andaluz", tacan: true}
+    - {tekst: "Rekonkista je završena padom Granade 1492.", tacan: true}
+    - {tekst: "Baskijski jezik je blizak srodnik španskog", tacan: false}
