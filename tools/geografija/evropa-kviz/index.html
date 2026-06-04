@@ -407,7 +407,7 @@ function applyVisibility(ids) {
   const set = new Set(ids);
   visibleIds = ids;
   for (const inp of allInputs) {
-    const id = parseInt(inp.dataset.correct, 10);
+    const id = parseInt(inp.dataset.id, 10);   // canonical id (matches visibleIds)
     inp.parentElement.classList.toggle('hidden', !set.has(id));
   }
   for (const [id, li] of legendItems) {
