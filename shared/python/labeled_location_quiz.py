@@ -2170,13 +2170,13 @@ document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMen
 document.getElementById('mMenuReset').addEventListener('click', () => { mCloseMenu(); resetBtn.click(); mGoto('list'); });
 mobileModeSel.addEventListener('change', () => { modeSelect.value = mobileModeSel.value; modeSelect.dispatchEvent(new Event('change')); mGoto('list'); });
 
-// Mobile = a phone in EITHER orientation: detect by the shorter screen side being
-// small AND a touch device. This stays mobile through portrait<->landscape, while
-// tablets and desktops (no coarse pointer / larger short side) remain desktop.
+// Mobile = phone in either orientation. Portrait uses the proven (max-width:760px)
+// query; landscape adds a short-and-touch query so a phone stays mobile when rotated.
+// Tablets (height > 480 in landscape) and desktops (no coarse pointer) stay desktop.
 function isMobileViewport() {
-  const w = window.innerWidth || 9999, h = window.innerHeight || 9999;
-  const coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
-  return w <= 760 || (Math.min(w, h) <= 480 && coarse);
+  if (!window.matchMedia) return false;
+  return window.matchMedia('(max-width:760px)').matches ||
+         window.matchMedia('(max-height:480px) and (orientation:landscape) and (pointer:coarse)').matches;
 }
 function applyMobileMode() {
   const on = isMobileViewport();
