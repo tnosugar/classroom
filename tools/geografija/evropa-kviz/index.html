@@ -244,9 +244,11 @@
  body.mobile.test-mode .stats-group{display:flex;flex-basis:100%;gap:6px;order:9}
  @media (orientation:landscape){ body.mobile.test-mode .stats-group{flex-basis:auto;order:0} }
  body.mobile .mode-selector,body.mobile #exportCsv,body.mobile #descBtn,body.mobile #reset,body.mobile #bordersBtn{display:none}
- body.mobile #mobileBack,body.mobile #mobileMenuBtn{display:inline-flex}
  #mobileBack,#mobileMenuBtn{display:none;align-items:center;justify-content:center;font-size:20px;line-height:1;padding:5px 10px;min-width:auto}
- body.mobile.m-list #mobileBack{visibility:hidden}
+ body.mobile #mobileMenuBtn{display:inline-flex}
+ /* Back-to-list is only an option BEFORE the term is placed (slot kept to avoid shift). */
+ body.mobile #mobileBack{display:inline-flex;visibility:hidden}
+ body.mobile.m-map.m-unplaced #mobileBack{visibility:visible}
  /* ⋯ menu */
  #mobileMenu{display:none;position:fixed;right:10px;top:var(--htop,52px);z-index:70;background:#fff;border:1px solid #e1d8c2;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:8px;min-width:190px}
  body.mobile #mobileMenu.open{display:block}
@@ -258,7 +260,7 @@
  body.mobile.m-map #mobileMapBar{display:flex}
  body.mobile.m-result #mobileResultBar{display:flex}
  .m-bottombar button{width:100%;padding:13px;font-size:15px;border-radius:10px}
- #mPotvrdi:disabled{opacity:.45;border-color:#bbb;color:#bbb;background:#fff;cursor:default}
+ #mPotvrdi:disabled,#mNext:disabled{opacity:.45;border-color:#bbb;color:#bbb;background:#fff;cursor:default}
  body.mobile #msg{bottom:80px}   /* sit above the bottom action bar, not over the button */
  /* hint bottom-sheet */
  #mobileHint{display:none;position:fixed;left:0;right:0;bottom:74px;z-index:58;background:#2b2b2b;color:#fff;
@@ -944,6 +946,7 @@ panelBody.addEventListener('click', e => {
   recountAnswers();
   recountBonus();
   updateLegendMarks(canonId);
+  mUpdateNextState();   // enable "Sledeći pojam" once all questions are answered (test, mobile)
   saveState();
   maybeAutoAnalyze();
 });
@@ -964,6 +967,8 @@ function setTestMode(on, opts) {
   recountBonus();
   recountAnswers();
   refreshAllLegendMarks();
+  if (typeof setHeaderTop === 'function') setHeaderTop();   // test mode adds a stats row → re-measure header
+  if (typeof mUpdateNextState === 'function') mUpdateNextState();
   saveState();
 }
 modeLearn.addEventListener('click', () => { if (isTestMode()) setTestMode(false, {}); });
@@ -2029,8 +2034,9 @@ function mGoto(screen) {
   document.body.classList.remove('m-list', 'm-map', 'm-result');
   document.body.classList.add('m-' + screen);
   mHideHint();
-  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; mTermLabel.textContent = ''; }
+  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; mTermLabel.textContent = ''; document.body.classList.remove('m-unplaced'); }
   else { fit(); }   // map just became visible — measure it and fit the whole map
+  if (screen === 'result') mUpdateNextState();
   mCloseMenu();
   window.scrollTo(0, 0);
 }
@@ -2055,6 +2061,20 @@ function mTapPlace(clientX, clientY) {
   mHideHint();
 }
 
+// In Test mode the student returns to the list only after every question on the
+// result screen is answered; in Learn mode "Sledeći pojam" is always available.
+function mAllAnswered(id) {
+  const p = getQP(id);
+  return p.solved.length > 0 && p.solved.every((s, i) => s || p.wrong[i]);
+}
+function mUpdateNextState() {
+  if (!MOBILE()) return;
+  if (!isTestMode()) { mNext.disabled = false; return; }
+  const q = panelBody.querySelector('.quiz');
+  const id = q ? parseInt(q.dataset.canon, 10) : null;
+  mNext.disabled = !(id != null && mAllAnswered(id));
+}
+
 function mConfirm() {
   if (mobileHeld == null || !mProvisional) return;
   const id = mobileHeld;
@@ -2067,6 +2087,7 @@ function mConfirm() {
     applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
   } finally {
     mProvisional = null;
+    document.body.classList.remove('m-unplaced');   // placed → back-to-list no longer offered
     if (inputsById.get(id).classList.contains('correct')) {
       // Correct (or revealed after 10 tries): stay on the map; the Potvrdi button
       // becomes "Dalje na opis/pitanja" — the user reviews the map, then continues.
@@ -2106,6 +2127,7 @@ legendList.addEventListener('click', e => {
   mobileHeld = id; mAttemptId = id; mProvisional = null; mAwaitNext = false;
   mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT;
   mGoto('map');
+  document.body.classList.add('m-unplaced');   // back-to-list allowed only until placed
   mSetTermLabel(id);
 });
 
@@ -2215,10 +2237,12 @@ if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
-window.addEventListener('resize', () => { setHeaderTop(); applyMobileMode(); fit(); });
-window.addEventListener('orientationchange', () => setTimeout(() => { setHeaderTop(); applyMobileMode(); fit(); }, 200));
-setHeaderTop();
+// Order matters: applyMobileMode() sets the header's mobile padding, THEN we
+// measure it for --htop, so the fixed content sits flush under the real header.
+window.addEventListener('resize', () => { applyMobileMode(); setHeaderTop(); fit(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { applyMobileMode(); setHeaderTop(); fit(); }, 200));
 applyMobileMode();
+setHeaderTop();
 fit();
 </script>
 </body>
