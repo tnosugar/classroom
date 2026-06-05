@@ -1420,6 +1420,7 @@ legendList.addEventListener('pointerdown', e => {
 
 // pointerdown on a placed-wrong cell starts re-drag
 document.getElementById('overlay').addEventListener('pointerdown', e => {
+  if (document.body.classList.contains('mobile')) return;   // mobile re-places via tap + Potvrdi
   if (!document.body.classList.contains('drag-mode')) return;
   const cell = e.target.closest('.cell.drag-placed');
   if (!cell) return;
