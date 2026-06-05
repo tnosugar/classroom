@@ -36,7 +36,7 @@ ui:
   legend_mountains: ▲ braon linije = planine
   legend_rivers: — plave linije = reke
   legend_circles: ▢ = lokacija pojma (upiši broj)
-  stat_correct: Na mapi
+  stat_correct: Mapa
   stat_answers: Pitanja
   stat_miss: Greške
   btn_reset: Počni ispočetka

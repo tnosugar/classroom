@@ -395,6 +395,11 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body.mobile header{padding:8px 12px}
  body.mobile .bar{gap:6px 8px;align-items:center}
  body.mobile #statCorrect,body.mobile #statMiss,body.mobile #statAnswers,body.mobile #bonusStat{font-size:11px;padding:3px 7px}
+ /* stats grouping: own row under the header in mobile portrait test; inline in landscape */
+ .stats-group{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}
+ body:not(.test-mode) .stats-group{display:none}
+ body.mobile.test-mode .stats-group{display:flex;flex-basis:100%;gap:6px;order:9}
+ @media (orientation:landscape){ body.mobile.test-mode .stats-group{flex-basis:auto;order:0} }
  body.mobile .mode-selector,body.mobile #exportCsv,body.mobile #descBtn,body.mobile #reset{display:none}
  body.mobile #mobileBack,body.mobile #mobileMenuBtn{display:inline-flex}
  #mobileBack,#mobileMenuBtn{display:none;align-items:center;justify-content:center;font-size:20px;line-height:1;padding:5px 10px;min-width:auto}
@@ -411,6 +416,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body.mobile.m-result #mobileResultBar{display:flex}
  .m-bottombar button{width:100%;padding:13px;font-size:15px;border-radius:10px}
  #mPotvrdi:disabled{opacity:.45;border-color:#bbb;color:#bbb;background:#fff;cursor:default}
+ body.mobile #msg{bottom:80px}   /* sit above the bottom action bar, not over the button */
  /* hint bottom-sheet */
  #mobileHint{display:none;position:fixed;left:0;right:0;bottom:74px;z-index:58;background:#2b2b2b;color:#fff;
    max-height:33vh;overflow:auto;padding:12px 36px 14px 14px;border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,.35);font-size:13px;line-height:1.5}
@@ -449,10 +455,13 @@ _HTML_TPL = r"""<!DOCTYPE html>
   <span class="mode-switch">__MODE_SWITCH_LABEL__:
    <button type="button" id="modeLearn" class="ms-btn active">__MODE_LEARN__</button><button type="button" id="modeTest" class="ms-btn">__MODE_TEST__</button>
   </span>
+  <button id="mobileMenuBtn" type="button" aria-label="Meni">&#8943;</button>
+  <span class="stats-group">
   <span class="stat" id="statCorrect">__LBL_CORRECT__: <b class="ok" id="cCorrect">0</b> / <b id="cTotal">__TOTAL__</b></span>
   <span class="stat" id="statAnswers" style="display:none">__LBL_ANSWERS__: <b class="ok" id="cAnswers">0</b> / <b id="cAnswersTotal">0</b></span>
   <span class="stat" id="statMiss">__LBL_MISS__: <b class="bad" id="cMiss">0</b></span>
   <span class="stat bonus-stat" id="bonusStat" style="display:none">__LBL_BONUS__: <b class="ok" id="cBonus">0</b> / <b id="cBonusTotal">0</b></span>
+  </span>
   <button id="reset">__BTN_RESET__</button>
   <button id="exportCsv" class="secondary" style="display:none">__BTN_CSV__</button>
   <label class="mode-selector">__MODE_LABEL__:
@@ -464,7 +473,6 @@ _HTML_TPL = r"""<!DOCTYPE html>
    </select>
   </label>
   <span class="stat win" id="win" style="display:none"></span>
-  <button id="mobileMenuBtn" type="button" aria-label="Meni">&#8943;</button>
  </div>
 </header>
 <div id="mobileMenu">
