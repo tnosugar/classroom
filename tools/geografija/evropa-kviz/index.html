@@ -1439,11 +1439,15 @@ let baseFit = 1, zoom = 1, panX = 0, panY = 0;
 function computeFit() {
   const top = wrap.getBoundingClientRect().top;
   const availW = wrap.clientWidth;
-  const availH = Math.max(240, window.innerHeight - top - 14);
+  // On mobile the map fills the whole screen (wrap is full-height), so fit to the
+  // actual wrap height — the entire map is visible at minimum zoom.
+  const availH = MOBILE() ? wrap.clientHeight : Math.max(240, window.innerHeight - top - 14);
   baseFit = Math.min(availW / MW, availH / MH);
 }
 function clampPan() {
-  const vw = wrap.clientWidth, vh = baseFit * MH;
+  // Viewport height = the real visible area: wrap height on mobile (full screen),
+  // fitted map height on desktop. This lets panning reach all edges when zoomed.
+  const vw = wrap.clientWidth, vh = MOBILE() ? wrap.clientHeight : baseFit * MH;
   const cw = MW * baseFit * zoom, ch = MH * baseFit * zoom;
   panX = cw <= vw ? (vw - cw) / 2 : Math.min(0, Math.max(vw - cw, panX));
   panY = ch <= vh ? (vh - ch) / 2 : Math.min(0, Math.max(vh - ch, panY));
@@ -1458,7 +1462,7 @@ function apply() {
     c.style.top  = (panY + (+c.dataset.sy) * sc) + 'px';
   }
 }
-function fit() { computeFit(); wrap.style.height = (baseFit * MH) + 'px'; apply(); }
+function fit() { computeFit(); if (!MOBILE()) wrap.style.height = (baseFit * MH) + 'px'; apply(); }
 function zoomAt(cx, cy, factor) {
   const nz = Math.min(ZMAX, Math.max(ZMIN, zoom * factor));
   if (nz === zoom) return;
@@ -1895,6 +1899,7 @@ function mGoto(screen) {
   document.body.classList.add('m-' + screen);
   mHideHint();
   if (screen !== 'map') { mProvisional = null; mPotvrdi.disabled = true; }
+  else { fit(); }   // map just became visible — measure it and fit the whole map
   mCloseMenu();
   window.scrollTo(0, 0);
 }
@@ -2029,10 +2034,10 @@ if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
-window.addEventListener('resize', () => { setHeaderTop(); fit(); applyMobileMode(); });
+window.addEventListener('resize', () => { setHeaderTop(); applyMobileMode(); fit(); });
 setHeaderTop();
-fit();
 applyMobileMode();
+fit();
 </script>
 </body>
 </html>
