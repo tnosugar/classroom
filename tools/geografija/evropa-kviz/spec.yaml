@@ -40,6 +40,9 @@ ui:
   stat_answers: Pitanja
   stat_miss: Greške
   btn_reset: Počni ispočetka
+  btn_borders_on: 'Granice: uključene'
+  btn_borders_off: 'Granice: isključene'
+  btn_borders_locked_title: Granice se menjaju samo na početku, pre prevlačenja prvog pojma.
   btn_export_csv: Preuzmi rezultate (CSV)
   mode_label: Pitanja
   mode_all: Sve ({n})

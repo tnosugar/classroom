@@ -96,6 +96,9 @@ def _ui_default():
         "stat_correct": "Correct",
         "stat_miss": "Mistakes",
         "btn_reset": "Reset",
+        "btn_borders_on": "Borders: on",
+        "btn_borders_off": "Borders: off",
+        "btn_borders_locked_title": "Borders can be changed only before the first term is placed.",
         "btn_export_csv": "Download results (CSV)",
         "mode_label": "Questions",
         "mode_all": "All ({n})",
@@ -326,6 +329,10 @@ _HTML_TPL = r"""<!DOCTYPE html>
  svg .feat-mtn, svg .feat-mtn-mark, svg .feat-riv { display: none }
  svg .feat-mtn.revealed, svg .feat-mtn-mark.revealed, svg .feat-riv.revealed { display: inline }
  svg .border-path { display: none }
+ /* Country borders: shown by default; toggled (only before the first term) via #bordersBtn. */
+ body.show-borders svg .border-path { display: inline }
+ #bordersBtn:disabled,#mMenuBorders:disabled{opacity:.5;cursor:default}
+ #bordersBtn.borders-off,#mMenuBorders.borders-off{color:#9b3b32;border-color:#c98a2c}
 
  /* Drag mode: pre-placed cells are hidden until dropped. Legend items
     become draggable; placed-but-wrong cells become re-draggable. */
@@ -470,6 +477,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
   <span class="stat bonus-stat" id="bonusStat" style="display:none">__LBL_BONUS__: <b class="ok" id="cBonus">0</b> / <b id="cBonusTotal">0</b></span>
   </span>
   <button id="reset">__BTN_RESET__</button>
+  <button id="bordersBtn" class="secondary" title="__BTN_BORDERS_LOCKED_TITLE__">__BTN_BORDERS_ON__</button>
   <button id="exportCsv" class="secondary" style="display:none">__BTN_CSV__</button>
   <label class="mode-selector">__MODE_LABEL__:
    <select id="mode">
@@ -485,6 +493,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <div id="mobileMenu">
  <button id="mMenuOpis" type="button">__BTN_DESC__</button>
  <button id="mMenuReset" type="button">__BTN_RESET__</button>
+ <button id="mMenuBorders" type="button">__BTN_BORDERS_ON__</button>
  <label>__MODE_LABEL__
   <select id="mobileMode">
    <option value="all">__MODE_ALL__</option>
@@ -563,7 +572,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <script>
 const ALL_TERMS = __TERMS_JSON__;
 const STATE_KEY = 'classroom:' + window.location.pathname;
-const STATE_VERSION = 4;
+const STATE_VERSION = 5;
 const RANDOMIZE_NUMBERS = __RANDOMIZE_NUMBERS__;
 // Projection constants for screen-pixel ↔ lon/lat conversion (drag mode only)
 const PROJ_LON0 = __PROJ_LON0__, PROJ_LAT1 = __PROJ_LAT1__;
@@ -1136,6 +1145,7 @@ function check(inp) {
   if (inp.classList.contains('correct')) return;
   const v = inp.value.trim();
   if (v === '') return;
+  markQuizStarted();
   if (parseInt(v, 10) === parseInt(inp.dataset.correct, 10)) {
     inp.classList.remove('wrong');
     inp.classList.add('correct');
@@ -1195,6 +1205,7 @@ function saveState() {
     mode: currentMode,
     testMode: isTestMode(),
     demoDone: demoDone,
+    borders: bordersOn,
     visible: visibleIds,
     mapping: currentMapping ? currentMapping.c2d : null,
     answers
@@ -1530,6 +1541,7 @@ function applyDrop(canonicalId, accepted, baseX, baseY) {
   const cell = inputsById.get(canonicalId).parentElement;
   const inp = cell.querySelector('.ans');
   if (inp.classList.contains('correct')) return;
+  markQuizStarted();   // first placed term locks the borders toggle
   cell.classList.add('drag-placed');
   cell.dataset.sx = String(baseX);
   cell.dataset.sy = String(baseY);
@@ -1617,6 +1629,7 @@ resetBtn.addEventListener('click', () => {
   // Full reset: setMode() with no restore opts picks a fresh subset (for N-mode)
   // AND clears the board (applyAnswers({}) → cells, drawings, answers all reset).
   mAttemptId = null; mobileHeld = null;
+  bordersLocked = false; updateBordersUI();   // back to start → borders editable again
   setMode(currentMode, {});
   apply();   // re-render cleared cell positions
   resumeBanner.classList.remove('show');
@@ -1810,11 +1823,28 @@ function demoBonus() {
   if (pv) pv.click();
 }
 
+// Demonstrate the borders toggle (flash off → on) without locking it.
+function demoFlashBorders() {
+  bordersOn = false; updateBordersUI();
+  setTimeout(() => { bordersOn = true; updateBordersUI(); }, 800);
+}
+// Demonstrate zoom: zoom in, then reset the view shortly after.
+function demoZoomDemo() {
+  centerZoom(1.7);
+  setTimeout(() => { zoom = 1; panX = 0; panY = 0; fit(); }, 900);
+}
+
 // --- demo step script ---
 const DEMO_STEPS = [
+  // --- podešavanja pre početka ---
+  { l: 'Granice', t: 'Pre početka možeš <b>uključiti/isključiti državne granice</b> ovim dugmetom. To je moguće samo na startu — čim postaviš prvi pojam, opcija se zaključava.', a: demoFlashBorders, at: 'borders' },
+  { l: 'Broj pitanja', t: 'Ovde biraš obim vežbe: <b>svih 42</b> pojma, ili <b>nasumično 20 / 10 / 5</b>.', a: null, at: 'modesel' },
+  { l: 'Zumiranje', t: 'Mapu zumiraš dugmadima <b>+ / −</b>, a <b>⟳</b> vraća prikaz. Mapa može i da se prevlači.', a: demoZoomDemo, at: 'zoom' },
+  { l: 'Ceo ekran', t: 'Dugme <b>⛶</b> otvara mapu preko celog ekrana; istim dugmetom se vraćaš nazad.', a: null, at: 'full' },
+  // --- mod Učenje ---
   { l: 'Učenje', t: 'Prevlačim pojam <b>Srbija</b> na pogrešno mesto — broj <b>0</b> pada tu (crveno). Greška se broji i otvara prvi <b>hint</b>.', a: () => demoDropWrongAt(MW * 0.20, MH * 0.28), at: 'map' },
-  { l: 'Hintovi', t: 'Spuštam <b>0</b> na drugo pogrešno mesto — otkriva se sledeći, konkretniji hint.', a: () => demoDropWrongAt(MW * 0.31, MH * 0.56), at: 'map' },
-  { l: 'Tačno', t: 'Sad <b>0</b> ide na tačno mesto. Tada se prikaže <b>pun opis</b> pojma u panelu.', a: demoDropCorrect, at: 'map' },
+  { l: 'Hintovi', t: 'Spuštam <b>0</b> na drugo pogrešno mesto — otkriva se sledeći, konkretniji hint. (Posle 10 pokušaja mesto se samo otkriva.)', a: () => demoDropWrongAt(MW * 0.31, MH * 0.56), at: 'map' },
+  { l: 'Tačno', t: 'Sad <b>0</b> ide na tačno mesto — iscrta se baš taj pojam, a u panelu se prikaže <b>pun opis</b>. Dugme <b>Opis</b> ga kasnije ponovo otvara.', a: demoDropCorrect, at: 'desc' },
   { l: 'Test mod', t: 'Prelazim u <b>Test</b> mod. Ovde nema hintova ni opisa — posle tačnog lociranja dobijaš pitanja.', a: demoEnterTest, at: 'mode' },
   { l: 'Test: greška 1', t: 'I u testu pogrešno lociranje broji grešku — <b>0</b> na prvo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.22, MH * 0.30), at: 'map' },
   { l: 'Test: greška 2', t: '...pa <b>0</b> na drugo pogrešno mesto.', a: () => demoDropWrongAt(MW * 0.33, MH * 0.58), at: 'map' },
@@ -1823,7 +1853,10 @@ const DEMO_STEPS = [
   { l: 'Pitanje 2', t: 'Drugo pitanje namerno pogrešim — pitanje se <b>zaključa</b>: pogrešan odgovor pocrveni, a tačni se označe zeleno. Ispravka nije moguća; broji se greška.', a: () => demoAnswerQuestion(1, false), at: 'panel' },
   { l: 'Pitanje 3', t: 'Treće pitanje odgovaram tačno. Sva tri su odgovorena — otključava se <b>bonus</b>.', a: () => demoAnswerQuestion(2, true), at: 'panel' },
   { l: 'Bonus', t: 'Za bonus treba pregledati <b>sve izvore</b> iz kojih je nastao opis. Odgovaram tačno.', a: demoBonus, at: 'panel' },
-  { l: 'Kraj', t: 'To je ceo tok kviza — učenje, pa test, pa bonus. Srbija sada nestaje sa spiska. Srećno!', a: null, at: 'mode' },
+  // --- alati posle kviza ---
+  { l: 'Analiza', t: 'Ispod mape je <b>Analiza znanja</b>: nastavnik unese svoj Claude API ključ i dobije kratak osvrt — gde je učenik dobar, a gde treba da vežba. Ključ ostaje samo u pregledaču, nikad u kodu.', a: null, at: 'analysis' },
+  { l: 'Rezultati', t: 'Po završetku se pojavi dugme <b>Preuzmi rezultate (CSV)</b>. A <b>Počni ispočetka</b> briše sve i kreće iz početka.', a: null, at: 'reset' },
+  { l: 'Kraj', t: 'To je ceo tok — podešavanja, učenje, test, bonus i analiza. Srbija sada nestaje sa spiska. Srećno!', a: null, at: 'mode' },
 ];
 
 function demoPositionBubble(at) {
@@ -1836,6 +1869,22 @@ function demoPositionBubble(at) {
     const visible = [...panelBody.querySelectorAll('.q-proveri')]
       .find(b => b.offsetParent !== null);
     if (visible) demoCursorToEl(visible);
+  } else if (at === 'borders') {
+    demoCursorToEl(bordersBtn);
+  } else if (at === 'modesel') {
+    const el = document.querySelector('.mode-selector');
+    if (el) demoCursorToEl(el);
+  } else if (at === 'zoom') {
+    demoCursorToEl(document.getElementById('zin'));
+  } else if (at === 'full') {
+    demoCursorToEl(document.getElementById('zfull'));
+  } else if (at === 'desc') {
+    demoCursorToEl(descBtn);
+  } else if (at === 'reset') {
+    demoCursorToEl(resetBtn);
+  } else if (at === 'analysis') {
+    const el = document.getElementById('analysis');
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => demoCursorToEl(el), 350); }
   }
 }
 
@@ -1902,6 +1951,7 @@ function endDemo() {
   demoDone = true;
   // reset board to a clean learn-mode quiz, then permanently hide Srbija
   if (isTestMode()) setTestMode(false, {}); else { applyAnswers({}); recountCorrectMiss(); apply(); }
+  bordersOn = true; bordersLocked = false; updateBordersUI();   // back to default after the demo
   closePanel();
   hideDemoTerm();
   saveState();
@@ -2277,9 +2327,35 @@ function setHeaderTop() {
 
 setSelectOptions();
 
+// --- borders toggle (default ON; changeable only before the first term) ---
+const BORDERS_ON_TXT = __BORDERS_ON_TXT__, BORDERS_OFF_TXT = __BORDERS_OFF_TXT__;
+const bordersBtn = document.getElementById('bordersBtn');
+const mMenuBorders = document.getElementById('mMenuBorders');
+let bordersOn = true;
+let bordersLocked = false;
+function updateBordersUI() {
+  document.body.classList.toggle('show-borders', bordersOn);
+  const lbl = bordersOn ? BORDERS_ON_TXT : BORDERS_OFF_TXT;
+  for (const b of [bordersBtn, mMenuBorders]) {
+    if (!b) continue;
+    b.textContent = lbl;
+    b.disabled = bordersLocked;
+    b.classList.toggle('borders-off', !bordersOn);
+  }
+}
+function toggleBorders() { if (bordersLocked) return; bordersOn = !bordersOn; updateBordersUI(); saveState(); }
+function lockBorders() { if (!bordersLocked) { bordersLocked = true; updateBordersUI(); } }
+function markQuizStarted() { if (!document.body.classList.contains('demo-running')) lockBorders(); }
+bordersBtn.addEventListener('click', toggleBorders);
+mMenuBorders.addEventListener('click', () => { toggleBorders(); mCloseMenu(); });
+
 // Restore state if present
 const saved = loadState();
 if (saved) {
+  bordersOn = saved.borders !== false;
+  const demoKey = DEMO_TERM ? String(DEMO_TERM.id) : null;
+  bordersLocked = Object.entries(saved.answers || {})
+    .some(([k, a]) => k !== demoKey && a && (a.c || (a.m && a.m > 0) || a.dp));
   modeSelect.value = saved.mode || 'all';
   let restoreMapping = null;
   if (saved.mapping) {
@@ -2296,6 +2372,7 @@ if (saved) {
 } else {
   setMode('all', {});
 }
+updateBordersUI();
 recountBonus();
 recountAnswers();
 refreshAllLegendMarks();
@@ -2610,6 +2687,9 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__LBL_ANSWERS__": ui["stat_answers"],
         "__LBL_MISS__": ui["stat_miss"],
         "__BTN_RESET__": ui["btn_reset"],
+        "__BTN_BORDERS_ON__": ui["btn_borders_on"],
+        "__BTN_BORDERS_OFF__": ui["btn_borders_off"],
+        "__BTN_BORDERS_LOCKED_TITLE__": ui["btn_borders_locked_title"],
         "__BTN_CSV__": ui["btn_export_csv"],
         "__MODE_LABEL__": ui["mode_label"],
         "__MODE_ALL__": ui["mode_all"].replace("{n}", str(n_quiz)),
@@ -2634,6 +2714,8 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__PROJ_LAT1__": f"{extent_lat[1]}",
         "__PROJ_SX__": f"{(map_width_px / (extent_lon[1] - extent_lon[0])):.6f}",
         "__PROJ_SY__": f"{(map_width_px / (extent_lon[1] - extent_lon[0])) * (1.0 / math.cos(math.radians(mid_lat))):.6f}",
+        "__BORDERS_ON_TXT__": _json.dumps(ui["btn_borders_on"]),
+        "__BORDERS_OFF_TXT__": _json.dumps(ui["btn_borders_off"]),
         "__MSG_CORRECT__": _json.dumps(ui["msg_correct"]),
         "__MSG_WRONG__": _json.dumps(ui["msg_wrong"]),
         "__MSG_REVEALED__": _json.dumps(ui["msg_revealed"]),
