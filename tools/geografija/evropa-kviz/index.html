@@ -220,6 +220,13 @@
  body.mobile:not(.m-map) .mapcol{display:none}
  body.mobile:not(.m-result) .panelcol{display:none}
  body.mobile #stageWrap{height:100%!important}
+ /* active-term label: top-left of the map, both orientations; visible while on the map screen */
+ #mTermLabel{display:none}
+ body.mobile.m-map #mTermLabel{display:block;position:absolute;left:12px;top:12px;z-index:30;
+   background:rgba(255,255,255,.92);border:1px solid #6b6456;border-radius:9px;
+   padding:6px 11px;font-weight:700;font-size:14px;color:#3a3528;max-width:62%;
+   box-shadow:0 1px 3px rgba(0,0,0,.22)}
+ body.mobile.m-map #mTermLabel:empty{display:none}
  body.mobile .resume-banner,body.mobile #analysis{display:none!important}      /* phase 2 */
  body.mobile li.demo-item{display:none!important}                              /* phase 2 */
  body.mobile .panelhead .panel-x{display:none}                                 /* nav handles closing */
@@ -338,6 +345,7 @@
  </aside>
  <main class="mapcol">
   <div id="stageWrap">
+   <div id="mTermLabel"></div>
    <div class="zoombar">
     <button id="zin" title="+">+</button>
     <button id="zout" title="−">−</button>
@@ -1905,6 +1913,8 @@ descModal.addEventListener('click', e => { if (e.target === descModal) hideDescM
 // --- mobile mode (screen-at-a-time flow: list -> map -> result) ---
 function MOBILE() { return document.body.classList.contains('mobile'); }
 const mobileBack = document.getElementById('mobileBack');
+const mTermLabel = document.getElementById('mTermLabel');
+function mSetTermLabel(id) { const t = ALL_TERMS.find(x => x.id === id); mTermLabel.textContent = t ? t.name : ''; }
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const mPotvrdi = document.getElementById('mPotvrdi');
@@ -1935,7 +1945,7 @@ function mGoto(screen) {
   document.body.classList.remove('m-list', 'm-map', 'm-result');
   document.body.classList.add('m-' + screen);
   mHideHint();
-  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; }
+  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; mTermLabel.textContent = ''; }
   else { fit(); }   // map just became visible — measure it and fit the whole map
   mCloseMenu();
   window.scrollTo(0, 0);
@@ -2007,6 +2017,7 @@ legendList.addEventListener('click', e => {
   mobileHeld = id; mProvisional = null; mAwaitNext = false;
   mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT;
   mGoto('map');
+  mSetTermLabel(id);
 });
 
 // map tap (no pan) → set provisional pin
