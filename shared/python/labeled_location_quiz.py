@@ -414,7 +414,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  body:not(.test-mode) .stats-group{display:none}
  body.mobile.test-mode .stats-group{display:flex;flex-basis:100%;gap:6px;order:9}
  @media (orientation:landscape){ body.mobile.test-mode .stats-group{flex-basis:auto;order:0} }
- body.mobile .mode-selector,body.mobile #exportCsv,body.mobile #descBtn,body.mobile #reset{display:none}
+ body.mobile .mode-selector,body.mobile #exportCsv,body.mobile #descBtn,body.mobile #reset,body.mobile #bordersBtn{display:none}
  body.mobile #mobileBack,body.mobile #mobileMenuBtn{display:inline-flex}
  #mobileBack,#mobileMenuBtn{display:none;align-items:center;justify-content:center;font-size:20px;line-height:1;padding:5px 10px;min-width:auto}
  body.mobile.m-list #mobileBack{visibility:hidden}
@@ -2231,17 +2231,22 @@ function mConfirm() {
   const term = ALL_TERMS.find(t => t.id === id);
   inputsById.get(id).parentElement.classList.remove('m-provisional');
   const accepted = isDropAcceptable(term, mProvisional.lon, mProvisional.lat);
-  applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
-  mProvisional = null;
-  if (inputsById.get(id).classList.contains('correct')) {
-    // Correct (or revealed after 10 tries): stay on the map; the Potvrdi button
-    // becomes "Dalje na opis/pitanja" — the user reviews the map, then continues.
-    mobileHeld = null;
-    mAwaitNext = true;
-    mPotvrdi.disabled = false;
-    mPotvrdi.textContent = isTestMode() ? M_NEXT_Q : M_NEXT_DESC;
-  } else {
-    mPotvrdi.disabled = true;   // wrong → re-tap the map to try again
+  // The button update runs in `finally` so a hiccup inside applyDrop can never
+  // leave the button stuck on "Potvrdi" after a correct placement.
+  try {
+    applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
+  } finally {
+    mProvisional = null;
+    if (inputsById.get(id).classList.contains('correct')) {
+      // Correct (or revealed after 10 tries): stay on the map; the Potvrdi button
+      // becomes "Dalje na opis/pitanja" — the user reviews the map, then continues.
+      mobileHeld = null;
+      mAwaitNext = true;
+      mPotvrdi.disabled = false;
+      mPotvrdi.textContent = isTestMode() ? M_NEXT_Q : M_NEXT_DESC;
+    } else {
+      mPotvrdi.disabled = true;   // wrong → re-tap the map to try again
+    }
   }
 }
 
