@@ -2170,9 +2170,16 @@ document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMen
 document.getElementById('mMenuReset').addEventListener('click', () => { mCloseMenu(); resetBtn.click(); mGoto('list'); });
 mobileModeSel.addEventListener('change', () => { modeSelect.value = mobileModeSel.value; modeSelect.dispatchEvent(new Event('change')); mGoto('list'); });
 
-const mq = window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
+// Mobile = a phone in EITHER orientation: detect by the shorter screen side being
+// small AND a touch device. This stays mobile through portrait<->landscape, while
+// tablets and desktops (no coarse pointer / larger short side) remain desktop.
+function isMobileViewport() {
+  const w = window.innerWidth || 9999, h = window.innerHeight || 9999;
+  const coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+  return w <= 760 || (Math.min(w, h) <= 480 && coarse);
+}
 function applyMobileMode() {
-  const on = mq ? mq.matches : false;
+  const on = isMobileViewport();
   document.body.classList.toggle('mobile', on);
   if (on) {
     if (!document.body.classList.contains('m-map') && !document.body.classList.contains('m-result'))
@@ -2181,7 +2188,6 @@ function applyMobileMode() {
     document.body.classList.remove('m-list', 'm-map', 'm-result', 'm-hint-on');
   }
 }
-if (mq) { if (mq.addEventListener) mq.addEventListener('change', applyMobileMode); else if (mq.addListener) mq.addListener(applyMobileMode); }
 
 // --- init ---
 function setHeaderTop() {
@@ -2218,6 +2224,7 @@ closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
 window.addEventListener('resize', () => { setHeaderTop(); applyMobileMode(); fit(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { setHeaderTop(); applyMobileMode(); fit(); }, 200));
 setHeaderTop();
 applyMobileMode();
 fit();
