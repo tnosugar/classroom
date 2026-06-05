@@ -149,6 +149,8 @@ def _ui_default():
         "analysis_no_key": "Za analizu je potreban Claude API ključ. Klikni 'API ključ', unesi ga (čuva se lokalno), pa ponovo 'Analiziraj'.",
         "analysis_error": "Greška pri analizi:",
         "analysis_empty": "Nema dovoljno podataka — prvo uradi bar nešto u testu.",
+        "m_confirm": "Potvrdi",
+        "m_next": "Sledeći pojam ›",
     }
 
 
@@ -368,6 +370,55 @@ _HTML_TPL = r"""<!DOCTYPE html>
    h1{font-size:17px}
    .ans{width:32px;height:32px;font-size:14px}
  }
+ /* ===== MOBILE (class set by JS via matchMedia) — screen-at-a-time flow ===== */
+ .m-only{display:none}
+ body.mobile .m-only{display:flex}
+ body.mobile .layout{display:block}
+ body.mobile .qcol,body.mobile .mapcol,body.mobile .panelcol{
+   position:fixed;left:0;right:0;top:var(--htop,52px);bottom:0;width:auto;max-height:none;
+   border:none;overflow:auto;background:#faf8f2;z-index:30}
+ body.mobile .qcol{padding:10px 14px}
+ body.mobile .qcol ol.terms{columns:1;font-size:15px;line-height:1.7}
+ body.mobile ol.terms li{padding:9px 8px;border-bottom:1px solid #eee}
+ body.mobile .mapcol{padding:0}
+ body.mobile .panelcol{padding:14px 16px 84px;border-top:none}
+ body.mobile:not(.m-list) .qcol{display:none}
+ body.mobile:not(.m-map) .mapcol{display:none}
+ body.mobile:not(.m-result) .panelcol{display:none}
+ body.mobile #stageWrap{height:100%!important}
+ body.mobile .resume-banner,body.mobile #analysis{display:none!important}      /* phase 2 */
+ body.mobile li.demo-item{display:none!important}                              /* phase 2 */
+ body.mobile .panelhead .panel-x{display:none}                                 /* nav handles closing */
+ /* compact top bar */
+ body.mobile header{padding:8px 12px}
+ body.mobile .bar{gap:6px 8px;align-items:center}
+ body.mobile #statCorrect,body.mobile #statMiss,body.mobile #statAnswers,body.mobile #bonusStat{font-size:11px;padding:3px 7px}
+ body.mobile .mode-selector,body.mobile #exportCsv,body.mobile #descBtn,body.mobile #reset{display:none}
+ body.mobile #mobileBack,body.mobile #mobileMenuBtn{display:inline-flex}
+ #mobileBack,#mobileMenuBtn{display:none;align-items:center;justify-content:center;font-size:20px;line-height:1;padding:5px 10px;min-width:auto}
+ body.mobile.m-list #mobileBack{visibility:hidden}
+ /* ⋯ menu */
+ #mobileMenu{display:none;position:fixed;right:10px;top:var(--htop,52px);z-index:70;background:#fff;border:1px solid #e1d8c2;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:8px;min-width:190px}
+ body.mobile #mobileMenu.open{display:block}
+ #mobileMenu button,#mobileMenu label{display:block;width:100%;text-align:left;margin:4px 0;border:none;background:transparent;color:#3a3528;font:inherit;padding:8px;border-radius:6px;cursor:pointer}
+ #mobileMenu button:hover{background:#f3ecd8;color:#3a3528}
+ #mobileMenu select{font:inherit;width:100%;padding:6px;border:1px solid #6b6456;border-radius:6px;margin-top:4px}
+ /* bottom action bars */
+ .m-bottombar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid #e1d8c2;padding:10px 14px;gap:10px}
+ body.mobile.m-map #mobileMapBar{display:flex}
+ body.mobile.m-result #mobileResultBar{display:flex}
+ .m-bottombar button{width:100%;padding:13px;font-size:15px;border-radius:10px}
+ #mPotvrdi:disabled{opacity:.45;border-color:#bbb;color:#bbb;background:#fff;cursor:default}
+ /* hint bottom-sheet */
+ #mobileHint{display:none;position:fixed;left:0;right:0;bottom:74px;z-index:58;background:#2b2b2b;color:#fff;
+   max-height:33vh;overflow:auto;padding:12px 14px 14px;border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,.35);font-size:13px;line-height:1.5}
+ body.mobile.m-map.m-hint-on #mobileHint{display:block}
+ #mobileHint h4{margin:0 0 6px;font-size:12px;color:#ffd27a;text-transform:uppercase;letter-spacing:.05em}
+ #mobileHint ol{margin:0;padding-left:18px} #mobileHint li{margin:5px 0}
+ /* provisional pin (mobile place) */
+ body.mobile .cell.m-provisional{display:block!important}
+ body.mobile .cell.m-provisional .ans{box-shadow:0 0 0 3px rgba(177,39,31,.25)}
+ body.mobile .map-hint{position:absolute;left:50%;bottom:84px;transform:translateX(-50%);z-index:40;background:rgba(255,255,255,.92);border:1px solid #e1d8c2;border-radius:8px;padding:6px 12px;font-size:12px;color:#6b6456;pointer-events:none}
  @media print {
    header .bar, .zoombar, .zhint, #msg, .resume-banner, button, .panelcol, .analysis { display: none !important; }
    header { position: static; border-bottom: 1px solid #ccc }
@@ -384,6 +435,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
 <body>
 <header>
  <div class="bar">
+  <button id="mobileBack" type="button" aria-label="Nazad">&lsaquo;</button>
   <button id="descBtn" class="desc-btn">__BTN_DESC__</button>
   <span class="mode-switch">__MODE_SWITCH_LABEL__:
    <button type="button" id="modeLearn" class="ms-btn active">__MODE_LEARN__</button><button type="button" id="modeTest" class="ms-btn">__MODE_TEST__</button>
@@ -403,8 +455,24 @@ _HTML_TPL = r"""<!DOCTYPE html>
    </select>
   </label>
   <span class="stat win" id="win" style="display:none"></span>
+  <button id="mobileMenuBtn" type="button" aria-label="Meni">&#8943;</button>
  </div>
 </header>
+<div id="mobileMenu">
+ <button id="mMenuOpis" type="button">__BTN_DESC__</button>
+ <button id="mMenuReset" type="button">__BTN_RESET__</button>
+ <label>__MODE_LABEL__
+  <select id="mobileMode">
+   <option value="all">__MODE_ALL__</option>
+   <option value="20">__MODE_20__</option>
+   <option value="10">__MODE_10__</option>
+   <option value="5">__MODE_5__</option>
+  </select>
+ </label>
+</div>
+<div id="mobileMapBar" class="m-bottombar"><button id="mPotvrdi" type="button" class="secondary" disabled>__M_CONFIRM__</button></div>
+<div id="mobileResultBar" class="m-bottombar"><button id="mNext" type="button" class="secondary">__M_NEXT__</button></div>
+<div id="mobileHint"></div>
 <div id="descModal" class="desc-modal" hidden>
  <div class="desc-modal-box">
   <button class="desc-modal-x" id="descClose" aria-label="__PANEL_CLOSE__">&times;</button>
@@ -705,6 +773,7 @@ function showPanelFor(canonId) {
 // (terms without hints stay quiet — only shake + miss badge).
 function maybeHintPanel(canonId) {
   if (isTestMode()) return;  // no hints in test mode (wrong location still counts)
+  if (MOBILE()) { mShowHint(canonId); return; }   // mobile: bottom-sheet hint
   const t = ALL_TERMS.find(t => t.id === canonId);
   if (t && t.desc && t.desc.hints && t.desc.hints.length) showPanelFor(canonId);
 }
@@ -1469,6 +1538,7 @@ function applyDrop(canonicalId, accepted, baseX, baseY) {
 
 // pointerdown on a legend item starts drag
 legendList.addEventListener('pointerdown', e => {
+  if (document.body.classList.contains('mobile')) return;   // mobile uses tap (click) handler
   if (!document.body.classList.contains('drag-mode')) return;
   const li = e.target.closest('li');
   if (!li || li.classList.contains('placed')) return;
@@ -1919,6 +1989,7 @@ async function runAnalysis() {
 }
 
 function maybeAutoAnalyze() {
+  if (MOBILE()) return;   // mobile analysis is phase 2
   if (!isTestMode() || analysisDone || analysisRunning) return;
   const f = buildAnalysisData().faza;
   const complete = f.lokUkupno > 0 && f.lokPostavljeno === f.lokUkupno &&
@@ -1960,6 +2031,136 @@ document.getElementById('descClose').addEventListener('click', hideDescModal);
 document.getElementById('descOk').addEventListener('click', hideDescModal);
 descModal.addEventListener('click', e => { if (e.target === descModal) hideDescModal(); });
 
+// --- mobile mode (screen-at-a-time flow: list -> map -> result) ---
+function MOBILE() { return document.body.classList.contains('mobile'); }
+const mobileBack = document.getElementById('mobileBack');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mPotvrdi = document.getElementById('mPotvrdi');
+const mNext = document.getElementById('mNext');
+const mobileHintEl = document.getElementById('mobileHint');
+const mobileModeSel = document.getElementById('mobileMode');
+let mobileHeld = null;     // canonical id of the term "in hand"
+let mProvisional = null;   // { baseX, baseY, lon, lat }
+
+function mShowHint(canonId) {
+  const t = ALL_TERMS.find(x => x.id === canonId);
+  const hints = (t && t.desc && t.desc.hints) ? t.desc.hints : [];
+  const inp = inputsById.get(canonId);
+  const miss = inp ? (parseInt(inp.dataset.locmiss, 10) || 0) : 0;
+  const shown = hints.slice(0, Math.min(miss, hints.length));
+  if (!shown.length) { mHideHint(); return; }
+  mobileHintEl.innerHTML = '<h4>' + PANEL_HINT_HEADING + '</h4><ol>' +
+    shown.map(h => '<li>' + h + '</li>').join('') + '</ol>';
+  document.body.classList.add('m-hint-on');
+}
+function mHideHint() { document.body.classList.remove('m-hint-on'); }
+
+function mGoto(screen) {
+  document.body.classList.remove('m-list', 'm-map', 'm-result');
+  document.body.classList.add('m-' + screen);
+  mHideHint();
+  if (screen !== 'map') { mProvisional = null; mPotvrdi.disabled = true; }
+  mCloseMenu();
+  window.scrollTo(0, 0);
+}
+
+function mTapPlace(clientX, clientY) {
+  if (mobileHeld == null) return;
+  const r = wrap.getBoundingClientRect();
+  if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) return;
+  const sc = baseFit * zoom;
+  const baseX = (clientX - r.left - panX) / sc, baseY = (clientY - r.top - panY) / sc;
+  const [lon, lat] = screenToLonLat(clientX, clientY);
+  mProvisional = { baseX, baseY, lon, lat };
+  const cell = inputsById.get(mobileHeld).parentElement;
+  const inp = cell.querySelector('.ans');
+  inp.classList.remove('wrong-placed');
+  cell.classList.remove('drag-placed');
+  cell.classList.add('m-provisional');
+  cell.dataset.sx = String(baseX); cell.dataset.sy = String(baseY);
+  inp.value = inp.dataset.correct;
+  apply();
+  mPotvrdi.disabled = false;
+  mHideHint();
+}
+
+function mConfirm() {
+  if (mobileHeld == null || !mProvisional) return;
+  const id = mobileHeld;
+  const term = ALL_TERMS.find(t => t.id === id);
+  inputsById.get(id).parentElement.classList.remove('m-provisional');
+  const accepted = isDropAcceptable(term, mProvisional.lon, mProvisional.lat);
+  applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
+  mProvisional = null; mPotvrdi.disabled = true;
+  if (inputsById.get(id).classList.contains('correct')) {
+    mobileHeld = null;
+    mGoto('result');   // panel already populated by showPanelFor in applyDrop
+  }
+  // wrong → applyDrop already showed the hint sheet (via maybeHintPanel); stay on map
+}
+
+function mBack() {
+  if (document.body.classList.contains('m-map') && mobileHeld != null) {
+    const inp = inputsById.get(mobileHeld), cell = inp.parentElement;
+    if (!inp.classList.contains('correct')) {          // discard an unplaced/wrong attempt
+      cell.classList.remove('m-provisional', 'drag-placed');
+      inp.classList.remove('wrong-placed');
+      apply(); recountCorrectMiss();
+    }
+  }
+  mobileHeld = null;
+  mGoto('list');
+}
+
+function mCloseMenu() { mobileMenu.classList.remove('open'); }
+
+// list tap → take the term (or open a placed term's result)
+legendList.addEventListener('click', e => {
+  if (!MOBILE()) return;
+  const li = e.target.closest('li');
+  if (!li || li.dataset.demo || li.classList.contains('hidden')) return;
+  const id = parseInt(li.dataset.id, 10);
+  const inp = inputsById.get(id);
+  if (inp && inp.classList.contains('correct')) { mobileHeld = null; showPanelFor(id); mGoto('result'); return; }
+  mobileHeld = id; mProvisional = null; mPotvrdi.disabled = true;
+  mGoto('map');
+});
+
+// map tap (no pan) → set provisional pin
+let mTapStart = null;
+wrap.addEventListener('pointerdown', e => {
+  if (MOBILE() && mobileHeld != null && !e.target.closest('.zoombar')) mTapStart = { x: e.clientX, y: e.clientY };
+});
+wrap.addEventListener('pointerup', e => {
+  if (mTapStart) {
+    if (Math.hypot(e.clientX - mTapStart.x, e.clientY - mTapStart.y) < 8) mTapPlace(e.clientX, e.clientY);
+    mTapStart = null;
+  }
+});
+
+mPotvrdi.addEventListener('click', mConfirm);
+mNext.addEventListener('click', () => mGoto('list'));
+mobileBack.addEventListener('click', mBack);
+mobileMenuBtn.addEventListener('click', e => { e.stopPropagation(); mobileMenu.classList.toggle('open'); });
+document.addEventListener('click', e => { if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) mCloseMenu(); });
+document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMenu(); showDescModal(); });
+document.getElementById('mMenuReset').addEventListener('click', () => { mCloseMenu(); resetBtn.click(); mGoto('list'); });
+mobileModeSel.addEventListener('change', () => { modeSelect.value = mobileModeSel.value; modeSelect.dispatchEvent(new Event('change')); mGoto('list'); });
+
+const mq = window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
+function applyMobileMode() {
+  const on = mq ? mq.matches : false;
+  document.body.classList.toggle('mobile', on);
+  if (on) {
+    if (!document.body.classList.contains('m-map') && !document.body.classList.contains('m-result'))
+      document.body.classList.add('m-list');
+  } else {
+    document.body.classList.remove('m-list', 'm-map', 'm-result', 'm-hint-on');
+  }
+}
+if (mq) { if (mq.addEventListener) mq.addEventListener('change', applyMobileMode); else if (mq.addListener) mq.addListener(applyMobileMode); }
+
 // --- init ---
 function setHeaderTop() {
   const h = document.querySelector('header').offsetHeight;
@@ -1994,9 +2195,10 @@ if (demoDone) hideDemoTerm();
 closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
-window.addEventListener('resize', () => { setHeaderTop(); fit(); });
+window.addEventListener('resize', () => { setHeaderTop(); fit(); applyMobileMode(); });
 setHeaderTop();
 fit();
+applyMobileMode();
 </script>
 </body>
 </html>"""
@@ -2363,6 +2565,8 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__ANALYSIS_NO_KEY__": _json.dumps(ui["analysis_no_key"]),
         "__ANALYSIS_ERROR__": _json.dumps(ui["analysis_error"]),
         "__ANALYSIS_EMPTY__": _json.dumps(ui["analysis_empty"]),
+        "__M_CONFIRM__": _html.escape(ui["m_confirm"]),
+        "__M_NEXT__": _html.escape(ui["m_next"]),
     }
     html = _HTML_TPL
     for k, v in repl.items():
