@@ -151,6 +151,8 @@ def _ui_default():
         "analysis_empty": "Nema dovoljno podataka — prvo uradi bar nešto u testu.",
         "m_confirm": "Potvrdi",
         "m_next": "Sledeći pojam ›",
+        "m_next_desc": "Dalje na opis ›",
+        "m_next_q": "Dalje na pitanja ›",
     }
 
 
@@ -2071,6 +2073,8 @@ const mobileHintEl = document.getElementById('mobileHint');
 const mobileModeSel = document.getElementById('mobileMode');
 let mobileHeld = null;     // canonical id of the term "in hand"
 let mProvisional = null;   // { baseX, baseY, lon, lat }
+const M_CONFIRM_TXT = __M_CONFIRM_TXT__, M_NEXT_DESC = __M_NEXT_DESC__, M_NEXT_Q = __M_NEXT_Q__;
+let mAwaitNext = false;    // placed correctly → button becomes "Dalje" (don't jump to result yet)
 
 function mShowHint(canonId) {
   const t = ALL_TERMS.find(x => x.id === canonId);
@@ -2091,7 +2095,7 @@ function mGoto(screen) {
   document.body.classList.remove('m-list', 'm-map', 'm-result');
   document.body.classList.add('m-' + screen);
   mHideHint();
-  if (screen !== 'map') { mProvisional = null; mPotvrdi.disabled = true; }
+  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; }
   else { fit(); }   // map just became visible — measure it and fit the whole map
   mCloseMenu();
   window.scrollTo(0, 0);
@@ -2124,12 +2128,17 @@ function mConfirm() {
   inputsById.get(id).parentElement.classList.remove('m-provisional');
   const accepted = isDropAcceptable(term, mProvisional.lon, mProvisional.lat);
   applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
-  mProvisional = null; mPotvrdi.disabled = true;
+  mProvisional = null;
   if (inputsById.get(id).classList.contains('correct')) {
+    // Correct (or revealed after 10 tries): stay on the map; the Potvrdi button
+    // becomes "Dalje na opis/pitanja" — the user reviews the map, then continues.
     mobileHeld = null;
-    mGoto('result');   // panel already populated by showPanelFor in applyDrop
+    mAwaitNext = true;
+    mPotvrdi.disabled = false;
+    mPotvrdi.textContent = isTestMode() ? M_NEXT_Q : M_NEXT_DESC;
+  } else {
+    mPotvrdi.disabled = true;   // wrong → re-tap the map to try again
   }
-  // wrong → applyDrop already showed the hint sheet (via maybeHintPanel); stay on map
 }
 
 function mBack() {
@@ -2155,7 +2164,8 @@ legendList.addEventListener('click', e => {
   const id = parseInt(li.dataset.id, 10);
   const inp = inputsById.get(id);
   if (inp && inp.classList.contains('correct')) { mobileHeld = null; showPanelFor(id); mGoto('result'); return; }
-  mobileHeld = id; mProvisional = null; mPotvrdi.disabled = true;
+  mobileHeld = id; mProvisional = null; mAwaitNext = false;
+  mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT;
   mGoto('map');
 });
 
@@ -2171,7 +2181,10 @@ wrap.addEventListener('pointerup', e => {
   }
 });
 
-mPotvrdi.addEventListener('click', mConfirm);
+mPotvrdi.addEventListener('click', () => {
+  if (mAwaitNext) { mAwaitNext = false; mPotvrdi.textContent = M_CONFIRM_TXT; mPotvrdi.disabled = true; mGoto('result'); }
+  else mConfirm();
+});
 mNext.addEventListener('click', () => mGoto('list'));
 mobileBack.addEventListener('click', mBack);
 mobileHintEl.addEventListener('click', e => { if (e.target.closest('.m-hint-min')) document.body.classList.add('m-hint-min'); });
@@ -2608,6 +2621,9 @@ def render_html(spec, output_path, map_width_px=1160.0):
         "__ANALYSIS_EMPTY__": _json.dumps(ui["analysis_empty"]),
         "__M_CONFIRM__": _html.escape(ui["m_confirm"]),
         "__M_NEXT__": _html.escape(ui["m_next"]),
+        "__M_CONFIRM_TXT__": _json.dumps(ui["m_confirm"]),
+        "__M_NEXT_DESC__": _json.dumps(ui["m_next_desc"]),
+        "__M_NEXT_Q__": _json.dumps(ui["m_next_q"]),
     }
     html = _HTML_TPL
     for k, v in repl.items():

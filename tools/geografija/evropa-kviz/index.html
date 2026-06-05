@@ -1905,6 +1905,8 @@ const mobileHintEl = document.getElementById('mobileHint');
 const mobileModeSel = document.getElementById('mobileMode');
 let mobileHeld = null;     // canonical id of the term "in hand"
 let mProvisional = null;   // { baseX, baseY, lon, lat }
+const M_CONFIRM_TXT = "Potvrdi", M_NEXT_DESC = "Dalje na opis \u203a", M_NEXT_Q = "Dalje na pitanja \u203a";
+let mAwaitNext = false;    // placed correctly → button becomes "Dalje" (don't jump to result yet)
 
 function mShowHint(canonId) {
   const t = ALL_TERMS.find(x => x.id === canonId);
@@ -1925,7 +1927,7 @@ function mGoto(screen) {
   document.body.classList.remove('m-list', 'm-map', 'm-result');
   document.body.classList.add('m-' + screen);
   mHideHint();
-  if (screen !== 'map') { mProvisional = null; mPotvrdi.disabled = true; }
+  if (screen !== 'map') { mProvisional = null; mAwaitNext = false; mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT; }
   else { fit(); }   // map just became visible — measure it and fit the whole map
   mCloseMenu();
   window.scrollTo(0, 0);
@@ -1958,12 +1960,17 @@ function mConfirm() {
   inputsById.get(id).parentElement.classList.remove('m-provisional');
   const accepted = isDropAcceptable(term, mProvisional.lon, mProvisional.lat);
   applyDrop(id, accepted, mProvisional.baseX, mProvisional.baseY);
-  mProvisional = null; mPotvrdi.disabled = true;
+  mProvisional = null;
   if (inputsById.get(id).classList.contains('correct')) {
+    // Correct (or revealed after 10 tries): stay on the map; the Potvrdi button
+    // becomes "Dalje na opis/pitanja" — the user reviews the map, then continues.
     mobileHeld = null;
-    mGoto('result');   // panel already populated by showPanelFor in applyDrop
+    mAwaitNext = true;
+    mPotvrdi.disabled = false;
+    mPotvrdi.textContent = isTestMode() ? M_NEXT_Q : M_NEXT_DESC;
+  } else {
+    mPotvrdi.disabled = true;   // wrong → re-tap the map to try again
   }
-  // wrong → applyDrop already showed the hint sheet (via maybeHintPanel); stay on map
 }
 
 function mBack() {
@@ -1989,7 +1996,8 @@ legendList.addEventListener('click', e => {
   const id = parseInt(li.dataset.id, 10);
   const inp = inputsById.get(id);
   if (inp && inp.classList.contains('correct')) { mobileHeld = null; showPanelFor(id); mGoto('result'); return; }
-  mobileHeld = id; mProvisional = null; mPotvrdi.disabled = true;
+  mobileHeld = id; mProvisional = null; mAwaitNext = false;
+  mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT;
   mGoto('map');
 });
 
@@ -2005,7 +2013,10 @@ wrap.addEventListener('pointerup', e => {
   }
 });
 
-mPotvrdi.addEventListener('click', mConfirm);
+mPotvrdi.addEventListener('click', () => {
+  if (mAwaitNext) { mAwaitNext = false; mPotvrdi.textContent = M_CONFIRM_TXT; mPotvrdi.disabled = true; mGoto('result'); }
+  else mConfirm();
+});
 mNext.addEventListener('click', () => mGoto('list'));
 mobileBack.addEventListener('click', mBack);
 mobileHintEl.addEventListener('click', e => { if (e.target.closest('.m-hint-min')) document.body.classList.add('m-hint-min'); });
