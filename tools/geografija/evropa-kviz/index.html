@@ -245,10 +245,17 @@
  #mPotvrdi:disabled{opacity:.45;border-color:#bbb;color:#bbb;background:#fff;cursor:default}
  /* hint bottom-sheet */
  #mobileHint{display:none;position:fixed;left:0;right:0;bottom:74px;z-index:58;background:#2b2b2b;color:#fff;
-   max-height:33vh;overflow:auto;padding:12px 14px 14px;border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,.35);font-size:13px;line-height:1.5}
- body.mobile.m-map.m-hint-on #mobileHint{display:block}
+   max-height:33vh;overflow:auto;padding:12px 36px 14px 14px;border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,.35);font-size:13px;line-height:1.5}
+ body.mobile.m-map.m-hint-on:not(.m-hint-min) #mobileHint{display:block}
  #mobileHint h4{margin:0 0 6px;font-size:12px;color:#ffd27a;text-transform:uppercase;letter-spacing:.05em}
  #mobileHint ol{margin:0;padding-left:18px} #mobileHint li{margin:5px 0}
+ #mobileHint .m-hint-min{position:absolute;top:8px;right:8px;border:none;background:rgba(255,255,255,.15);color:#fff;width:26px;height:26px;border-radius:7px;font-size:16px;line-height:1;cursor:pointer;padding:0}
+ #mobileHint .m-hint-min:hover{background:rgba(255,255,255,.28);color:#fff}
+ /* minimized hint → square button under the zoom buttons */
+ #hintRestore{display:none}
+ body.mobile.m-map.m-hint-on.m-hint-min #hintRestore{display:flex;align-items:center;justify-content:center}
+ #hintRestore{background:#2b2b2b;color:#ffd27a;border-color:#2b2b2b}
+ #hintRestore:hover{background:#3a3a3a;color:#ffd27a}
  /* provisional pin (mobile place) */
  body.mobile .cell.m-provisional{display:block!important}
  body.mobile .cell.m-provisional .ans{box-shadow:0 0 0 3px rgba(177,39,31,.25)}
@@ -328,6 +335,7 @@
     <button id="zout" title="−">−</button>
     <button id="zreset" title="⟳">⟳</button>
     <button id="zfull" title="Ceo ekran" aria-label="Ceo ekran">&#9974;</button>
+    <button id="hintRestore" title="Prikaži hint" aria-label="Prikaži hint">&#128161;</button>
    </div>
    <div class="zhint">Zumiraj: dugmad +/−, točkić miša ili dvoklik · Prevuci za pomeranje</div>
    <div id="stage">
@@ -1905,11 +1913,13 @@ function mShowHint(canonId) {
   const miss = inp ? (parseInt(inp.dataset.locmiss, 10) || 0) : 0;
   const shown = hints.slice(0, Math.min(miss, hints.length));
   if (!shown.length) { mHideHint(); return; }
-  mobileHintEl.innerHTML = '<h4>' + PANEL_HINT_HEADING + '</h4><ol>' +
+  mobileHintEl.innerHTML = '<button class="m-hint-min" title="Smanji" aria-label="Smanji">&#9662;</button>' +
+    '<h4>' + PANEL_HINT_HEADING + '</h4><ol>' +
     shown.map(h => '<li>' + h + '</li>').join('') + '</ol>';
   document.body.classList.add('m-hint-on');
+  document.body.classList.remove('m-hint-min');   // a fresh hint pops the sheet back open
 }
-function mHideHint() { document.body.classList.remove('m-hint-on'); }
+function mHideHint() { document.body.classList.remove('m-hint-on', 'm-hint-min'); }
 
 function mGoto(screen) {
   document.body.classList.remove('m-list', 'm-map', 'm-result');
@@ -1998,6 +2008,8 @@ wrap.addEventListener('pointerup', e => {
 mPotvrdi.addEventListener('click', mConfirm);
 mNext.addEventListener('click', () => mGoto('list'));
 mobileBack.addEventListener('click', mBack);
+mobileHintEl.addEventListener('click', e => { if (e.target.closest('.m-hint-min')) document.body.classList.add('m-hint-min'); });
+document.getElementById('hintRestore').addEventListener('click', () => document.body.classList.remove('m-hint-min'));
 mobileMenuBtn.addEventListener('click', e => { e.stopPropagation(); mobileMenu.classList.toggle('open'); });
 document.addEventListener('click', e => { if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) mCloseMenu(); });
 document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMenu(); showDescModal(); });
