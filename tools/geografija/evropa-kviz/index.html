@@ -1987,7 +1987,9 @@ document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMen
 document.getElementById('mMenuReset').addEventListener('click', () => { mCloseMenu(); resetBtn.click(); mGoto('list'); });
 mobileModeSel.addEventListener('change', () => { modeSelect.value = mobileModeSel.value; modeSelect.dispatchEvent(new Event('change')); mGoto('list'); });
 
-const mq = window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
+// Mobile if narrow (portrait phone) OR short (landscape phone). Tablet landscape
+// (height >= ~768) stays desktop, as required.
+const mq = window.matchMedia ? window.matchMedia('(max-width:760px), (max-height:500px)') : null;
 function applyMobileMode() {
   const on = mq ? mq.matches : false;
   document.body.classList.toggle('mobile', on);
@@ -2035,6 +2037,7 @@ closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
 window.addEventListener('resize', () => { setHeaderTop(); applyMobileMode(); fit(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { setHeaderTop(); applyMobileMode(); fit(); }, 150));
 setHeaderTop();
 applyMobileMode();
 fit();
