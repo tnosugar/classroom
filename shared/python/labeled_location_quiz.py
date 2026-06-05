@@ -294,7 +294,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  .quiz .bonus-note{font-size:11.5px;color:#7a5a00;font-style:italic;margin:0 0 8px}
  #stageWrap{width:100%;overflow:hidden;position:relative;touch-action:none;cursor:grab}
  #stageWrap.grabbing{cursor:grabbing}
- .zoombar{position:absolute;right:12px;top:12px;z-index:30;display:flex;flex-direction:column;gap:6px}
+ .zoombar{position:absolute;right:12px;top:12px;z-index:30;display:grid;grid-template-columns:auto auto;gap:6px}
  .zoombar button{width:40px;height:40px;padding:0;font-size:21px;line-height:1;font-weight:700;background:#fff;border:1px solid #6b6456;color:#3a3528;border-radius:9px;box-shadow:0 1px 3px rgba(0,0,0,.22);cursor:pointer}
  .zoombar button:hover{background:#f3ecd8;color:#3a3528}
  .zhint{position:absolute;left:12px;bottom:10px;z-index:30;background:rgba(255,255,255,.85);border:1px solid #e1d8c2;border-radius:8px;padding:4px 10px;font-size:12px;color:#6b6456;pointer-events:none}
@@ -434,7 +434,7 @@ _HTML_TPL = r"""<!DOCTYPE html>
  #mobileHint .m-hint-min:hover{background:rgba(255,255,255,.28);color:#fff}
  /* minimized hint → square button under the zoom buttons */
  #hintRestore{display:none}
- body.mobile.m-map.m-hint-on.m-hint-min #hintRestore{display:flex;align-items:center;justify-content:center}
+ body.mobile.m-map.m-hint-on.m-hint-min #hintRestore{display:flex;align-items:center;justify-content:center;grid-column:2}
  #hintRestore{background:#2b2b2b;color:#ffd27a;border-color:#2b2b2b}
  #hintRestore:hover{background:#3a3a3a;color:#ffd27a}
  /* provisional pin (mobile place) */
@@ -515,10 +515,10 @@ _HTML_TPL = r"""<!DOCTYPE html>
   <div id="stageWrap">
    <div id="mTermLabel"></div>
    <div class="zoombar">
-    <button id="zin" title="+">+</button>
-    <button id="zout" title="−">−</button>
     <button id="zreset" title="⟳">⟳</button>
+    <button id="zin" title="+">+</button>
     <button id="zfull" title="Ceo ekran" aria-label="Ceo ekran">&#9974;</button>
+    <button id="zout" title="−">−</button>
     <button id="hintRestore" title="Prikaži hint" aria-label="Prikaži hint">&#128161;</button>
    </div>
    <div class="zhint">__ZHINT__</div>
@@ -1616,6 +1616,7 @@ allInputs.forEach(inp => {
 resetBtn.addEventListener('click', () => {
   // Full reset: setMode() with no restore opts picks a fresh subset (for N-mode)
   // AND clears the board (applyAnswers({}) → cells, drawings, answers all reset).
+  mAttemptId = null; mobileHeld = null;
   setMode(currentMode, {});
   apply();   // re-render cleared cell positions
   resumeBanner.classList.remove('show');
@@ -2093,6 +2094,41 @@ let mobileHeld = null;     // canonical id of the term "in hand"
 let mProvisional = null;   // { baseX, baseY, lon, lat }
 const M_CONFIRM_TXT = __M_CONFIRM_TXT__, M_NEXT_DESC = __M_NEXT_DESC__, M_NEXT_Q = __M_NEXT_Q__;
 let mAwaitNext = false;    // placed correctly → button becomes "Dalje" (don't jump to result yet)
+let mAttemptId = null;     // term taken from the list; its result is committed only after
+                          // the full cycle (place → read description → "Sledeći pojam").
+                          // Leaving via the back arrow before that reverts it entirely.
+
+// Undo any drawn geometry / reveal-area for a single term.
+function hideGeometry(canonId) {
+  for (const el of document.querySelectorAll('svg [data-term="' + canonId + '"]')) el.classList.remove('revealed');
+  for (const el of document.querySelectorAll('svg .reveal-area[data-term="' + canonId + '"]')) el.remove();
+}
+
+// Fully revert a term to its pristine (untouched) state — used when the student
+// goes back to the list without finishing the read-description cycle, so neither
+// a correct result, a placement, nor accumulated mistakes are committed.
+function mAbandonAttempt(id) {
+  const inp = inputsById.get(id);
+  if (!inp) return;
+  const cell = inp.parentElement;
+  inp.classList.remove('correct', 'wrong-placed', 'wrong', 'revealed-loc');
+  inp.readOnly = false;
+  inp.value = '';
+  inp.dataset.miss = '0';
+  inp.dataset.locmiss = '0';
+  cell.classList.remove('drag-placed', 'm-provisional', 'dragging');
+  cell.dataset.sx = cell.dataset.canonSx;
+  cell.dataset.sy = cell.dataset.canonSy;
+  const badge = cell.querySelector('.miss');
+  if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+  const li = legendItems.get(id);
+  if (li) li.classList.remove('placed', 'revealed-loc');
+  hideGeometry(id);
+  updateLegendMarks(id);
+  apply();
+  recountCorrectMiss();
+  saveState();
+}
 
 function mShowHint(canonId) {
   const t = ALL_TERMS.find(x => x.id === canonId);
@@ -2160,14 +2196,14 @@ function mConfirm() {
 }
 
 function mBack() {
-  if (document.body.classList.contains('m-map') && mobileHeld != null) {
-    const inp = inputsById.get(mobileHeld), cell = inp.parentElement;
-    if (!inp.classList.contains('correct')) {          // discard an unplaced/wrong attempt
-      cell.classList.remove('m-provisional', 'drag-placed');
-      inp.classList.remove('wrong-placed');
-      apply(); recountCorrectMiss();
-    }
+  // Leaving the map before the cycle is complete = abandon: revert the whole
+  // attempt (correct/wrong/misses/geometry) so the counter never keeps a result
+  // for a term the student didn't finish. A committed correct answer is reached
+  // only through "Dalje" → description, where mAttemptId was already cleared.
+  if (document.body.classList.contains('m-map') && mAttemptId != null) {
+    mAbandonAttempt(mAttemptId);
   }
+  mAttemptId = null;
   mobileHeld = null;
   mGoto('list');
 }
@@ -2182,7 +2218,7 @@ legendList.addEventListener('click', e => {
   const id = parseInt(li.dataset.id, 10);
   const inp = inputsById.get(id);
   if (inp && inp.classList.contains('correct')) { mobileHeld = null; showPanelFor(id); mGoto('result'); return; }
-  mobileHeld = id; mProvisional = null; mAwaitNext = false;
+  mobileHeld = id; mAttemptId = id; mProvisional = null; mAwaitNext = false;
   mPotvrdi.disabled = true; mPotvrdi.textContent = M_CONFIRM_TXT;
   mGoto('map');
   mSetTermLabel(id);
@@ -2201,7 +2237,7 @@ wrap.addEventListener('pointerup', e => {
 });
 
 mPotvrdi.addEventListener('click', () => {
-  if (mAwaitNext) { mAwaitNext = false; mPotvrdi.textContent = M_CONFIRM_TXT; mPotvrdi.disabled = true; mGoto('result'); }
+  if (mAwaitNext) { mAwaitNext = false; mAttemptId = null; mPotvrdi.textContent = M_CONFIRM_TXT; mPotvrdi.disabled = true; mGoto('result'); }
   else mConfirm();
 });
 mNext.addEventListener('click', () => mGoto('list'));
