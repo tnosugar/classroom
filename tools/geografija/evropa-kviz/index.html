@@ -327,6 +327,7 @@
     <button id="zin" title="+">+</button>
     <button id="zout" title="−">−</button>
     <button id="zreset" title="⟳">⟳</button>
+    <button id="zfull" title="Ceo ekran" aria-label="Ceo ekran">&#9974;</button>
    </div>
    <div class="zhint">Zumiraj: dugmad +/−, točkić miša ili dvoklik · Prevuci za pomeranje</div>
    <div id="stage">
@@ -1476,6 +1477,22 @@ function centerZoom(factor) { zoomAt(wrap.clientWidth / 2, wrap.clientHeight / 2
 document.getElementById('zin').addEventListener('click', () => centerZoom(1.4));
 document.getElementById('zout').addEventListener('click', () => centerZoom(1 / 1.4));
 document.getElementById('zreset').addEventListener('click', () => { zoom = 1; panX = 0; panY = 0; fit(); });
+// Full-screen toggle (below the zoom buttons) + return to default
+const zfull = document.getElementById('zfull');
+function fsElement() { return document.fullscreenElement || document.webkitFullscreenElement || null; }
+function toggleFullscreen() {
+  const el = document.documentElement;
+  if (!fsElement()) { const req = el.requestFullscreen || el.webkitRequestFullscreen; if (req) req.call(el); }
+  else { const ex = document.exitFullscreen || document.webkitExitFullscreen; if (ex) ex.call(document); }
+}
+function updateFsBtn() {
+  const on = !!fsElement();
+  zfull.innerHTML = on ? '&#10006;' : '&#9974;';
+  zfull.title = on ? 'Izađi iz celog ekrana' : 'Ceo ekran';
+}
+zfull.addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', () => { setHeaderTop(); fit(); updateFsBtn(); });
+document.addEventListener('webkitfullscreenchange', () => { setHeaderTop(); fit(); updateFsBtn(); });
 wrap.addEventListener('wheel', e => {
   e.preventDefault();
   const r = wrap.getBoundingClientRect();
@@ -1987,9 +2004,7 @@ document.getElementById('mMenuOpis').addEventListener('click', () => { mCloseMen
 document.getElementById('mMenuReset').addEventListener('click', () => { mCloseMenu(); resetBtn.click(); mGoto('list'); });
 mobileModeSel.addEventListener('change', () => { modeSelect.value = mobileModeSel.value; modeSelect.dispatchEvent(new Event('change')); mGoto('list'); });
 
-// Mobile if narrow (portrait phone) OR short (landscape phone). Tablet landscape
-// (height >= ~768) stays desktop, as required.
-const mq = window.matchMedia ? window.matchMedia('(max-width:760px), (max-height:500px)') : null;
+const mq = window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
 function applyMobileMode() {
   const on = mq ? mq.matches : false;
   document.body.classList.toggle('mobile', on);
@@ -2037,7 +2052,6 @@ closePanel();   // start with the idle placeholder in the always-present panel
 try { if (localStorage.getItem(DESC_KEY) !== '1') showDescModal(); } catch (e) {}
 
 window.addEventListener('resize', () => { setHeaderTop(); applyMobileMode(); fit(); });
-window.addEventListener('orientationchange', () => setTimeout(() => { setHeaderTop(); applyMobileMode(); fit(); }, 150));
 setHeaderTop();
 applyMobileMode();
 fit();
